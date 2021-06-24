@@ -1,5 +1,5 @@
 #' @title Late-Fall Run Chinook Model
-#' @description Fall Run Chinook life cycle model used for CVPIA's Structured
+#' @description Late-Fall Run Chinook life cycle model used for CVPIA's Structured
 #' Decision Making Process
 #' @param scenario Model inputs, can be modified to test management actions
 #' @param mode
@@ -9,7 +9,7 @@
 #' @param ..params parameters derived from calibration
 #' @source IP-117068
 #' @export
-latefall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "calibrate"),
+late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "calibrate"),
                            seeds = NULL, ..params = lateFallRunDSM::params){
 
   mode <- match.arg(mode)
@@ -141,7 +141,8 @@ latefall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "ca
                              yolo_habitat = ..params$yolo_habitat,
                              delta_habitat = ..params$delta_habitat)
 
-      rearing_survival <- get_rearing_survival_rates(year, month, scenario,
+      rearing_survival <- get_rearing_survival_rates(year, month, mode = mode,
+                                                     survival_adjustment = scenario_data$survival_adjustment,
                                                      avg_temp = ..params$avg_temp,
                                                      avg_temp_delta = ..params$avg_temp_delta,
                                                      prob_strand_early = ..params$prob_strand_early,

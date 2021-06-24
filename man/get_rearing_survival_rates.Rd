@@ -10,7 +10,8 @@ IP-117068
 get_rearing_survival_rates(
   year,
   month,
-  scenario,
+  mode,
+  survival_adjustment,
   avg_temp,
   avg_temp_delta,
   prob_strand_early,
@@ -54,8 +55,6 @@ get_rearing_survival_rates(
 \item{year}{The simulation year, 1-20}
 
 \item{month}{The simulation month, 1-8}
-
-\item{scenario}{The current scenario}
 
 \item{..surv_juv_rear_int}{TODO}
 
@@ -102,6 +101,8 @@ get_rearing_survival_rates(
 \item{.surv_juv_delta_medium}{TODO}
 
 \item{.surv_juv_delta_large}{TODO}
+
+\item{scenario}{The current scenario}
 }
 \description{
 Calculates the juvenile inchannel, floodplain, bypasses, and
