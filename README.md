@@ -1,4 +1,4 @@
-# Fall Chinook Salmon Science Iintegration Team Model
+# Late-Fall Chinook Salmon Science Iintegration Team Model
 
 ## Primary Authors:                                                     
                                                                      
