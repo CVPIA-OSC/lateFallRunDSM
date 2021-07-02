@@ -1,0 +1,23 @@
+model{
+  for (k in 1:n.obs){ 
+    ## must calculate precision using standard error
+    ## from each study
+    precision.logor[k] <- 1/pow( logit.se[k], 2) 
+    
+    ## log odds ratio distributed normally
+    ## observed response for each study comes from normal 
+    logit.s[k] ~ dnorm( theta[k],  precision.logor[k]) 
+    
+    theta[k]~dnorm(mu.theta, tau.theta )
+  }
+  
+  # prior distribution for posterior log odds
+  mu.theta  ~ dnorm(0.0, 0.001)
+  
+  # prior distribution for posterior log odds precision
+  tau.theta <- pow(tau.var,-2)
+  tau.var ~ dunif(0,6)
+  
+  ### posterior estimate of log odds
+  theta.new ~ dnorm(mu.theta,tau.theta)
+}
