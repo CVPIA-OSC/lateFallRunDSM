@@ -16,7 +16,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
 
   if (mode == "simulate") {
     if (is.null(scenario)) {
-      # the do nothing scenario to force habitat degration
+      # the do nothing scenario to force habitat degradation
       scenario <- DSMscenario::scenarios$NO_ACTION
     }
 
@@ -132,7 +132,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                redd_size = ..params$spawn_success_redd_size,
                                fecundity = ..params$spawn_success_fecundity)
 
-    for (month in 1:8) {
+    for (month in 4:11) {
       habitat <- get_habitat(year, month,
                              inchannel_habitat_fry = ..params$inchannel_habitat_fry,
                              inchannel_habitat_juvenile = ..params$inchannel_habitat_juvenile,
@@ -141,7 +141,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                              yolo_habitat = ..params$yolo_habitat,
                              delta_habitat = ..params$delta_habitat)
 
-      rearing_survival <- get_rearing_survival_rates(year, month, mode = mode,
+      rearing_survival <- get_rearing_survival_rates(year, month, mode = mode, #survival in this model is a probability parameter (probability of success), not a rate parameter (proportion that survived)...probability near same thing given the number of fish, but maybe not
                                                      survival_adjustment = scenario_data$survival_adjustment,
                                                      avg_temp = ..params$avg_temp,
                                                      avg_temp_delta = ..params$avg_temp_delta,
@@ -213,7 +213,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
 
       migrants <- matrix(0, nrow = 31, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels, lateFallRunDSM::size_class_labels))
 
-      if (month == 8) {
+      if (month == 11) {
         # all remaining fish outmigrate
         sutter_fish <- migrate(sutter_fish, migratory_survival$sutter)
         upper_mid_sac_fish <- migrate(upper_mid_sac_fish + juveniles[1:15, ], migratory_survival$uppermid_sac)
@@ -249,7 +249,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
 
         annual_migrants <- annual_migrants + migrants_at_golden_gate
       } else {
-        # if month < 8
+        # if month < 11
         # route northern natal fish stay and rear or migrate downstream ------
         upper_sac_trib_fish <-  route(year = year,
                                       month = month,
@@ -534,12 +534,12 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
     output$juvenile_biomass[ , year] <- juveniles_at_chipps %*% lateFallRunDSM::params$mass_by_size_class
 
     adults_returning <- t(sapply(1:31, function(i) {
-      rmultinom(1, adults_in_ocean[i], prob = c(.25, .5, .25))
+      rmultinom(1, adults_in_ocean[i], prob = c(0.1, 0.64, 0.25,0.01)) #Might update this value for fall run too based on Satterthwaite et al. 2017, TAFS 146:594-610...either way, the extra year may warrant 6 years of seeding instead of 5 
     }))
 
     # distribute returning adults for future spawning
     if (mode != "calibrate") {
-      adults[1:31, (year + 2):(year + 4)] <- adults[1:31, (year + 2):(year + 4)] + adults_returning
+      adults[1:31, (year + 2):(year + 5)] <- adults[1:31, (year + 2):(year + 5)] + adults_returning
     }
 
   } # end year for loop

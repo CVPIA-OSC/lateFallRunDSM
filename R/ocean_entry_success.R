@@ -23,7 +23,7 @@ ocean_entry_success <- function(migrants, month, avg_ocean_transition_month,
                                            .ocean_entry_success_length))
   }
 
-  if (month_since == 0) rep(0, 31) else rowSums(round(survival_rate * migrants))
+  if (month_since == 0) rep(0, 31) else rowSums(round(survival_rate * migrants)) ##Why was stochasticity removed here?
 
 }
 
