@@ -80,6 +80,8 @@ fill_regional <- function(juveniles, habitat, floodplain_habitat = NULL,
   prop_flood <- mapply(flood_rear / orig_tot, FUN = max, 0, na.rm = TRUE)
   prop_river <- mapply(river_rear / orig_tot, FUN = max, 0, na.rm = TRUE)
   prop_migrant <- mapply(migrants / orig_tot, FUN = max, 0, na.rm = TRUE)
+  
+  #need to keep track of proportion form each trib
 
   # apportioning tributary fish to the region
   flood_rear <- round(t(t(juveniles) * prop_flood))
