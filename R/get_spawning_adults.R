@@ -21,6 +21,9 @@
 #' @param .adult_en_route_adult_harvest_rate TODO
 #' @source IP-117068
 #' @export
+#' Inputs that need to change
+#' params$month_return_proportions for Battle and Clear creeks Nov, Dec, Jan: 10,40,40,10
+#  For upper Sacramento Oct- Feb distribution, 10,20, 40, 20, 10
 get_spawning_adults <- function(year, adults, hatch_adults, mode,
                                 month_return_proportions=lateFallRunDSM::params$month_return_proportions,
                                 prop_flow_natal,
@@ -101,16 +104,18 @@ get_spawning_adults <- function(year, adults, hatch_adults, mode,
 
     adults_after_stray <- adults_by_month - straying_adults + south_delta_stray_adults + stray_adults
 
-    # are tisdale or yolo bypasses overtopped?
+    # are Tisdale or yolo bypasses overtopped?
     # for all years and months 10-12 there is always at least one true
-
+    # will need months for Battle and Clear Nov, Dec, Jan, Feb distribution, 20,30,30,20
+    # For upper Sacramento Oct- Feb distribution, 10,20, 40, 20, 10
+    # but year+ 1 for Jan and Feb
     bypass_is_overtopped <- sapply(10:12, function(month) {
 
       tis <- gates_overtopped[month, year, 1] * tisdale_bypass_watershed
       yolo <- gates_overtopped[month, year, 2] * yolo_bypass_watershed
       as.logical(tis + yolo)
     })
-
+    # we can't use the same matrix because we have year+ 1 for months 1,2
     en_route_temps <- migratory_temperature_proportion_over_20[, 10:12]
 
     adult_en_route_surv <- sapply(1:3, function(month) {
