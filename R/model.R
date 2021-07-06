@@ -534,12 +534,12 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
     output$juvenile_biomass[ , year] <- juveniles_at_chipps %*% lateFallRunDSM::params$mass_by_size_class
 
     adults_returning <- t(sapply(1:31, function(i) {
-      rmultinom(1, adults_in_ocean[i], prob = c(0.1, 0.64, 0.25,0.01)) #Might update this value for fall run too based on Satterthwaite et al. 2017, TAFS 146:594-610...either way, the extra year may warrant 6 years of seeding instead of 5 
+      rmultinom(1, adults_in_ocean[i], prob = c(.432, .566, .02))  
     }))
 
     # distribute returning adults for future spawning
     if (mode != "calibrate") {
-      adults[1:31, (year + 2):(year + 5)] <- adults[1:31, (year + 2):(year + 5)] + adults_returning
+      adults[1:31, (year + 2):(year + 4)] <- adults[1:31, (year + 2):(year + 4)] + adults_returning
     }
 
   } # end year for loop
