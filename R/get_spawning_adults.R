@@ -21,6 +21,9 @@
 #' @param .adult_en_route_adult_harvest_rate TODO
 #' @source IP-117068
 #' @export
+#' Inputs that need to change
+#' params$month_return_proportions for Battle and Clear creeks Nov, Dec, Jan: 10,40,40,10
+#  For upper Sacramento Oct- Feb distribution, 10,20, 40, 20, 10
 get_spawning_adults <- function(year, adults, hatch_adults, mode,
                                 month_return_proportions=lateFallRunDSM::params$month_return_proportions,
                                 prop_flow_natal,
@@ -46,10 +49,13 @@ get_spawning_adults <- function(year, adults, hatch_adults, mode,
   if (mode %in% c("seed", "calibrate")) {
     adult_index <- ifelse(mode == "seed", 1, year)
     adults_by_month <- t(sapply(1:31, function(watershed) {
-      rmultinom(1, adults[watershed, adult_index], month_return_proportions)
+      rmultinom(1, adults[watershed, adult_index], month_return_proportions[2,])
+    }))
+    adults_by_month[1,] <- t(sapply(1, function(watershed) {
+      rmultinom(1, adults[watershed, adult_index], month_return_proportions[1,])
     }))
 
-    natural_adults_by_month <- sapply(1:3, function(month) {
+    natural_adults_by_month <- sapply(1:5, function(month) {
       rbinom(n = 31,
              size = round(adults_by_month[, month]),
              prob = 1 - lateFallRunDSM::params$natural_adult_removal_rate)
@@ -63,17 +69,23 @@ get_spawning_adults <- function(year, adults, hatch_adults, mode,
   } else  {
 
     adults_by_month <- t(sapply(1:31, function(watershed) {
-      rmultinom(1, adults[watershed, year], month_return_proportions)
+      rmultinom(1, adults[watershed, year], month_return_proportions[2,])
+    }))
+    adults_by_month[1,] <- t(sapply(1, function(watershed) {
+      rmultinom(1, adults[watershed, year], month_return_proportions[1,])
     }))
 
     hatchery_by_month <- t(sapply(1:31, function(watershed) {
-      rmultinom(1, hatch_adults[watershed], month_return_proportions)
+      rmultinom(1, hatch_adults[watershed], month_return_proportions[2,])
+    }))
+    hatchery_by_month[1,] <- t(sapply(1:31, function(watershed) {
+      rmultinom(1, hatch_adults[watershed], month_return_proportions[1,])
     }))
 
     #TODO random variable
-    stray_props <- sapply(10:12, function(month) {
+    stray_props <- sapply(c(10:12,1,2), function(month) {
       adult_stray(wild = 1,
-                  natal_flow = prop_flow_natal[ , year],
+                  natal_flow = prop_flow_natal[ , year+(month < 3)],
                   south_delta_watershed = south_delta_routed_watersheds,
                   cross_channel_gates_closed = cc_gates_days_closed[month],
                   .intercept = .adult_stray_intercept,
@@ -84,36 +96,37 @@ get_spawning_adults <- function(year, adults, hatch_adults, mode,
                   .prop_delta_trans = .adult_stray_prop_delta_trans)
     })
 
-    straying_adults <- sapply(1:3, function(month) {
+    straying_adults <- sapply(1:5, function(month) {
       rbinom(n = 31, adults_by_month[, month], stray_props[, month])
     })
 
     south_delta_routed_adults <- round(colSums(straying_adults * south_delta_routed_watersheds))
-    south_delta_stray_adults <- sapply(1:3, function(month) {
+    south_delta_stray_adults <- sapply(1:5, function(month) {
       as.vector(rmultinom(1, south_delta_routed_adults[month], lateFallRunDSM::params$cross_channel_stray_rate))
     })
 
     remaining_stray_adults <- round(colSums(straying_adults * (1 - south_delta_routed_watersheds)))
-    stray_adults <- sapply(1:3, function(month) {
+    stray_adults <- sapply(1:5, function(month) {
       as.vector(rmultinom(1, remaining_stray_adults[month], lateFallRunDSM::params$stray_rate))
     })
 
-
     adults_after_stray <- adults_by_month - straying_adults + south_delta_stray_adults + stray_adults
 
-    # are tisdale or yolo bypasses overtopped?
+    # are Tisdale or yolo bypasses overtopped?
     # for all years and months 10-12 there is always at least one true
+    # will need months for Battle and Clear Nov, Dec, Jan, Feb distribution, 20,30,30,20
+    # For upper Sacramento Oct- Feb distribution, 10,20, 40, 20, 10
+    # but year+ 1 for Jan and Feb
+    bypass_is_overtopped <- sapply(c(10:12,1,2), function(month) {
 
-    bypass_is_overtopped <- sapply(10:12, function(month) {
-
-      tis <- gates_overtopped[month, year, 1] * tisdale_bypass_watershed
-      yolo <- gates_overtopped[month, year, 2] * yolo_bypass_watershed
+      tis <- gates_overtopped[month, year+ (month<3), 1] * tisdale_bypass_watershed
+      yolo <- gates_overtopped[month, year+ (month<3), 2] * yolo_bypass_watershed
       as.logical(tis + yolo)
     })
+    # we can't use the same matrix because we have year+ 1 for months 1,2
+    en_route_temps <- migratory_temperature_proportion_over_20[, c(10:12,1,2)]
 
-    en_route_temps <- migratory_temperature_proportion_over_20[, 10:12]
-
-    adult_en_route_surv <- sapply(1:3, function(month) {
+    adult_en_route_surv <- sapply(1:5, function(month) {
       adult_en_route_surv <- surv_adult_enroute(migratory_temp = en_route_temps[,month],
                                                 bypass_overtopped = bypass_is_overtopped[,month],
                                                 adult_harvest = .adult_en_route_adult_harvest_rate,
@@ -123,15 +136,15 @@ get_spawning_adults <- function(year, adults, hatch_adults, mode,
     })
 
 
-    adults_survived_to_spawning <- sapply(1:3, function(month) {
+    adults_survived_to_spawning <- sapply(1:5, function(month) {
       rbinom(31, round(adults_after_stray[, month]), adult_en_route_surv[, month])
     })
 
-    surviving_natural_adults_by_month <- sapply(1:3, function(month) {
+    surviving_natural_adults_by_month <- sapply(1:5, function(month) {
       rbinom(31, round(adults_survived_to_spawning[, month]), (1 - lateFallRunDSM::params$natural_adult_removal_rate))
     })
 
-    surviving_hatchery_adults_by_month <- sapply(1:3, function(month) {
+    surviving_hatchery_adults_by_month <- sapply(1:5, function(month) {
       rbinom(31, round(hatchery_by_month[, month]), adult_en_route_surv[, month])
     })
 
@@ -150,7 +163,6 @@ get_spawning_adults <- function(year, adults, hatch_adults, mode,
        init_adults_by_month = init_adults_by_month)
 
 }
-
 
 
 

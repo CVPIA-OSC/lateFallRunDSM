@@ -76,7 +76,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
     annual_migrants <- matrix(0, nrow = 31, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels, lateFallRunDSM::size_class_labels))
     avg_ocean_transition_month <- ocean_transition_month() # 2
 
-    hatch_adults <- rmultinom(1, size = round(runif(1, 83097.01,532203.1)), prob = ..params$hatchery_allocation)[ , 1]
+    hatch_adults <- rmultinom(1, size = round(runif(1, 1753,7012)), prob = ..params$hatchery_allocation)[ , 1]
     spawners <- get_spawning_adults(year, round(adults), hatch_adults, mode = mode,
                                     prop_flow_natal = ..params$prop_flow_natal,
                                     south_delta_routed_watersheds = ..params$south_delta_routed_watersheds,
@@ -111,13 +111,16 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
       ..surv_egg_to_fry_int = ..params$..surv_egg_to_fry_int
     )
 
-    min_spawn_habitat <- apply(..params$spawning_habitat[ , 10:12, year], 1, min)
+    min_spawn_habitat <- apply(..params$spawning_habitat[ , c(12,1,2), c(year, year+1,year+1)], 1, min)
 
-    accumulated_degree_days <- cbind(oct = rowSums(..params$degree_days[ , 10:12, year]),
-                                     nov = rowSums(..params$degree_days[ , 11:12, year]),
-                                     dec = ..params$degree_days[ , 12, year])
+    accumulated_degree_days <- cbind(oct = rowSums(..params$degree_days[ , c(10:12,1,2), c(year,year,year+1,year+1)]),
+                                     nov = rowSums(..params$degree_days[ , c(11:12,1,2), c(year,year+1,year+1)]),
+                                     dec = rowSums(..params$degree_days[ , c(12,1,2), c(year,year+1,year+1)]),
+                                     jan = rowSums(..params$degree_days[ , c(1,2), c(year+1,year+1)]),
+                                     feb = ..params$degree_days[ , 2, year+1])
 
-    average_degree_days <- apply(accumulated_degree_days, 1, weighted.mean, ..params$month_return_proportions)
+    average_degree_days <- apply(accumulated_degree_days, 1, weighted.mean, ..params$month_return_proportions[,2])
+    average_degree_days[1] <- apply(accumulated_degree_days, 1, weighted.mean, ..params$month_return_proportions[,1])
 
     prespawn_survival <- surv_adult_prespawn(average_degree_days,
                                              ..surv_adult_prespawn_int = ..params$..surv_adult_prespawn_int,
