@@ -12,7 +12,7 @@
 #' @export
 surv_egg_to_fry <- function(proportion_natural,
                             scour,
-                            temperature_effect,
+                            temperature_effect, # TODO expose for sensitivity
                             ..surv_egg_to_fry_int = 0.041,
                             .proportion_natural = 0.533,
                             .scour = -0.655){

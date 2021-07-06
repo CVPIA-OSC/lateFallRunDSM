@@ -124,9 +124,12 @@ get_spawning_adults <- function(year, adults, hatch_adults, mode,
       as.logical(tis + yolo)
     })
     # we can't use the same matrix because we have year+ 1 for months 1,2
+    # TODO fix this
     en_route_temps <- migratory_temperature_proportion_over_20[, c(10:12,1,2)]
 
+
     adult_en_route_surv <- sapply(1:5, function(month) {
+
       adult_en_route_surv <- surv_adult_enroute(migratory_temp = en_route_temps[,month],
                                                 bypass_overtopped = bypass_is_overtopped[,month],
                                                 adult_harvest = .adult_en_route_adult_harvest_rate,
