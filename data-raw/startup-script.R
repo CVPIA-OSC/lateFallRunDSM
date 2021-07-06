@@ -10,6 +10,7 @@ library(tidyverse)
 library(parallel)
 library(doParallel)
 library(remotes)
+remotes::install_github("CVPIA-OSC/lateFallRunDSM")
 library(lateFallRunDSM)
 
 # set up for parallel processing ----------------------------------
@@ -21,22 +22,22 @@ registerDoParallel(cl)
 # seeds,I want both the models to be using the same seed therefore I leave the seeding
 # out of the iterations, if we want seeding to happen every iteration we simply move
 # this like into each of the model run functions below
-lfr_run_seeds <- latefall_run_model(mode = "seed")
+lfr_run_seeds <- late_fall_run_model(mode = "seed")
 
 
 # base run, with NO ACTION
 run_base <- function(...) {
-  latefall_run_model(scenario = DSMscenario::scenarios$NO_ACTION, mode = "simulate", seeds = lfr_run_seeds)
+  late_fall_run_model(scenario = DSMscenario::scenarios$NO_ACTION, mode = "simulate", seeds = lfr_run_seeds)
 }
 
 # scenario run with scenario = 5
 run_scenario5 <- function(...) {
-  latefall_run_model(scenario = DSMscenario::scenarios$FIVE, mode = "simulate", seeds = lfr_run_seeds)
+  late_fall_run_model(scenario = DSMscenario::scenarios$FIVE, mode = "simulate", seeds = lfr_run_seeds)
 }
 
 
 # register the functions for use in parallel mode
-clusterExport(cl, list('run_base', 'run_scenario5', 'latefall_run_model', 'lfr_run_seeds'))
+clusterExport(cl, list('run_base', 'run_scenario5', 'late_fall_run_model', 'lfr_run_seeds'))
 
 # total number of times to run the model
 model_iters <- 10

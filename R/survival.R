@@ -26,9 +26,9 @@ surv_juv_rear <- function(max_temp_thresh, avg_temp_thresh, high_predation,
                           ..surv_juv_rear_int = 3.5,
                           .avg_temp_thresh = -0.717,
                           .high_predation = -0.122,
-                          ..surv_juv_rear_contact_points = -0.0068,
-                          ..surv_juv_rear_prop_diversions = -0.1755,
-                          ..surv_juv_rear_total_diversions = -0.0005,
+                          ..surv_juv_rear_contact_points = -0.189*0.0358, #these products need to stay this way here and elsewhere because the first value comes from the literature (or maybe expert elicitatio - would need to check with Jim), and the other value is based on calibration to scale the value.
+                          ..surv_juv_rear_prop_diversions = -3.51*0.05,
+                          ..surv_juv_rear_total_diversions = -0.0021*0.215,
                           .stranded = -1.939,
                           .medium = 1.48,
                           .large = 2.223,
@@ -49,7 +49,7 @@ surv_juv_rear <- function(max_temp_thresh, avg_temp_thresh, high_predation,
     (.avg_temp_thresh  * avg_temp_thresh) + (.high_predation * high_predation)
 
   # hi.tmp is emebeded here needs to be exposed so that it van be varied
-  s1 <- ifelse(max_temp_thresh, .0001, boot::inv.logit(base_score_inchannel))
+  s1 <- ifelse(max_temp_thresh, .0001, boot::inv.logit(base_score_inchannel)) # the .0001 was varied in the sensitivity analysis during the last iteration. Is this still possible as coded? similar to temp effect on egg survival, this needs to be constraind between 0 and 1 in the sensitivity anlaysis by switch back and forth to logit transformation and probability 
   m1 <- ifelse(max_temp_thresh, .0001, boot::inv.logit(base_score_inchannel + .medium))
   l1 <- ifelse(max_temp_thresh, .0001, boot::inv.logit(base_score_inchannel  + .large))
 
@@ -95,7 +95,7 @@ surv_juv_bypass <- function(max_temp_thresh, avg_temp_thresh, high_predation,
                 .avg_temp_thresh * avg_temp_thresh +
                 .high_predation * high_predation
 
-  s <- ifelse(max_temp_thresh, .0001, boot::inv.logit(base_score))
+  s <- ifelse(max_temp_thresh, .0001, boot::inv.logit(base_score)) #same comment before on 0.0001 being in sensitivity analysis
   m <- ifelse(max_temp_thresh, .0001, boot::inv.logit(base_score + .medium))
   l <- ifelse(max_temp_thresh, .0001, boot::inv.logit(base_score + .large))
 
@@ -126,13 +126,13 @@ surv_juv_delta <- function(avg_temp, max_temp_thresh, avg_temp_thresh, high_pred
                            ..surv_juv_delta_int = 1.4,
                            .avg_temp_thresh = -0.717,
                            .high_predation = -0.122,
-                           ..surv_juv_delta_contact_points = 0.0358 * -0.189,
+                           ..surv_juv_delta_contact_points = 0.0358 * -0.189, # perfect
                            .prop_diverted = -3.51,
                            ..surv_juv_delta_total_diverted = 0.5 * -0.0021,
                            .medium = 1.48,
                            .large = 2.223){
   # north delta
-  north_delta_surv <- rep((avg_temp <= 16.5)*.42 + (avg_temp > 16.5 & avg_temp < 19.5) * 0.42 / (1.55^(avg_temp-15.5)) + (avg_temp > 19.5 & avg_temp < 25)*0.035,4)
+  north_delta_surv <- rep((avg_temp <= 16.5)*.42 + (avg_temp > 16.5 & avg_temp < 19.5) * 0.42 / (1.55^(avg_temp-15.5)) + (avg_temp > 19.5 & avg_temp < 25)*0.035,4) #what is this doing?
 
   # south delta
   base_score <- ..surv_juv_delta_int +
@@ -142,7 +142,7 @@ surv_juv_delta <- function(avg_temp, max_temp_thresh, avg_temp_thresh, high_pred
     .prop_diverted * prop_diverted[2] +
     ..surv_juv_delta_total_diverted * total_diverted[2]
 
-  s <- ifelse(max_temp_thresh[2], .0001, boot::inv.logit(base_score))
+  s <- ifelse(max_temp_thresh[2], .0001, boot::inv.logit(base_score)) #same comment before on 0.0001 being in sensitivity analysis
   m <- ifelse(max_temp_thresh[2], .0001, boot::inv.logit(base_score + .medium))
   l <- ifelse(max_temp_thresh[2], .0001, boot::inv.logit(base_score + .large))
 
@@ -185,7 +185,8 @@ surv_juv_delta <- function(avg_temp, max_temp_thresh, avg_temp_thresh, high_pred
 #' @param .surv_juv_delta_large TODO
 #' @source IP-117068
 #' @export
-get_rearing_survival_rates <- function(year, month, scenario,
+get_rearing_survival_rates <- function(year, month, mode,
+                                       survival_adjustment,
                                        avg_temp,
                                        avg_temp_delta,
                                        prob_strand_early,
@@ -291,8 +292,9 @@ get_rearing_survival_rates <- function(year, month, scenario,
   river_surv <- matrix(unlist(rear_surv[ , 1]), ncol = 4, byrow = TRUE)
   flood_surv <- matrix(unlist(rear_surv[ , 2]), ncol = 4, byrow = TRUE)
 
-  if (!is.null(scenario)) {
-    survival_increase <- matrix(0, nrow = 31, ncol = 4)
+  if (mode != "seed") {
+    river_surv <- pmin(river_surv * survival_adjustment[, year], 1)
+    flood_surv <- pmin(flood_surv * survival_adjustment[, year], 1)
   }
 
   bp_surv <- surv_juv_bypass(max_temp_thresh = maxT25[22],
@@ -343,7 +345,7 @@ get_rearing_survival_rates <- function(year, month, scenario,
 #' @export
 surv_juv_outmigration_sac <- function(flow_cms){
 
-  result <- rep((flow_cms <= 122)*0.03 + (flow_cms > 122 & flow_cms <= 303)*0.189 + (flow_cms > 303)*0.508,4)
+  result <- rep((flow_cms <= 122)*0.03 + (flow_cms > 122 & flow_cms <= 303)*0.189 + (flow_cms > 303)*0.508,4) #should check this. I am probably wrong, but shouldn't the weights sum to 1 here?
   setNames(result, c("s", "m", "l", "vl"))
 }
 
@@ -390,7 +392,17 @@ surv_juv_outmigration_sac_delta <- function(delta_flow, avg_temp, perc_diversion
                                             .medium = 1.48,
                                             .large = 2.223){
 
-  model_weight <- 1/3
+  model_weight <- 1/3 #this model weight needs to be elevated, I think. We vary this in the sensitivity analysis with the constraint that is sums to 1. I did it by hardcoding it with the below code
+  # modwt<-rep(0.333,3)
+  # if(sum(vary == "juv.deltmigS.modwt")){ 
+  #   if(pctil[vary == "juv.deltmigS.modwt"] > 1) modwt<-c(0.5,0,0.5)
+  #   if(pctil[vary == "juv.deltmigS.modwt"] > 1.2) modwt<-c(0.5,0.5,0)
+  #   if(pctil[vary == "juv.deltmigS.modwt"] > 1.4) modwt<-c(1,0,0)
+  #   if(pctil[vary == "juv.deltmigS.modwt"] == 1) modwt<-rep(1/3,3)
+  #   if(pctil[vary == "juv.deltmigS.modwt"] < 1) modwt<-c(0,1,0)
+  #   if(pctil[vary == "juv.deltmigS.modwt"] < 0.8) modwt<-c(0,0.5,0.5)
+  #   if(pctil[vary == "juv.deltmigS.modwt"] < 0.6) modwt<-c(0,0,1)
+  # }
 
   base_score1 <- .intercept_one + .delta_flow * delta_flow
   base_score2 <- .intercept_two + .avg_temp * avg_temp

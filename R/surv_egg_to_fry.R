@@ -16,12 +16,19 @@ surv_egg_to_fry <- function(proportion_natural,
                             ..surv_egg_to_fry_int = 0.041,
                             .proportion_natural = 0.533,
                             .scour = -0.655){
-
+ #may want to set up temp effect to be able to move from logit land to probability. I had to for the sensitivity analysis to keep it between 0 and 1 using the below code
+  # 
+  # if(sum(vary == "egg.viab")){
+  #   viab<-log((tmp.eff+ 0.000001)/((1-tmp.eff)+0.0000001))
+  #   viab<- viab*pctil[vary == "egg.viab"]
+  #   tmp.eff<-inv.logit(viab)
+  # }
+  
   boot::inv.logit(..surv_egg_to_fry_int + .proportion_natural * proportion_natural +
                   .scour * scour) * temperature_effect
 }
 
-# TODO need to implement some api for sensitivity analysis
+# TODO need to implement some api for sensitivity analysis...sorry, just saw this.
 # tmp.eff = temperature_effect
 # if(sum(vary == "egg.viab")){
 #   viab<-log((tmp.eff+ 0.000001)/((1-tmp.eff)+0.0000001))

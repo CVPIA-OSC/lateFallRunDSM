@@ -35,14 +35,14 @@ growth <- function(daily_growth_rate = .5, size_class_breaks = c(35, 42, 72, 110
     transition_matrix[(i-1), 4] <- 1- pgamma(size_class_breaks[4], shape = alpha, scale = beta)
   }
 
-  # Eliminate nosense transitions and normalize just in case
+  # Eliminate nonsense transitions and normalize just in case
   transition_matrix[2, 1] <- transition_matrix[3, 1] <- transition_matrix[3, 2] <- 0
   transition_matrix <- transition_matrix / rowSums(transition_matrix)
 
   transition_matrix
 }
 
-#' @title Floodplain Growth Transistion Probability
+#' @title Floodplain Growth Transition Probability
 #' @description Generates transition probability matrices for growth on the
 #' floodplain dependent on number of weeks inundated
 #' @param daily_rates The daily growth rate for inchannel (0.5 mm/day) and floodplain (1.06 mm/day)
