@@ -10,6 +10,7 @@ library(tidyverse)
 library(parallel)
 library(doParallel)
 library(remotes)
+remotes::install_github("CVPIA-OSC/lateFallRunDSM")
 library(lateFallRunDSM)
 
 # set up for parallel processing ----------------------------------

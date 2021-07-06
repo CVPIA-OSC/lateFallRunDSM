@@ -1,5 +1,9 @@
 library(tidyverse)
 
+
+
+#################
+# Note that all these adjustments will change with new calibration for late fall run
 vect <- c(3.5000000 , #inchannel default intercept
           1.5000000, # upper sacramento intercept
           -2.5000000, # butte creek intercept
@@ -72,7 +76,7 @@ survival_betas <- cvpiaData::watershed_ordering %>%
              large = 2.223,
              `floodplain habitat` = 0.47,
              `survival adjustments` = surv.adj) %>%
-  mutate(
+  mutate( #these are hard coded here and then in the functions themselves. Is this correct?
     contact_points_coeff = .0358 * -.189,
     proportion_diverted_coeff = 0.05 * -3.51,
     total_diverted_coeff = 0.215 * -0.0021

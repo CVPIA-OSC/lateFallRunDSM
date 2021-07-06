@@ -18,12 +18,12 @@ spawn_success <- function(escapement, adult_prespawn_survival, egg_to_fry_surviv
                           fecundity = 5522){
 
   capacity <- spawn_habitat / redd_size
-  spawner_potential <- escapement * adult_prespawn_survival * sex_ratio
+  spawner_potential <- escapement * adult_prespawn_survival * sex_ratio#####WHY WAS STOCHASTICITY REMOVED HERE?
 
   spawners <- ifelse(spawner_potential > capacity, capacity, spawner_potential)
-  fry <- spawners * (1 - prob_scour) * fecundity * egg_to_fry_survival
+  fry <- spawners * (1 - prob_scour) * fecundity * egg_to_fry_survival#####WHY WAS STOCHASTICITY REMOVED HERE?
 
   zeros <- matrix(0, nrow = length(escapement), ncol = 3)
-  cbind(fry, zeros)
+  cbind(fry, zeros) #need it to return whole fish (no decimals)
 
 }

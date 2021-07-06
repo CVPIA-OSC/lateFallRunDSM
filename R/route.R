@@ -2,7 +2,7 @@
 #' @description Determines if juveniles stay in their natal tributary, are detoured
 #' to a bypass, or out migrate during a simulated month
 #' @param year The current simulation year, 1-20
-#' @param month The current simulation month, 1-8
+#' @param month The current simulation month, 4-11
 #' @param juvenile An n by 4 matrix of juvenile fish by watershed and size class
 #' @param inchannel_habitat A vector of available habitat in square meters
 #' @param floodplain_habitat A vector of available floodplain habitat in square meters
@@ -212,7 +212,7 @@ route_south_delta <- function(freeport_flow, dcc_closed, month,
 #' during a simulated month. Then the remaining juveniles in the delta rear
 #' (growth and survival rates applied) and survival rates are applied to out migrating juveniles
 #' @param year Simulation year, 1-20
-#' @param month Simulation month, 1-8
+#' @param month Simulation month, 4-11
 #' @param migrants An n by 4 matrix of juvenile fish by watershed and size class
 #' @param north_delta_fish An n by 4 matrix of juvenile fish by watershed and size class
 #' @param south_delta_fish An n by 4 matrix of juvenile fish by watershed and size class
@@ -256,7 +256,7 @@ route_and_rear_deltas <- function(year, month, migrants, north_delta_fish, south
   south_delta_fish <- fill_regional(juveniles = migrants_and_salvaged + south_delta_fish,
                                     habitat = north_delta_habitat)
 
-  if (month == 8) {
+  if (month == 11) {
     north_delta_fish = list(migrants = north_delta_fish$inchannel + north_delta_fish$migrants)
     south_delta_fish = list(migrants = south_delta_fish$inchannel + south_delta_fish$migrants)
   }
@@ -285,7 +285,7 @@ route_and_rear_deltas <- function(year, month, migrants, north_delta_fish, south
 
   juveniles_at_chipps <- juveniles_at_chipps + rbind(migrants_out, matrix(0, nrow = 8, ncol = 4)) + south_delta_migrants
 
-  if (month != 8) {
+  if (month != 11) {
     north_delta_fish <- rear(juveniles = north_delta_fish$inchannel,
                              survival_rate = rearing_survival_delta[1, ],
                              growth = growth_rates)

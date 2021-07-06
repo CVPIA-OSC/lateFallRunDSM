@@ -14,7 +14,7 @@ proportion_hatchery <- c(0.37, 0.2, 0.9, 0.37968253968254, 0.2, 0.115, 0.2225, 0
                          0.37968253968254, 0.37968253968254, 0.37968253968254, 0, 0.855,
                          0.54, 0.37968253968254, 0.37968253968254, 0.571666666666667,
                          0.37968253968254, 0.0766666666666667, 0.02, 0.7575, 0.745, 0.705,
-                         0.465, 0.37968253968254) # differs based on run? TODO
+                         0.465, 0.37968253968254) # differs based on run? TODO Yes, it differs based on run
 
 names(proportion_hatchery) <- DSMhabitat::watershed_metadata$watershed[-32]
 
@@ -24,7 +24,7 @@ usethis::use_data(proportion_hatchery, overwrite = TRUE)
 # @title Hatchery Returns
 # @export
 # emanuel: not needed
-# total_hatchery_returning <- round(stats::runif(1,83097.01, 532203.1)) # what is this
+# total_hatchery_returning <- round(stats::runif(1,83097.01, 532203.1)) # what is this - A random sample o the total number of hatchery fish returning based on the CWT reports. It is needed for years subsequent to the seeding years.
 
 # @title Proportion of Adults Spawning October to December
 # @export
