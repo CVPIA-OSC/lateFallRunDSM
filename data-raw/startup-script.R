@@ -39,7 +39,7 @@ run_scenario5 <- function(...) {
 clusterExport(cl, list('run_base', 'run_scenario5', 'late_fall_run_model', 'lfr_run_seeds'))
 
 # total number of times to run the model
-model_iters <- 10
+model_iters <- 5
 
 # run and time each
 system.time(

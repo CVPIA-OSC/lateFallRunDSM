@@ -111,6 +111,7 @@ get_spawning_adults <- function(year, adults, hatch_adults, mode,
       as.logical(tis + yolo)
     })
 
+    # TODO fix this
     en_route_temps <- migratory_temperature_proportion_over_20[, 10:12]
 
     adult_en_route_surv <- sapply(1:3, function(month) {
