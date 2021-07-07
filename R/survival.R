@@ -512,7 +512,7 @@ surv_juv_outmigration_delta <- function(prop_DCC_closed, hor_barr, freeport_flow
     b_freeport_flow = c(1.1049, 1.1049, 2.2758, 2.5756, 2.1591, 1.1510, 0.0379, 0.03898)
   )
 
-  score <- function( b0, b_dcc_open, b_freeport_flow) {min_survival_rate
+  score <- function( b0, b_dcc_open, b_freeport_flow) {
     b0 + b_dcc_open * prop_DCC_open + b_freeport_flow * freeport
   }
 

@@ -49,10 +49,10 @@ get_spawning_adults <- function(year, adults, hatch_adults, mode,
   if (mode %in% c("seed", "calibrate")) {
     adult_index <- ifelse(mode == "seed", 1, year)
     adults_by_month <- t(sapply(1:31, function(watershed) {
-      rmultinom(1, adults[watershed, adult_index], month_return_proportions[2,])
+      rmultinom(1, adults[watershed, adult_index], month_return_proportions["Battle and Clear Creeks",])
     }))
     adults_by_month[1,] <- t(sapply(1, function(watershed) {
-      rmultinom(1, adults[watershed, adult_index], month_return_proportions[1,])
+      rmultinom(1, adults[watershed, adult_index], month_return_proportions["Upper Sacramento River",])
     }))
 
     natural_adults_by_month <- sapply(1:5, function(month) {
@@ -69,17 +69,17 @@ get_spawning_adults <- function(year, adults, hatch_adults, mode,
   } else  {
 
     adults_by_month <- t(sapply(1:31, function(watershed) {
-      rmultinom(1, adults[watershed, year], month_return_proportions[2,])
+      rmultinom(1, adults[watershed, year], month_return_proportions["Battle and Clear Creeks",])
     }))
     adults_by_month[1,] <- t(sapply(1, function(watershed) {
-      rmultinom(1, adults[watershed, year], month_return_proportions[1,])
+      rmultinom(1, adults[watershed, year], month_return_proportions["Upper Sacramento River",])
     }))
 
     hatchery_by_month <- t(sapply(1:31, function(watershed) {
-      rmultinom(1, hatch_adults[watershed], month_return_proportions[2,])
+      rmultinom(1, hatch_adults[watershed], month_return_proportions["Battle and Clear Creeks",])
     }))
     hatchery_by_month[1,] <- t(sapply(1:31, function(watershed) {
-      rmultinom(1, hatch_adults[watershed], month_return_proportions[1,])
+      rmultinom(1, hatch_adults[watershed], month_return_proportions["Upper Sacramento River",])
     }))
 
     #TODO random variable

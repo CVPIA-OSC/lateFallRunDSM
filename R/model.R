@@ -110,17 +110,21 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
       .scour = ..params$surv_egg_to_fry_scour,
       ..surv_egg_to_fry_int = ..params$..surv_egg_to_fry_int
     )
+    next_year <- year + 1
+    min_spawn_habitat <- apply(..params$spawning_habitat[ , c(12, 1, 2), c(year, next_year, next_year)], 1, min)
+  
+    accumulated_degree_days <- cbind(oct = rowSums(..params$degree_days[ , c(10:12, 1, 2), c(year, year, next_year, next_year)]),
+                                     nov = rowSums(..params$degree_days[ , c(11:12, 1, 2), c(year, next_year, next_year)]),
+                                     dec = rowSums(..params$degree_days[ , c(12, 1, 2), c(year, next_year, next_year)]),
+                                     jan = rowSums(..params$degree_days[ , c(1, 2), c(next_year, next_year)]),
+                                     feb = ..params$degree_days[ , 2, next_year])
 
-    min_spawn_habitat <- apply(..params$spawning_habitat[ , c(12,1,2), c(year, year+1,year+1)], 1, min)
-
-    accumulated_degree_days <- cbind(oct = rowSums(..params$degree_days[ , c(10:12,1,2), c(year,year,year+1,year+1)]),
-                                     nov = rowSums(..params$degree_days[ , c(11:12,1,2), c(year,year+1,year+1)]),
-                                     dec = rowSums(..params$degree_days[ , c(12,1,2), c(year,year+1,year+1)]),
-                                     jan = rowSums(..params$degree_days[ , c(1,2), c(year+1,year+1)]),
-                                     feb = ..params$degree_days[ , 2, year+1])
-
-    average_degree_days <- apply(accumulated_degree_days, 1, weighted.mean, ..params$month_return_proportions[,2])
-    average_degree_days[1] <- apply(accumulated_degree_days, 1, weighted.mean, ..params$month_return_proportions[,1])
+    average_degree_days <- apply(accumulated_degree_days, 1, 
+                                 weighted.mean, 
+                                 ..params$month_return_proportions["Battle and Clear Creeks", ])
+    
+    average_degree_days[1] <- weighted.mean(accumulated_degree_days[1, ], 
+                                            ..params$month_return_proportions["Upper Sacramento River", ])
 
     prespawn_survival <- surv_adult_prespawn(average_degree_days,
                                              ..surv_adult_prespawn_int = ..params$..surv_adult_prespawn_int,
