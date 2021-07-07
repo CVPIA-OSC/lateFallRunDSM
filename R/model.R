@@ -30,7 +30,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
 
     scenario_data <- DSMscenario::load_scenario(scenario,
                                    habitat_inputs = habitats,
-                                   species = DSMscenario::species$FALL_RUN)
+                                   species = DSMscenario::species$LATE_FALL_RUN)
 
     ..params$spawning_habitat <- scenario_data$spawning_habitat
     ..params$inchannel_habitat_fry <- scenario_data$inchannel_habitat_fry
@@ -542,8 +542,8 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
 
     output$juvenile_biomass[ , year] <- juveniles_at_chipps %*% lateFallRunDSM::params$mass_by_size_class
 
-    adults_returning <- t(sapply(1:31, function(i) {
-      rmultinom(1, adults_in_ocean[i], prob = c(.432, .566, .02))  
+    adults_returning <- t(sapply(1:31, function(watershed) {
+      rmultinom(1, adults_in_ocean[watershed], prob = c(.432, .566, .02))  
     }))
 
     # distribute returning adults for future spawning
