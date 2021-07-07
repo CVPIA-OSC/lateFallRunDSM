@@ -17,6 +17,8 @@ params <- list(
   stray_rate = lateFallRunDSM::stray_rate,
   adult_harvest_rate = lateFallRunDSM::adult_harvest_rate,
   diversity_group = lateFallRunDSM::diversity_group,
+  
+  min_survival_rate = 0.0001,
 
 
   # adults

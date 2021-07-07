@@ -10,20 +10,26 @@
 #' @param fecundity The number of eggs per female, default value 5522
 #' @source IP-117068
 #' @export
-
 spawn_success <- function(escapement, adult_prespawn_survival, egg_to_fry_survival,
                           prob_scour, spawn_habitat,
-                          sex_ratio = 0.5,
-                          redd_size = 9.29,
-                          fecundity = 5522){
-
+                          sex_ratio = lateFallRunDSM::params$spawn_success_sex_ratio,
+                          redd_size = lateFallRunDSM::params$spawn_success_redd_size,
+                          fecundity = lateFallRunDSM::params$spawn_success_fecundity){
+  
   capacity <- spawn_habitat / redd_size
-  spawner_potential <- escapement * adult_prespawn_survival * sex_ratio#####WHY WAS STOCHASTICITY REMOVED HERE?
-
+  
+  spawner_potential <- ifelse(max(escapement) <= 1000000000,
+                              rbinom(31, round(escapement), (adult_prespawn_survival * sex_ratio)),
+                              round(escapement * adult_prespawn_survival * sex_ratio))
+  
   spawners <- ifelse(spawner_potential > capacity, capacity, spawner_potential)
-  fry <- spawners * (1 - prob_scour) * fecundity * egg_to_fry_survival#####WHY WAS STOCHASTICITY REMOVED HERE?
-
+  fry <- spawners * (1 - prob_scour) * fecundity * egg_to_fry_survival
+  
+  fry <- ifelse(max(fry) <= 1000000000,
+                pmax(round(rnorm(31, fry, (sqrt(fry) / 2))), 0),
+                round(fry))
+  
   zeros <- matrix(0, nrow = length(escapement), ncol = 3)
-  cbind(fry, zeros) #need it to return whole fish (no decimals)
-
+  cbind(fry, zeros)
+  
 }

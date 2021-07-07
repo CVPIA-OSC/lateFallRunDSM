@@ -18,6 +18,7 @@
 #' @param .medium parameter for medium sized fish, source: \href{https://afspubs.onlinelibrary.wiley.com/doi/abs/10.1577/M02-161.1}{Connor et al. (2004)}
 #' @param .large parameter for large sized fish, source: \href{https://afspubs.onlinelibrary.wiley.com/doi/abs/10.1577/M02-161.1}{Connor et al. (2004)}
 #' @param .floodplain parameter for floodplain rearing benefit, source: \href{https://dsm-docs.s3-us-west-2.amazonaws.com/SOMMER_T-SDWA+180+Floodplain+rearing+of+juvenile+chinook+salmon+evidence+of+enhanced+growth+and+survival+.pdf}{Sommer et al. (2001)}
+#' @param min_survival_rate estimated survival rate if temperature threshold is exceeded, source: expert opinion 
 #' @source IP-117068
 #' @export
 surv_juv_rear <- function(max_temp_thresh, avg_temp_thresh, high_predation,
@@ -32,7 +33,8 @@ surv_juv_rear <- function(max_temp_thresh, avg_temp_thresh, high_predation,
                           .stranded = -1.939,
                           .medium = 1.48,
                           .large = 2.223,
-                          .floodplain = 0.47){
+                          .floodplain = 0.47, 
+                          min_survival_rate = lateFallRunDSM::params$min_survival_rate){
   # determine the proportion of weeks when flooded vs not
   prop_ic <-ifelse(weeks_flooded > 0, (4 - weeks_flooded) / 4, 1)
   prop_fp <- 1 - prop_ic
@@ -49,13 +51,13 @@ surv_juv_rear <- function(max_temp_thresh, avg_temp_thresh, high_predation,
     (.avg_temp_thresh  * avg_temp_thresh) + (.high_predation * high_predation)
 
   # hi.tmp is emebeded here needs to be exposed so that it van be varied
-  s1 <- ifelse(max_temp_thresh, .0001, boot::inv.logit(base_score_inchannel)) # the .0001 was varied in the sensitivity analysis during the last iteration. Is this still possible as coded? similar to temp effect on egg survival, this needs to be constraind between 0 and 1 in the sensitivity anlaysis by switch back and forth to logit transformation and probability 
-  m1 <- ifelse(max_temp_thresh, .0001, boot::inv.logit(base_score_inchannel + .medium))
-  l1 <- ifelse(max_temp_thresh, .0001, boot::inv.logit(base_score_inchannel  + .large))
+  s1 <- ifelse(max_temp_thresh, min_survival_rate, boot::inv.logit(base_score_inchannel)) # the .0001 was varied in the sensitivity analysis during the last iteration. Is this still possible as coded? similar to temp effect on egg survival, this needs to be constraind between 0 and 1 in the sensitivity anlaysis by switch back and forth to logit transformation and probability 
+  m1 <- ifelse(max_temp_thresh, min_survival_rate, boot::inv.logit(base_score_inchannel + .medium))
+  l1 <- ifelse(max_temp_thresh, min_survival_rate, boot::inv.logit(base_score_inchannel  + .large))
 
-  s2 <- ifelse(max_temp_thresh, .0001, boot::inv.logit(base_score_floodplain)) ^ prop_fp
-  m2 <- ifelse(max_temp_thresh, .0001, boot::inv.logit(base_score_floodplain + .medium)) ^ prop_fp
-  l2 <- ifelse(max_temp_thresh, .0001, boot::inv.logit(base_score_floodplain + .large)) ^ prop_fp
+  s2 <- ifelse(max_temp_thresh, min_survival_rate, boot::inv.logit(base_score_floodplain)) ^ prop_fp
+  m2 <- ifelse(max_temp_thresh, min_survival_rate, boot::inv.logit(base_score_floodplain + .medium)) ^ prop_fp
+  l2 <- ifelse(max_temp_thresh, min_survival_rate, boot::inv.logit(base_score_floodplain + .large)) ^ prop_fp
 
   list(
     inchannel = cbind(s = s1,
@@ -80,7 +82,7 @@ surv_juv_rear <- function(max_temp_thresh, avg_temp_thresh, high_predation,
 #' @param .medium parameter for medium sized fish, source: \href{https://afspubs.onlinelibrary.wiley.com/doi/abs/10.1577/M02-161.1}{Connor et al. (2004)}
 #' @param .large parameter for large sized fish, source: \href{https://afspubs.onlinelibrary.wiley.com/doi/abs/10.1577/M02-161.1}{Connor et al. (2004)}
 #' @param .floodplain parameter for floodplain rearing benefit, source: \href{https://dsm-docs.s3-us-west-2.amazonaws.com/SOMMER_T-SDWA+180+Floodplain+rearing+of+juvenile+chinook+salmon+evidence+of+enhanced+growth+and+survival+.pdf}{Sommer et al. (2001)}
-#'
+#' @param min_survival_rate
 #' @source IP-117068
 #' @export
 surv_juv_bypass <- function(max_temp_thresh, avg_temp_thresh, high_predation,
@@ -89,15 +91,16 @@ surv_juv_bypass <- function(max_temp_thresh, avg_temp_thresh, high_predation,
                             .high_predation = -0.122,
                             .medium = 1.48,
                             .large = 2.223,
-                            .floodplain = 0.47){
+                            .floodplain = 0.47, 
+                            min_survival_rate){
 
   base_score <- ..surv_juv_bypass_int + .floodplain +
                 .avg_temp_thresh * avg_temp_thresh +
                 .high_predation * high_predation
 
-  s <- ifelse(max_temp_thresh, .0001, boot::inv.logit(base_score)) #same comment before on 0.0001 being in sensitivity analysis
-  m <- ifelse(max_temp_thresh, .0001, boot::inv.logit(base_score + .medium))
-  l <- ifelse(max_temp_thresh, .0001, boot::inv.logit(base_score + .large))
+  s <- ifelse(max_temp_thresh, min_survival_rate, boot::inv.logit(base_score)) #same comment before on 0.0001 being in sensitivity analysis
+  m <- ifelse(max_temp_thresh, min_survival_rate, boot::inv.logit(base_score + .medium))
+  l <- ifelse(max_temp_thresh, min_survival_rate, boot::inv.logit(base_score + .large))
 
   cbind(s = s, m = m, l = l, vl = 1)
 }
@@ -119,6 +122,7 @@ surv_juv_bypass <- function(max_temp_thresh, avg_temp_thresh, high_predation,
 #' @param ..surv_juv_delta_total_diverted Coefficient for total_diversions variable, source: calibration
 #' @param .medium parameter for medium sized fish, source: \href{https://afspubs.onlinelibrary.wiley.com/doi/abs/10.1577/M02-161.1}{Connor et al. (2004)}
 #' @param .large parameter for large sized fish, source: \href{https://afspubs.onlinelibrary.wiley.com/doi/abs/10.1577/M02-161.1}{Connor et al. (2004)}
+#' @param min_survival_rate
 #' @source IP-117068
 #' @export
 surv_juv_delta <- function(avg_temp, max_temp_thresh, avg_temp_thresh, high_predation, contact_points,
@@ -130,7 +134,8 @@ surv_juv_delta <- function(avg_temp, max_temp_thresh, avg_temp_thresh, high_pred
                            .prop_diverted = -3.51,
                            ..surv_juv_delta_total_diverted = 0.5 * -0.0021,
                            .medium = 1.48,
-                           .large = 2.223){
+                           .large = 2.223, 
+                           min_survival_rate){
   # north delta
   north_delta_surv <- rep((avg_temp <= 16.5)*.42 + (avg_temp > 16.5 & avg_temp < 19.5) * 0.42 / (1.55^(avg_temp-15.5)) + (avg_temp > 19.5 & avg_temp < 25)*0.035,4) #what is this doing?
 
@@ -142,9 +147,9 @@ surv_juv_delta <- function(avg_temp, max_temp_thresh, avg_temp_thresh, high_pred
     .prop_diverted * prop_diverted[2] +
     ..surv_juv_delta_total_diverted * total_diverted[2]
 
-  s <- ifelse(max_temp_thresh[2], .0001, boot::inv.logit(base_score)) #same comment before on 0.0001 being in sensitivity analysis
-  m <- ifelse(max_temp_thresh[2], .0001, boot::inv.logit(base_score + .medium))
-  l <- ifelse(max_temp_thresh[2], .0001, boot::inv.logit(base_score + .large))
+  s <- ifelse(max_temp_thresh[2], min_survival_rate, boot::inv.logit(base_score)) #same comment before on 0.0001 being in sensitivity analysis
+  m <- ifelse(max_temp_thresh[2], min_survival_rate, boot::inv.logit(base_score + .medium))
+  l <- ifelse(max_temp_thresh[2], min_survival_rate, boot::inv.logit(base_score + .large))
 
   south_delta_surv <- cbind(s = s, m = m, l = l, vl = 1)
   result <- rbind("north_delta" = north_delta_surv, "south_delta" = south_delta_surv)
@@ -183,6 +188,7 @@ surv_juv_delta <- function(avg_temp, max_temp_thresh, avg_temp_thresh, high_pred
 #' @param .surv_juv_delta_prop_diverted TODO
 #' @param .surv_juv_delta_medium TODO
 #' @param .surv_juv_delta_large TODO
+#' @param min_survival_rate
 #' @source IP-117068
 #' @export
 get_rearing_survival_rates <- function(year, month, mode,
@@ -223,7 +229,8 @@ get_rearing_survival_rates <- function(year, month, mode,
                                        .surv_juv_delta_high_predation,
                                        .surv_juv_delta_prop_diverted,
                                        .surv_juv_delta_medium,
-                                       .surv_juv_delta_large) {
+                                       .surv_juv_delta_large, 
+                                       min_survival_rate) {
   watershed_labels <- c("Upper Sacramento River", "Antelope Creek", "Battle Creek",
                         "Bear Creek", "Big Chico Creek", "Butte Creek", "Clear Creek",
                         "Cottonwood Creek", "Cow Creek", "Deer Creek", "Elder Creek",
@@ -286,7 +293,8 @@ get_rearing_survival_rates <- function(year, month, mode,
                   .stranded = .surv_juv_rear_stranded,
                   .medium = .surv_juv_rear_medium,
                   .large = .surv_juv_rear_large,
-                  .floodplain = .surv_juv_rear_floodplain)
+                  .floodplain = .surv_juv_rear_floodplain, 
+                  min_survival_rate = min_survival_rate)
   }))
 
   river_surv <- matrix(unlist(rear_surv[ , 1]), ncol = 4, byrow = TRUE)
@@ -305,7 +313,8 @@ get_rearing_survival_rates <- function(year, month, mode,
                              .high_predation = .surv_juv_bypass_high_predation,
                              .medium = .surv_juv_bypass_medium,
                              .large = .surv_juv_bypass_large,
-                             .floodplain = .surv_juv_bypass_floodplain)
+                             .floodplain = .surv_juv_bypass_floodplain, 
+                             min_survival_rate = min_survival_rate)
 
   sutter_surv <- sqrt(bp_surv)
   yolo_surv <- sqrt(bp_surv)
@@ -325,7 +334,8 @@ get_rearing_survival_rates <- function(year, month, mode,
                                    .high_predation = .surv_juv_delta_high_predation,
                                    .prop_diverted = .surv_juv_delta_prop_diverted,
                                    .medium = .surv_juv_delta_medium,
-                                   .large = .surv_juv_delta_large)
+                                   .large = .surv_juv_delta_large, 
+                                   min_survival_rate = min_survival_rate)
 
   return(
     list(
@@ -502,7 +512,7 @@ surv_juv_outmigration_delta <- function(prop_DCC_closed, hor_barr, freeport_flow
     b_freeport_flow = c(1.1049, 1.1049, 2.2758, 2.5756, 2.1591, 1.1510, 0.0379, 0.03898)
   )
 
-  score <- function( b0, b_dcc_open, b_freeport_flow) {
+  score <- function( b0, b_dcc_open, b_freeport_flow) {min_survival_rate
     b0 + b_dcc_open * prop_DCC_open + b_freeport_flow * freeport
   }
 
@@ -603,6 +613,7 @@ surv_juv_outmigration_delta <- function(prop_DCC_closed, hor_barr, freeport_flow
 #' @param ..surv_juv_outmigration_sac_int_two
 #' @param .surv_juv_outmigration_san_joquin_medium TODO
 #' @param .surv_juv_outmigration_san_joaquin_large TODO
+#' @param min_survival_rate
 #' @source IP-117068
 #' @export
 get_migratory_survival_rates <- function(year, month,
@@ -633,7 +644,8 @@ get_migratory_survival_rates <- function(year, month,
                                          ..surv_juv_outmigration_sac_total_diversions = ..surv_juv_outmigration_sac_total_diversions,
                                          ..surv_juv_outmigration_sac_int_two = ..surv_juv_outmigration_sac_int_two,
                                          .surv_juv_outmigration_san_joquin_medium = .surv_juv_outmigration_san_joquin_medium,
-                                         .surv_juv_outmigration_san_joaquin_large = .surv_juv_outmigration_san_joaquin_large) {
+                                         .surv_juv_outmigration_san_joaquin_large = .surv_juv_outmigration_san_joaquin_large, 
+                                         min_survival_rate) {
 
 
   aveT20 <- rbinom(31, 1, boot::inv.logit(-14.32252 + 0.72102 * avg_temp[ , month , year]))
@@ -656,25 +668,8 @@ get_migratory_survival_rates <- function(year, month,
                                                          .medium = .surv_juv_outmigration_san_joquin_medium,
                                                          .large = .surv_juv_outmigration_san_joaquin_large)
 
-  # set up the regional survivals
-  # uppermid_sac_migration_surv <- surv_juv_outmigration_sac(flow_cms = u_sac_flow,
-  #                                                      avg_temp = avg_temp[16, month, year],
-  #                                                      total_diversions = total_diverted[16],
-  #                                                      prop_diversions = proportion_diverted[16])^.5 # UM.Sac.S
   uppermid_sac_migration_surv <- surv_juv_outmigration_sac(flow_cms = u_sac_flow)
-
-
-  # lowermid_sac_migration_surv <- surv_juv_outmigration_sac(flow_cms = u_sac_flow,
-  #                                                      avg_temp = avg_temp[21, month, year],
-  #                                                      total_diversions = total_diverted[21],
-  #                                                      prop_diversions = proportion_diverted[21])^.5 # LM.Sac.S
   lowermid_sac_migration_surv <- surv_juv_outmigration_sac(flow_cms = u_sac_flow)
-
-
-  # lower_sac_migration_surv <- surv_juv_outmigration_sac(flow_cms = u_sac_flow,
-  #                                                   avg_temp = avg_temp[24, month, year],
-  #                                                   total_diversions = total_diverted[24],
-  #                                                   prop_diversions = proportion_diverted[24])^.5 # LL.Sac.S
   lower_sac_migration_surv <- surv_juv_outmigration_sac(flow_cms = u_sac_flow)
 
   sac_delta_migration_surv <- surv_juv_outmigration_sac_delta(delta_flow = delta_inflow[month, year, ],
@@ -691,11 +686,11 @@ get_migratory_survival_rates <- function(year, month,
 
   bay_delta_migration_surv <- mean(c(0.43, 0.46, 0.26, 0.25, 0.39)) # Bay.S Chipps island to bay
 
-  bp_surv <- surv_juv_bypass(max_temp_thresh = maxT25[22],
+  bp_surv <- sqrt(surv_juv_bypass(max_temp_thresh = maxT25[22],
                              avg_temp_thresh = aveT20[22],
-                             high_predation = 0)
+                             high_predation = 0, 
+                             min_survival_rate = min_survival_rate))
 
-  sutter <- sqrt(bp_surv)
 
   return(
     list(
@@ -704,8 +699,8 @@ get_migratory_survival_rates <- function(year, month,
       uppermid_sac = uppermid_sac_migration_surv,
       lowermid_sac = lowermid_sac_migration_surv,
       lower_sac = lower_sac_migration_surv,
-      sutter = sutter,
-      yolo = sutter,
+      sutter = bp_surv,
+      yolo = bp_surv,
       sac_delta = sac_delta_migration_surv,
       bay_delta = bay_delta_migration_surv
     ))
