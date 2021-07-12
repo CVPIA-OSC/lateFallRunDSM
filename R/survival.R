@@ -159,7 +159,7 @@ surv_juv_delta <- function(avg_temp, max_temp_thresh, avg_temp_thresh, high_pred
 }
 
 
-#' @title Get Rearing Survival Rates
+#' @title Get Rearing Survival
 #' @description Calculates the juvenile inchannel, floodplain, bypasses, and
 #' deltas rearing survival rates for a month and year of the simulation
 #' @param year The simulation year, 1-20
@@ -191,7 +191,7 @@ surv_juv_delta <- function(avg_temp, max_temp_thresh, avg_temp_thresh, high_pred
 #' @param min_survival_rate
 #' @source IP-117068
 #' @export
-get_rearing_survival_rates <- function(year, month, mode,
+get_rearing_survival <- function(year, month, mode,
                                        survival_adjustment,
                                        avg_temp,
                                        avg_temp_delta,
@@ -616,7 +616,7 @@ surv_juv_outmigration_delta <- function(prop_DCC_closed, hor_barr, freeport_flow
 #' @param min_survival_rate
 #' @source IP-117068
 #' @export
-get_migratory_survival_rates <- function(year, month,
+get_migratory_survival <- function(year, month,
                                          cc_gates_prop_days_closed = cc_gates_prop_days_closed,
                                          freeport_flows = freeport_flows,
                                          vernalis_flows = vernalis_flows,

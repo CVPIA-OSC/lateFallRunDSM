@@ -148,7 +148,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                              yolo_habitat = ..params$yolo_habitat,
                              delta_habitat = ..params$delta_habitat)
 
-      rearing_survival <- get_rearing_survival_rates(year, month, mode = mode, #survival in this model is a probability parameter (probability of success), not a rate parameter (proportion that survived)...probability near same thing given the number of fish, but maybe not
+      rearing_survival <- get_rearing_survival(year, month, mode = mode,
                                                      survival_adjustment = scenario_data$survival_adjustment,
                                                      avg_temp = ..params$avg_temp,
                                                      avg_temp_delta = ..params$avg_temp_delta,
@@ -189,7 +189,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                                      .surv_juv_delta_large = ..params$.surv_juv_delta_large, 
                                                      min_survival_rate = ..params$min_survival_rate)
 
-      migratory_survival <- get_migratory_survival_rates(year, month,
+      migratory_survival <- get_migratory_survival(year, month,
                                                          cc_gates_prop_days_closed = ..params$cc_gates_prop_days_closed,
                                                          freeport_flows = ..params$freeport_flows,
                                                          vernalis_flows = ..params$vernalis_flows,
