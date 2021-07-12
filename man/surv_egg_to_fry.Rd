@@ -10,10 +10,10 @@ IP-117068
 surv_egg_to_fry(
   proportion_natural,
   scour,
-  temperature_effect,
-  ..surv_egg_to_fry_int = 0.041,
-  .proportion_natural = 0.533,
-  .scour = -0.655
+  temperature_effect = lateFallRunDSM::params$mean_egg_temp_effect,
+  ..surv_egg_to_fry_int = lateFallRunDSM::params$..surv_egg_to_fry_int,
+  .proportion_natural = lateFallRunDSM::params$surv_egg_to_fry_proportion_natural,
+  .scour = lateFallRunDSM::params$surv_egg_to_fry_scour
 )
 }
 \arguments{

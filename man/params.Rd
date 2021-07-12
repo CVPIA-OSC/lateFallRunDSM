@@ -5,7 +5,7 @@
 \alias{params}
 \title{Model Parameters from Calibration}
 \format{
-An object of class \code{list} of length 123.
+An object of class \code{list} of length 124.
 }
 \usage{
 params

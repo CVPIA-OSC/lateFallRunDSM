@@ -16,7 +16,8 @@ surv_juv_bypass(
   .high_predation = -0.122,
   .medium = 1.48,
   .large = 2.223,
-  .floodplain = 0.47
+  .floodplain = 0.47,
+  min_survival_rate
 )
 }
 \arguments{

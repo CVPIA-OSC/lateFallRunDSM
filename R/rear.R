@@ -14,16 +14,31 @@ rear <- function(juveniles, survival_rate, growth, floodplain_juveniles = NULL,
                  floodplain_survival_rate = NULL, floodplain_growth = NULL,
                  weeks_flooded = NULL){
 
-  next_juveniles <- (juveniles * survival_rate) %*% growth #####WHY WAS STOCHASTICITY REMOVED HERE?
+  if (max(juveniles) <= 1000000000) {
+    survived <- t(sapply(1:31, function(watershed) {
+      rbinom(4, size = juveniles[watershed, ], prob = survival_rate[watershed, ])
+    }))
+  } else {
+    survived <- juveniles * survival_rate
+  }
+  
+  next_juveniles <- survived %*% growth
 
   if(!is.null(floodplain_juveniles)) {
-    floodplain_juveniles_survived <- floodplain_juveniles * floodplain_survival_rate
-
+    
+    if (max(floodplain_juveniles) <= 1000000000) {
+      floodplain_juveniles_survived <- t(sapply(1:31, function(watershed) {
+        rbinom(4, size = floodplain_juveniles[watershed, ], prob = floodplain_survival_rate[watershed, ])
+      }))
+    } else {
+      floodplain_juveniles_survived <- floodplain_juveniles * floodplain_survival_rate
+    }
+    
     next_floodplain_juveniles <- c()
 
     for(i in 1:nrow(floodplain_juveniles)) {
       if (weeks_flooded[i] > 0) {
-        watershed_floodplain_juveniles <- floodplain_juveniles_survived[i, ] %*% floodplain_growth[ , , weeks_flooded[i]]#####WHY WAS STOCHASTICITY REMOVED HERE?
+        watershed_floodplain_juveniles <- floodplain_juveniles_survived[i, ] %*% floodplain_growth[ , , weeks_flooded[i]]
         next_floodplain_juveniles <- rbind(next_floodplain_juveniles, watershed_floodplain_juveniles)
       } else {
         next_floodplain_juveniles <- rbind(next_floodplain_juveniles, rep(0, 4))
@@ -33,4 +48,4 @@ rear <- function(juveniles, survival_rate, growth, floodplain_juveniles = NULL,
   }
 
   return(next_juveniles)
-} ###########Check output. Does it need to be total fish to use next (i.e., no decimal places)? yes. whole fish only
+}

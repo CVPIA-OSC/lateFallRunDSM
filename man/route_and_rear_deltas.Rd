@@ -29,7 +29,7 @@ route_and_rear_deltas(
 \arguments{
 \item{year}{Simulation year, 1-20}
 
-\item{month}{Simulation month, 1-8}
+\item{month}{Simulation month, 4-11}
 
 \item{migrants}{An n by 4 matrix of juvenile fish by watershed and size class}
 

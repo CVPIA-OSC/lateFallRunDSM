@@ -13,9 +13,9 @@ spawn_success(
   egg_to_fry_survival,
   prob_scour,
   spawn_habitat,
-  sex_ratio = 0.5,
-  redd_size = 9.29,
-  fecundity = 5522
+  sex_ratio = lateFallRunDSM::params$spawn_success_sex_ratio,
+  redd_size = lateFallRunDSM::params$spawn_success_redd_size,
+  fecundity = lateFallRunDSM::params$spawn_success_fecundity
 )
 }
 \arguments{
