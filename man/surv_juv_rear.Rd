@@ -19,13 +19,14 @@ surv_juv_rear(
   ..surv_juv_rear_int = 3.5,
   .avg_temp_thresh = -0.717,
   .high_predation = -0.122,
-  ..surv_juv_rear_contact_points = -0.0068,
-  ..surv_juv_rear_prop_diversions = -0.1755,
-  ..surv_juv_rear_total_diversions = -5e-04,
+  ..surv_juv_rear_contact_points = -0.189 * 0.0358,
+  ..surv_juv_rear_prop_diversions = -3.51 * 0.05,
+  ..surv_juv_rear_total_diversions = -0.0021 * 0.215,
   .stranded = -1.939,
   .medium = 1.48,
   .large = 2.223,
-  .floodplain = 0.47
+  .floodplain = 0.47,
+  min_survival_rate = lateFallRunDSM::params$min_survival_rate
 )
 }
 \arguments{
@@ -64,6 +65,8 @@ surv_juv_rear(
 \item{.large}{parameter for large sized fish, source: \href{https://afspubs.onlinelibrary.wiley.com/doi/abs/10.1577/M02-161.1}{Connor et al. (2004)}}
 
 \item{.floodplain}{parameter for floodplain rearing benefit, source: \href{https://dsm-docs.s3-us-west-2.amazonaws.com/SOMMER_T-SDWA+180+Floodplain+rearing+of+juvenile+chinook+salmon+evidence+of+enhanced+growth+and+survival+.pdf}{Sommer et al. (2001)}}
+
+\item{min_survival_rate}{estimated survival rate if temperature threshold is exceeded, source: expert opinion}
 }
 \description{
 Calculates the juvenile rearing survival inchannel and on the floodplain

@@ -13,24 +13,54 @@
 rear <- function(juveniles, survival_rate, growth, floodplain_juveniles = NULL,
                  floodplain_survival_rate = NULL, floodplain_growth = NULL,
                  weeks_flooded = NULL){
-
-  next_juveniles <- (juveniles * survival_rate) %*% growth #####WHY WAS STOCHASTICITY REMOVED HERE?
-
+  
+  
+  if (max(juveniles) <= 1000000000) {
+    if (is.vector(survival_rate)) {
+      # case when applying a regional rearing survival (e.g upper mid sac survival rate to all fish from above watersheds)
+      survived <- t(sapply(1:nrow(juveniles), function(watershed) {
+        rbinom(4, size = round(juveniles[watershed, ]), prob = survival_rate)
+      }))
+    } else{
+      # case when applying watershed specific survival rate
+      survived <- t(sapply(1:nrow(juveniles), function(watershed) {
+        rbinom(4, size = round(juveniles[watershed, ]), prob = survival_rate[watershed, ])
+      }))
+    }
+  } else {
+    # fall-back when juvenile numbers go out of control
+    survived <- round(juveniles * survival_rate)
+  }
+  
+  next_juveniles <- round(survived %*% growth)
+  
   if(!is.null(floodplain_juveniles)) {
-    floodplain_juveniles_survived <- floodplain_juveniles * floodplain_survival_rate
-
+    if (max(floodplain_juveniles) <= 1000000000) {
+      if (is.vector(floodplain_survival_rate)) {
+        floodplain_juveniles_survived <- t(sapply(1:nrow(floodplain_juveniles), function(watershed) {
+          rbinom(4, size = round(floodplain_juveniles[watershed, ]), prob = floodplain_survival_rate)
+        }))
+      } else {
+        floodplain_juveniles_survived <- t(sapply(1:nrow(floodplain_juveniles), function(watershed) {
+          rbinom(4, size = round(floodplain_juveniles[watershed, ]), prob = floodplain_survival_rate[watershed, ])
+        }))
+      }
+    } else {
+      floodplain_juveniles_survived <- floodplain_juveniles * floodplain_survival_rate
+    }
+    
     next_floodplain_juveniles <- c()
-
+    
     for(i in 1:nrow(floodplain_juveniles)) {
       if (weeks_flooded[i] > 0) {
-        watershed_floodplain_juveniles <- floodplain_juveniles_survived[i, ] %*% floodplain_growth[ , , weeks_flooded[i]]#####WHY WAS STOCHASTICITY REMOVED HERE?
+        watershed_floodplain_juveniles <- floodplain_juveniles_survived[i, ] %*% floodplain_growth[ , , weeks_flooded[i]]
         next_floodplain_juveniles <- rbind(next_floodplain_juveniles, watershed_floodplain_juveniles)
       } else {
         next_floodplain_juveniles <- rbind(next_floodplain_juveniles, rep(0, 4))
       }
     }
-    return(list(inchannel = next_juveniles, floodplain = next_floodplain_juveniles))
+    return(list(inchannel = next_juveniles, floodplain = round(next_floodplain_juveniles)))
   }
-
+  
   return(next_juveniles)
-} ###########Check output. Does it need to be total fish to use next (i.e., no decimal places)? yes. whole fish only
+}

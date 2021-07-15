@@ -15,5 +15,5 @@ migrate(migrants, migration_survival_rate)
 \item{migration_survival_rate}{The survival rates for s, m, l, and vl fish}
 }
 \description{
-Stocastic application of survival rate to migrating juvenile fish
+Stochastic application of survival rate to migrating juvenile fish
 }

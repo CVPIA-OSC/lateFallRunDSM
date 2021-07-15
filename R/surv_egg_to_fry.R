@@ -1,4 +1,4 @@
-
+# TODO 
 #' @title Egg to Fry Survival
 #' @description Calculates the survival of transitioning from egg to fry
 #' @param proportion_natural Variable describing the proportion of natural-origin spawners
@@ -12,26 +12,11 @@
 #' @export
 surv_egg_to_fry <- function(proportion_natural,
                             scour,
-                            temperature_effect,
-                            ..surv_egg_to_fry_int = 0.041,
-                            .proportion_natural = 0.533,
-                            .scour = -0.655){
- #may want to set up temp effect to be able to move from logit land to probability. I had to for the sensitivity analysis to keep it between 0 and 1 using the below code
-  # 
-  # if(sum(vary == "egg.viab")){
-  #   viab<-log((tmp.eff+ 0.000001)/((1-tmp.eff)+0.0000001))
-  #   viab<- viab*pctil[vary == "egg.viab"]
-  #   tmp.eff<-inv.logit(viab)
-  # }
+                            temperature_effect = lateFallRunDSM::params$mean_egg_temp_effect, # TODO expose for sensitivity
+                            ..surv_egg_to_fry_int = lateFallRunDSM::params$..surv_egg_to_fry_int,
+                            .proportion_natural = lateFallRunDSM::params$surv_egg_to_fry_proportion_natural,
+                            .scour = lateFallRunDSM::params$surv_egg_to_fry_scour){
   
   boot::inv.logit(..surv_egg_to_fry_int + .proportion_natural * proportion_natural +
                   .scour * scour) * temperature_effect
 }
-
-# TODO need to implement some api for sensitivity analysis...sorry, just saw this.
-# tmp.eff = temperature_effect
-# if(sum(vary == "egg.viab")){
-#   viab<-log((tmp.eff+ 0.000001)/((1-tmp.eff)+0.0000001))
-#   viab<- viab*pctil[vary == "egg.viab"]
-#   tmp.eff<-inv.logit(viab)
-# }

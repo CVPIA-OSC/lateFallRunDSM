@@ -30,7 +30,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
 
     scenario_data <- DSMscenario::load_scenario(scenario,
                                    habitat_inputs = habitats,
-                                   species = DSMscenario::species$FALL_RUN)
+                                   species = DSMscenario::species$LATE_FALL_RUN)
 
     ..params$spawning_habitat <- scenario_data$spawning_habitat
     ..params$inchannel_habitat_fry <- scenario_data$inchannel_habitat_fry
@@ -110,17 +110,21 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
       .scour = ..params$surv_egg_to_fry_scour,
       ..surv_egg_to_fry_int = ..params$..surv_egg_to_fry_int
     )
+    next_year <- year + 1
+    min_spawn_habitat <- apply(..params$spawning_habitat[ , c(12, 1, 2), c(year, next_year, next_year)], 1, min)
+  
+    accumulated_degree_days <- cbind(oct = rowSums(..params$degree_days[ , c(10:12, 1, 2), c(year, year, next_year, next_year)]),
+                                     nov = rowSums(..params$degree_days[ , c(11:12, 1, 2), c(year, next_year, next_year)]),
+                                     dec = rowSums(..params$degree_days[ , c(12, 1, 2), c(year, next_year, next_year)]),
+                                     jan = rowSums(..params$degree_days[ , c(1, 2), c(next_year, next_year)]),
+                                     feb = ..params$degree_days[ , 2, next_year])
 
-    min_spawn_habitat <- apply(..params$spawning_habitat[ , c(12,1,2), c(year, year+1,year+1)], 1, min)
-
-    accumulated_degree_days <- cbind(oct = rowSums(..params$degree_days[ , c(10:12,1,2), c(year,year,year+1,year+1)]),
-                                     nov = rowSums(..params$degree_days[ , c(11:12,1,2), c(year,year+1,year+1)]),
-                                     dec = rowSums(..params$degree_days[ , c(12,1,2), c(year,year+1,year+1)]),
-                                     jan = rowSums(..params$degree_days[ , c(1,2), c(year+1,year+1)]),
-                                     feb = ..params$degree_days[ , 2, year+1])
-
-    average_degree_days <- apply(accumulated_degree_days, 1, weighted.mean, ..params$month_return_proportions[,2])
-    average_degree_days[1] <- apply(accumulated_degree_days, 1, weighted.mean, ..params$month_return_proportions[,1])
+    average_degree_days <- apply(accumulated_degree_days, 1, 
+                                 weighted.mean, 
+                                 ..params$month_return_proportions["Battle and Clear Creeks", ])
+    
+    average_degree_days[1] <- weighted.mean(accumulated_degree_days[1, ], 
+                                            ..params$month_return_proportions["Upper Sacramento River", ])
 
     prespawn_survival <- surv_adult_prespawn(average_degree_days,
                                              ..surv_adult_prespawn_int = ..params$..surv_adult_prespawn_int,
@@ -144,7 +148,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                              yolo_habitat = ..params$yolo_habitat,
                              delta_habitat = ..params$delta_habitat)
 
-      rearing_survival <- get_rearing_survival_rates(year, month, mode = mode, #survival in this model is a probability parameter (probability of success), not a rate parameter (proportion that survived)...probability near same thing given the number of fish, but maybe not
+      rearing_survival <- get_rearing_survival(year, month, mode = mode,
                                                      survival_adjustment = scenario_data$survival_adjustment,
                                                      avg_temp = ..params$avg_temp,
                                                      avg_temp_delta = ..params$avg_temp_delta,
@@ -182,9 +186,10 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                                      .surv_juv_delta_high_predation = ..params$.surv_juv_delta_high_predation,
                                                      .surv_juv_delta_prop_diverted = ..params$.surv_juv_delta_prop_diverted,
                                                      .surv_juv_delta_medium = ..params$.surv_juv_delta_medium,
-                                                     .surv_juv_delta_large = ..params$.surv_juv_delta_large)
+                                                     .surv_juv_delta_large = ..params$.surv_juv_delta_large, 
+                                                     min_survival_rate = ..params$min_survival_rate)
 
-      migratory_survival <- get_migratory_survival_rates(year, month,
+      migratory_survival <- get_migratory_survival(year, month,
                                                          cc_gates_prop_days_closed = ..params$cc_gates_prop_days_closed,
                                                          freeport_flows = ..params$freeport_flows,
                                                          vernalis_flows = ..params$vernalis_flows,
@@ -205,14 +210,15 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                                          .surv_juv_outmigration_sac_delta_avg_temp = ..params$.surv_juv_outmigration_sac_delta_avg_temp,
                                                          .surv_juv_outmigration_sac_delta_perc_diversions = ..params$.surv_juv_outmigration_sac_delta_perc_diversions,
                                                          .surv_juv_outmigration_sac_delta_medium = ..params$.surv_juv_outmigration_sac_delta_medium,
-                                                         .surv_juv_outmigration_sac_delta_large = ..params$.surv_juv_outmigration_sac_delta_large,
+                                                          .surv_juv_outmigration_sac_delta_large = ..params$.surv_juv_outmigration_sac_delta_large,
                                                          ..surv_juv_outmigration_sj_int = ..params$..surv_juv_outmigration_sj_int,
                                                          ..surv_juv_outmigration_sac_int_one = ..params$..surv_juv_outmigration_sac_int_one,
                                                          ..surv_juv_outmigration_sac_prop_diversions = ..params$..surv_juv_outmigration_sac_prop_diversions,
                                                          ..surv_juv_outmigration_sac_total_diversions = ..params$..surv_juv_outmigration_sac_total_diversions,
                                                          ..surv_juv_outmigration_sac_int_two = ..params$..surv_juv_outmigration_sac_int_two,
                                                          .surv_juv_outmigration_san_joquin_medium = ..params$.surv_juv_outmigration_san_joquin_medium,
-                                                         .surv_juv_outmigration_san_joaquin_large = ..params$.surv_juv_outmigration_san_joaquin_large) #migratory_survival$uppermid_sac
+                                                         .surv_juv_outmigration_san_joaquin_large = ..params$.surv_juv_outmigration_san_joaquin_large, 
+                                                         min_survival_rate = ..params$min_survival_rate) #migratory_survival$uppermid_sac
 
       migrants <- matrix(0, nrow = 31, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels, lateFallRunDSM::size_class_labels))
 
@@ -536,8 +542,8 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
 
     output$juvenile_biomass[ , year] <- juveniles_at_chipps %*% lateFallRunDSM::params$mass_by_size_class
 
-    adults_returning <- t(sapply(1:31, function(i) {
-      rmultinom(1, adults_in_ocean[i], prob = c(.432, .566, .02))  
+    adults_returning <- t(sapply(1:31, function(watershed) {
+      rmultinom(1, adults_in_ocean[watershed], prob = c(.432, .566, .02))  
     }))
 
     # distribute returning adults for future spawning

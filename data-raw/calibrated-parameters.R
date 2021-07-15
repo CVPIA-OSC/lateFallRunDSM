@@ -17,6 +17,8 @@ params <- list(
   stray_rate = lateFallRunDSM::stray_rate,
   adult_harvest_rate = lateFallRunDSM::adult_harvest_rate,
   diversity_group = lateFallRunDSM::diversity_group,
+  
+  min_survival_rate = 0.0001,
 
 
   # adults
@@ -121,10 +123,10 @@ params <- list(
   migratory_temperature_proportion_over_20 = DSMtemperature::migratory_temperature_proportion_over_20,
 
   # DSMhabitat variables -----
-  spawning_habitat = DSMhabitat::fr_spawn,
-  inchannel_habitat_fry = DSMhabitat::fr_fry,
-  inchannel_habitat_juvenile = DSMhabitat::fr_juv,
-  floodplain_habitat = DSMhabitat::fr_fp,
+  spawning_habitat = DSMhabitat::lfr_spawn,
+  inchannel_habitat_fry = DSMhabitat::lfr_fry,
+   inchannel_habitat_juvenile = DSMhabitat::lfr_juv,
+  floodplain_habitat = DSMhabitat::lfr_fp,
   weeks_flooded = DSMhabitat::weeks_flooded,
   delta_habitat = DSMhabitat::delta_habitat,
   sutter_habitat = DSMhabitat::sutter_habitat,
@@ -207,8 +209,9 @@ params <- list(
 # Month_return_proportions for Battle and Clear creeks Nov, Dec, Jan, Feb: 10,40,40,10
 # For upper Sacramento Oct- Feb distribution, 10,20, 40, 20, 10
 params$month_return_proportions<-matrix(c(0.1,0.2,0.4,0.2,0.1,
-                                          0,0.1,0.4,0.4,0.1), byrow=T,nrow=2)
-colnames(params$month_return_proportions)<-c("Oct","Nov", "Dec", "Jan", "Feb")
+                                          0,0.1,0.4,0.4,0.1), byrow=T,nrow=2, 
+                                        dimnames = list(c("Upper Sacramento River", "Battle and Clear Creeks"), 
+                                                        c("Oct","Nov", "Dec", "Jan", "Feb")))
 
 
 ### change proportion hatchery based on CWT ests

@@ -4,7 +4,7 @@
 \name{growth_rates_floodplain}
 \alias{growth_rates_floodplain}
 \alias{growth_floodplain}
-\title{Floodplain Growth Transistion Probability}
+\title{Floodplain Growth Transition Probability}
 \format{
 An object of class \code{array} of dimension 4 x 4 x 4.
 }

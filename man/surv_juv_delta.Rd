@@ -22,7 +22,8 @@ surv_juv_delta(
   .prop_diverted = -3.51,
   ..surv_juv_delta_total_diverted = 0.5 * -0.0021,
   .medium = 1.48,
-  .large = 2.223
+  .large = 2.223,
+  min_survival_rate
 )
 }
 \arguments{
