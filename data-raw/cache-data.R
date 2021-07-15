@@ -1,13 +1,23 @@
 library(tidyverse)
 
 adult_seeds <- matrix(0, nrow = 31, ncol = 30)
-adult_seeds[ , 1] <- c(22012L, 72L, 12626L, 12L, 12L, 885L, 8555L, 1251L, 1649L, 569L,
-                       12L, 1332L, 51L, 12L, 12L, 0L, 0L, 12L, 52408L, 7184L, 0L, 0L,
-                       24959L, 0L, 12L, 499L, 4514L, 2145L, 5405L, 984L, 0L)
+no_lfr_spawn <- !as.logical(DSMhabitat::watershed_species_present[1:31, ]$lfr *
+                             DSMhabitat::watershed_species_present[1:31,]$spawn)
 
-rownames(adult_seeds) <- DSMhabitat::watershed_metadata$watershed[-32]
+adult_seed_values <- DSMCalibrationData::mean_escapement_2013_2017 %>%
+  bind_cols(no_lfr_spawn = no_lfr_spawn) %>%
+  select(watershed, `Late-Fall`, no_lfr_spawn) %>%
+  mutate(corrected_late_fall = case_when(
+    no_lfr_spawn ~ 0,
+    is.na(`Late-Fall`) | `Late-Fall` < 10 ~ 12,
+    TRUE ~ `Late-Fall`)
+  ) %>% pull(corrected_late_fall)
 
+adult_seeds[ , 1] <- adult_seed_values
+
+rownames(adult_seeds) <- DSMhabitat::watershed_species_present$watershed_name[-32]
 usethis::use_data(adult_seeds, overwrite = TRUE)
+
 
 proportion_hatchery <- c(0.37, 0.2, 0.9, 0.37968253968254, 0.2, 0.115, 0.2225, 0.3525,
                          0.2, 0.16, 0.37968253968254, 0.1525, 0.365, 0.37968253968254,
