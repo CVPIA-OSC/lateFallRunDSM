@@ -106,8 +106,8 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
       proportion_natural = 1 - ..params$proportion_hatchery,
       scour = ..params$prob_nest_scoured,
       temperature_effect = ..params$mean_egg_temp_effect,
-      .proportion_natural = ..params$surv_egg_to_fry_proportion_natural,
-      .scour = ..params$surv_egg_to_fry_scour,
+      .proportion_natural = ..params$.surv_egg_to_fry_proportion_natural,
+      .scour = ..params$.surv_egg_to_fry_scour,
       ..surv_egg_to_fry_int = ..params$..surv_egg_to_fry_int
     )
     next_year <- year + 1
@@ -251,7 +251,8 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                             migratory_survival_sac_delta = migratory_survival$sac_delta,
                                             migratory_survival_bay_delta = migratory_survival$bay_delta,
                                             juveniles_at_chipps = juveniles_at_chipps,
-                                            growth_rates = lateFallRunDSM::params$growth_rates)
+                                            growth_rates = lateFallRunDSM::params$growth_rates,
+                                            territory_size = lateFallRunDSM::params$territory_size)
 
 
         migrants_at_golden_gate <- delta_fish$migrants_at_golden_gate
@@ -275,7 +276,8 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                       .pulse_movement_vlarge = ..params$.pulse_movement_vlarge,
                                       .pulse_movement_medium_pulse = ..params$.pulse_movement_medium_pulse,
                                       .pulse_movement_large_pulse = ..params$.pulse_movement_large_pulse,
-                                      .pulse_movement_very_large_pulse = ..params$.pulse_movement_very_large_pulse)
+                                      .pulse_movement_very_large_pulse = ..params$.pulse_movement_very_large_pulse,
+                                      territory_size = lateFallRunDSM::params$territory_size)
 
         upper_sac_trib_rear <- rear(juveniles = upper_sac_trib_fish$inchannel,
                                     survival_rate = rearing_survival$inchannel[1:15, ],
@@ -292,14 +294,16 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
         # or migrate further downstream or in sutter bypass
         sutter_fish <- route_bypass(bypass_fish = sutter_fish + upper_sac_trib_fish$detoured,
                                     bypass_habitat = habitat$sutter,
-                                    migration_survival_rate = migratory_survival$sutter)
+                                    migration_survival_rate = migratory_survival$sutter,
+                                    territory_size = lateFallRunDSM::params$territory_size)
 
         upper_mid_sac_fish <- route_regional(month = month,
                                              migrants = upper_mid_sac_fish + upper_sac_trib_fish$migrants,
                                              inchannel_habitat = habitat$inchannel[16],
                                              floodplain_habitat = habitat$floodplain[16],
                                              prop_pulse_flows = ..params$prop_pulse_flows[16, , drop = FALSE],
-                                             migration_survival_rate = migratory_survival$uppermid_sac)
+                                             migration_survival_rate = migratory_survival$uppermid_sac,
+                                             territory_size = lateFallRunDSM::params$territory_size)
 
 
         migrants[1:15, ] <- upper_mid_sac_fish$migrants + sutter_fish$migrants
@@ -336,7 +340,8 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                          .pulse_movement_vlarge = ..params$.pulse_movement_vlarge,
                                          .pulse_movement_medium_pulse = ..params$.pulse_movement_medium_pulse,
                                          .pulse_movement_large_pulse = ..params$.pulse_movement_large_pulse,
-                                         .pulse_movement_very_large_pulse = ..params$.pulse_movement_very_large_pulse)
+                                         .pulse_movement_very_large_pulse = ..params$.pulse_movement_very_large_pulse,
+                                         territory_size = lateFallRunDSM::params$territory_size)
 
         lower_mid_sac_trib_rear <- rear(juveniles = lower_mid_sac_trib_fish$inchannel,
                                         survival_rate = rearing_survival$inchannel[18:20, ],
@@ -350,7 +355,8 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
 
         yolo_fish <- route_bypass(bypass_fish = yolo_fish + lower_mid_sac_trib_fish$detoured,
                                   bypass_habitat = habitat$yolo,
-                                  migration_survival_rate = migratory_survival$yolo)
+                                  migration_survival_rate = migratory_survival$yolo,
+                                  territory_size = lateFallRunDSM::params$territory_size)
 
         migrants[18:20, ] <- lower_mid_sac_trib_fish$migrants + yolo_fish$migrants
 
@@ -359,7 +365,8 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                              inchannel_habitat = habitat$inchannel[21],
                                              floodplain_habitat = habitat$floodplain[21],
                                              prop_pulse_flows = ..params$prop_pulse_flows[21, , drop = FALSE],
-                                             migration_survival_rate = migratory_survival$lowermid_sac)
+                                             migration_survival_rate = migratory_survival$lowermid_sac,
+                                             territory_size = lateFallRunDSM::params$territory_size)
 
         migrants <- lower_mid_sac_fish$migrants
 
@@ -394,7 +401,8 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                      .pulse_movement_vlarge = ..params$.pulse_movement_vlarge,
                                      .pulse_movement_medium_pulse = ..params$.pulse_movement_medium_pulse,
                                      .pulse_movement_large_pulse = ..params$.pulse_movement_large_pulse,
-                                     .pulse_movement_very_large_pulse = ..params$.pulse_movement_very_large_pulse)
+                                     .pulse_movement_very_large_pulse = ..params$.pulse_movement_very_large_pulse,
+                                     territory_size = lateFallRunDSM::params$territory_size)
 
         lower_sac_trib_rear <- rear(juveniles = lower_sac_trib_fish$inchannel,
                                     survival_rate = rearing_survival$inchannel[23, , drop = FALSE],
@@ -413,7 +421,8 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                          inchannel_habitat = habitat$inchannel[24],
                                          floodplain_habitat = habitat$floodplain[24],
                                          prop_pulse_flows = ..params$prop_pulse_flows[24, , drop = FALSE],
-                                         migration_survival_rate = migratory_survival$lower_sac)
+                                         migration_survival_rate = migratory_survival$lower_sac,
+                                         territory_size = lateFallRunDSM::params$territory_size)
 
         migrants <- lower_sac_fish$migrants
 
@@ -445,7 +454,8 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                        .pulse_movement_vlarge = ..params$.pulse_movement_vlarge,
                                        .pulse_movement_medium_pulse = ..params$.pulse_movement_medium_pulse,
                                        .pulse_movement_large_pulse = ..params$.pulse_movement_large_pulse,
-                                       .pulse_movement_very_large_pulse = ..params$.pulse_movement_very_large_pulse)
+                                       .pulse_movement_very_large_pulse = ..params$.pulse_movement_very_large_pulse,
+                                       territory_size = lateFallRunDSM::params$territory_size)
 
         south_delta_trib_rear <- rear(juveniles = south_delta_trib_fish$inchannel,
                                       survival_rate = rearing_survival$inchannel[25:27, ],
@@ -476,7 +486,8 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                        .pulse_movement_vlarge = ..params$.pulse_movement_vlarge,
                                        .pulse_movement_medium_pulse = ..params$.pulse_movement_medium_pulse,
                                        .pulse_movement_large_pulse = ..params$.pulse_movement_large_pulse,
-                                       .pulse_movement_very_large_pulse = ..params$.pulse_movement_very_large_pulse)
+                                       .pulse_movement_very_large_pulse = ..params$.pulse_movement_very_large_pulse,
+                                       territory_size = lateFallRunDSM::params$territory_size)
 
         san_joaquin_trib_rear <- rear(juveniles = san_joaquin_trib_fish$inchannel,
                                       survival_rate = rearing_survival$inchannel[28:30, ],
@@ -493,7 +504,8 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                            inchannel_habitat = habitat$inchannel[31],
                                            floodplain_habitat = habitat$floodplain[31],
                                            prop_pulse_flows = ..params$prop_pulse_flows[31, , drop = FALSE],
-                                           migration_survival_rate = migratory_survival$san_joaquin)
+                                           migration_survival_rate = migratory_survival$san_joaquin,
+                                           territory_size = lateFallRunDSM::params$territory_size)
 
         migrants[28:30, ] <- san_joaquin_fish$migrants
 
@@ -520,7 +532,8 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                             migratory_survival_sac_delta = migratory_survival$sac_delta,
                                             migratory_survival_bay_delta = migratory_survival$bay_delta,
                                             juveniles_at_chipps = juveniles_at_chipps,
-                                            growth_rates = lateFallRunDSM::params$growth_rates)
+                                            growth_rates = lateFallRunDSM::params$growth_rates,
+                                            territory_size = lateFallRunDSM::params$territory_size)
 
         migrants_at_golden_gate <- delta_fish$migrants_at_golden_gate
 

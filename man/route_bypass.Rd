@@ -15,6 +15,8 @@ route_bypass(bypass_fish, bypass_habitat, migration_survival_rate)
 \item{bypass_habitat}{A vector of available habitat in square meters}
 
 \item{migration_survival_rate}{The outmigration survival rate}
+
+\item{territory_size}{Array of juvenile fish territory requirements for \code{\link{fill_natal}}}
 }
 \description{
 Determines if juveniles remain in the bypass or out migrate

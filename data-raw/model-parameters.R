@@ -5,18 +5,18 @@ library(tidyverse)
 params <- list(
   
   # Data from latefallRunDSM cache-data (values vary by run)
-  hatchery_allocation = latefallRunDSM::hatchery_allocation,
-  natural_adult_removal_rate = latefallRunDSM::natural_adult_removal_rate,
-  proportion_hatchery = latefallRunDSM::proportion_hatchery,
-  month_return_proportions = latefallRunDSM::month_return_proportions,
-  survival_betas = latefallRunDSM::survival_betas,
-  growth_rates = latefallRunDSM::growth_rates,
-  growth_rates_floodplain = latefallRunDSM::growth_rates_floodplain,
-  mass_by_size_class = latefallRunDSM::mass_by_size_class,
-  cross_channel_stray_rate = latefallRunDSM::cross_channel_stray_rate,
-  stray_rate = latefallRunDSM::stray_rate,
-  adult_harvest_rate = latefallRunDSM::adult_harvest_rate,
-  diversity_group = latefallRunDSM::diversity_group,
+  hatchery_allocation = lateFallRunDSM::hatchery_allocation,
+  natural_adult_removal_rate = lateFallRunDSM::natural_adult_removal_rate,
+  proportion_hatchery = lateFallRunDSM::proportion_hatchery,
+  month_return_proportions = lateFallRunDSM::month_return_proportions,
+  survival_betas = lateFallRunDSM::survival_betas,
+  growth_rates = lateFallRunDSM::growth_rates,
+  growth_rates_floodplain = lateFallRunDSM::growth_rates_floodplain,
+  mass_by_size_class = lateFallRunDSM::mass_by_size_class,
+  cross_channel_stray_rate = lateFallRunDSM::cross_channel_stray_rate,
+  stray_rate = lateFallRunDSM::stray_rate,
+  adult_harvest_rate = lateFallRunDSM::adult_harvest_rate,
+  diversity_group = lateFallRunDSM::diversity_group,
   
   # Coefficients for adult submodules
   .adult_stray_intercept = 3,
@@ -27,7 +27,7 @@ params <- list(
   .adult_stray_prop_delta_trans = 2.89,
   .adult_en_route_migratory_temp = -0.26,
   .adult_en_route_bypass_overtopped = -0.019,
-  .adult_en_route_adult_harvest_rate = fallRunDSM::adult_harvest_rate, # varies by run
+  .adult_en_route_adult_harvest_rate = lateFallRunDSM::adult_harvest_rate, # varies by run
   .adult_prespawn_deg_day = -0.000669526,
   
   # Ocean entry success coefficient and variable
@@ -202,31 +202,6 @@ params <- list(
     `San Joaquin River` = 1.2)
 )
 
-# Month_return_proportions for Battle and Clear creeks Nov, Dec, Jan, Feb: 10,40,40,10
-# For upper Sacramento Oct- Feb distribution, 10,20, 40, 20, 10
-params$month_return_proportions<-matrix(c(0.1,0.2,0.4,0.2,0.1,
-                                          0,0.1,0.4,0.4,0.1), byrow=T,nrow=2, 
-                                        dimnames = list(c("Upper Sacramento River", "Battle and Clear Creeks"), 
-                                                        c("Oct","Nov", "Dec", "Jan", "Feb")))
-
-
-### change proportion hatchery based on CWT ests
-params$proportion_hatchery[params$proportion_hatchery>0]<-0
-params$proportion_hatchery[1]<-0.075
-params$proportion_hatchery[3]<-0.027
-
-# change removal rate using CWT ests
-params$natural_adult_removal_rate[params$natural_adult_removal_rate>0]<-0
-params$natural_adult_removal_rate[1]<-0.014
-
-# change harvest rate using CWT ests
-params$adult_harvest_rate[params$adult_harvest_rate>0]<-0
-params$adult_harvest_rate[c(1,3,7)]<-0.0676
-
-# change hatchery allocation using CWT ests
-params$hatchery_allocation[params$hatchery_allocation>0]<-0
-params$hatchery_allocation[1]<-0.083
-params$hatchery_allocation[3]<-0.015
 
 usethis::use_data(params, overwrite = TRUE)
 
