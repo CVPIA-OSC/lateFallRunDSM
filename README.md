@@ -33,15 +33,15 @@ remotes::install_github("CVPIA-OSC/DSMhabitat")
 remotes::install_github("CVPIA-OSC/DSMtemperature")
 remotes::install_github("CVPIA-OSC/DSMscenario")
 remotes::install_github("CVPIA-OSC/DSMCalibrationData")
-remotes::install_github("CVPIA-OSC/fallRunDSM")
+remotes::install_github("CVPIA-OSC/lateFallRunDSM")
 ```
 
 ### Run Model
-The `lateFallrunDSM` is a Fall Run Chinook life cycle model used for CVPIA's Structured Decision Making Process.
-Running the model simulates Fall Run Chinook population dynamics across 31 watersheds in California over a 20 year period. 
+The `lateFallrunDSM` is a Late-Fall Run Chinook life cycle model used for CVPIA's Structured Decision Making Process.
+Running the model simulates Late-Fall Run Chinook population dynamics across 31 watersheds in California over a 20 year period. 
 View the [late_fall_run_model()](https://cvpia-osc.github.io/lateFallRunDSM/reference/late_fall_run_model.html) documentation for additional information on running the `late_fall_run_model`.
 
-The following code runs the fall run model with SIT defined scenario 1 and `late_fall_run_seeds`:
+The following code runs the late fall run model with SIT defined scenario 1 and `late_fall_run_seeds`:
 ```r
 late_fall_run_seeds <- lateFallRunDSM::late_fall_run_model(mode = "seed")
 lateFallRunDSM::late_fall_run_model(scenario = DSMscenario::scenarios$ONE,
@@ -49,7 +49,7 @@ lateFallRunDSM::late_fall_run_model(scenario = DSMscenario::scenarios$ONE,
                                     seeds = late_fall_run_seeds)
 ```
 
-The following code runs the fall run model with a custom scenario defined in `scenario_df` and `late_fall_run_seeds`:
+The following code runs the late fall run model with a custom scenario defined in `scenario_df` and `late_fall_run_seeds`:
 ```r
 scenario_df <- data.frame(watershed = c("Upper Sacramento River", "Battle Creek"),
                           action = c(3, 2),
@@ -87,7 +87,7 @@ library(DSMtemperature)
 
 ### Scenario Functionality
 
-Scenario functionality within the `lateFallRunDSM` models the effect of restoration actions on Fall run Chinook. 
+Scenario functionality within the `lateFallRunDSM` models the effect of restoration actions on Late-Fall run Chinook. 
 The [CVPIA SIT (Science Integration Team)](http://cvpia.scienceintegrationteam.com/) has developed restoration action portfolioscomposed of actions preformed on watersheds over a set time period. 
 
 There are seven predefined scenarios that were developed by the CVPIA SIT. Additional scenarios can be defined by creating a `scenario_df` describing watershed, action, start year, end year, and units of effort. For additional description on how to build a scenario view `load_scenario` documentation by searching `?DSMscenario::load_scenario()`  
