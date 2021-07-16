@@ -7,7 +7,12 @@
 IP-117068
 }
 \usage{
-route_bypass(bypass_fish, bypass_habitat, migration_survival_rate)
+route_bypass(
+  bypass_fish,
+  bypass_habitat,
+  migration_survival_rate,
+  territory_size
+)
 }
 \arguments{
 \item{bypass_fish}{An n by 4 matrix of juvenile fish by watershed and size class}
