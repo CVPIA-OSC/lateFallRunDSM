@@ -2,7 +2,7 @@
 % Please edit documentation in R/survival.R
 \name{get_rearing_survival}
 \alias{get_rearing_survival}
-\title{Get Rearing Survival}
+\title{Get Rearing Survival Rates}
 \source{
 IP-117068
 }
@@ -10,8 +10,8 @@ IP-117068
 get_rearing_survival(
   year,
   month,
-  mode,
   survival_adjustment,
+  mode,
   avg_temp,
   avg_temp_delta,
   prob_strand_early,
@@ -26,12 +26,17 @@ get_rearing_survival(
   delta_contact_points,
   delta_prop_high_predation,
   ..surv_juv_rear_int,
+  .surv_juv_rear_contact_points,
   ..surv_juv_rear_contact_points,
+  .surv_juv_rear_prop_diversions,
   ..surv_juv_rear_prop_diversions,
+  .surv_juv_rear_total_diversions,
   ..surv_juv_rear_total_diversions,
   ..surv_juv_bypass_int,
   ..surv_juv_delta_int,
+  .surv_juv_delta_contact_points,
   ..surv_juv_delta_contact_points,
+  .surv_juv_delta_total_diverted,
   ..surv_juv_delta_total_diverted,
   .surv_juv_rear_avg_temp_thresh,
   .surv_juv_rear_high_predation,
@@ -57,51 +62,91 @@ get_rearing_survival(
 
 \item{month}{The simulation month, 1-8}
 
-\item{..surv_juv_rear_int}{TODO}
+\item{avg_temp}{More details at \code{\link[DSMtemperature]{stream_tempetature}}}
 
-\item{..surv_juv_rear_contact_points}{TODO}
+\item{avg_temp_delta}{More details at \code{\link[DSMtempetature]{delta_temprature}}}
 
-\item{..surv_juv_rear_prop_diversions}{TODO}
+\item{prob_strand_early}{More details at \code{\link[DSMhabitat]{prop_strand_early}}}
 
-\item{..surv_juv_rear_total_diversions}{TODO}
+\item{prob_strand_late}{More details at \code{\link[DSMhabitat]{prop_strand_late}}}
 
-\item{..surv_juv_bypass_int}{TODO}
+\item{proportion_diverted}{More details at \code{\link[DSMflow]{proportion_diverted}}}
 
-\item{..surv_juv_delta_int}{TODO}
+\item{total_diverted}{More details at \code{\link[DSMflow]{total_diverted}}}
 
-\item{..surv_juv_delta_contact_points}{TODO}
+\item{delta_proportion_diverted}{More details at \code{\link[DSMflow]{delta_proportion_diverted}}}
 
-\item{..surv_juv_delta_total_diverted}{TODO}
+\item{delta_total_diverted}{More details at \code{\link[DSMflow]{delta_total_diverted}}}
 
-\item{.surv_juv_rear_avg_temp_thresh}{TODO}
+\item{weeks_flooded}{More details at \code{\link[DSMflow]{weeks_flooded}}}
 
-\item{.surv_juv_rear_high_predation}{TODO}
+\item{prop_high_predation}{More details at \code{\link[DSMhabitat]{prop_high_predation}}}
 
-\item{.surv_juv_rear_stranded}{TODO}
+\item{contact_points}{More details at \code{\link[DSMhabitat]{contact_points}}}
 
-\item{.surv_juv_rear_medium}{TODO}
+\item{delta_contact_points}{More details at \code{\link[DSMhabitat]{delta_contact_points}}}
 
-\item{.surv_juv_rear_large}{TODO}
+\item{delta_prop_high_predation}{More details at \code{\link[DSMhabitat]{delta_prop_high_predation}}}
 
-\item{.surv_juv_rear_floodplain}{TODO}
+\item{..surv_juv_rear_int}{Intercept for \code{\link{surv_juv_rear}}}
 
-\item{.surv_juv_bypass_avg_temp_thresh}{TODO}
+\item{.surv_juv_rear_contact_points}{Coefficient for \code{\link{surv_juv_rear}} \code{contact_points} variable}
 
-\item{.surv_juv_bypass_high_predation}{TODO}
+\item{..surv_juv_rear_contact_points}{Calibrated coefficient for \code{\link{surv_juv_rear}} \code{contact_points} variable}
 
-\item{.surv_juv_bypass_medium}{TODO}
+\item{.surv_juv_rear_prop_diversions}{Coefficient for \code{\link{surv_juv_rear}} \code{prop_diversions} variable}
 
-\item{.surv_juv_bypass_large}{TODO}
+\item{..surv_juv_rear_prop_diversions}{Calibrated coefficient for \code{\link{surv_juv_rear}} \code{prop_diversions} variable}
 
-\item{.surv_juv_delta_avg_temp_thresh}{TODO}
+\item{.surv_juv_rear_total_diversions}{Coefficient for \code{\link{surv_juv_rear}} \code{total_diversions} variable}
 
-\item{.surv_juv_delta_high_predation}{TODO}
+\item{..surv_juv_rear_total_diversions}{Calibrated coefficient for \code{\link{surv_juv_rear}} \code{total_diversions} variable}
 
-\item{.surv_juv_delta_prop_diverted}{TODO}
+\item{..surv_juv_bypass_int}{Intercept for \code{\link{surv_juv_bypass}}}
 
-\item{.surv_juv_delta_medium}{TODO}
+\item{..surv_juv_delta_int}{Intercept for \code{\link{surv_juv_delta}}}
 
-\item{.surv_juv_delta_large}{TODO}
+\item{.surv_juv_delta_contact_points}{Coefficient for \code{\link{surv_juv_delta}} contact_points variable}
+
+\item{..surv_juv_delta_contact_points}{Calibrated coefficient for \code{\link{surv_juv_delta}} contact_points variable}
+
+\item{.surv_juv_delta_total_diverted}{Coefficient for \code{\link{surv_juv_delta}} total_diversions variable}
+
+\item{..surv_juv_delta_total_diverted}{Calibrated coefficient for \code{\link{surv_juv_delta}} total_diversions variable}
+
+\item{.surv_juv_rear_avg_temp_thresh}{Coefficient for \code{\link{surv_juv_rear}} \code{avg_temp_thresh} variable}
+
+\item{.surv_juv_rear_high_predation}{Coefficient for \code{\link{surv_juv_rear}} \code{high_predation} variable}
+
+\item{.surv_juv_rear_stranded}{Coefficient for \code{\link{surv_juv_rear}} \code{stranded} variable}
+
+\item{.surv_juv_rear_medium}{Size related intercept for \code{\link{surv_juv_rear}} medium sized fish}
+
+\item{.surv_juv_rear_large}{Size related intercept for \code{\link{surv_juv_rear}} large sized fish}
+
+\item{.surv_juv_rear_floodplain}{Additional intercept for \code{\link{surv_juv_rear}} floodplain rearing benefit}
+
+\item{.surv_juv_bypass_avg_temp_thresh}{Coefficient for \code{\link{surv_juv_bypass}} \code{avg_temp_thresh} variable}
+
+\item{.surv_juv_bypass_high_predation}{Coefficient for \code{\link{surv_juv_bypass}} \code{high_predation} variable}
+
+\item{.surv_juv_bypass_medium}{Size related intercept for \code{\link{surv_juv_bypass}} medium sized fish}
+
+\item{.surv_juv_bypass_large}{Size related intercept for \code{\link{surv_juv_bypass}} large sized fish}
+
+\item{.surv_juv_bypass_floodplain}{Additional intercept for \code{\link{surv_juv_bypass}} floodplain rearing benefit}
+
+\item{.surv_juv_delta_avg_temp_thresh}{Coefficient for \code{\link{surv_juv_delta}} \code{avg_temp_thresh} variable}
+
+\item{.surv_juv_delta_high_predation}{Coefficient for \code{\link{surv_juv_delta}} \code{high_predation} variable}
+
+\item{.surv_juv_delta_prop_diverted}{Coefficient for \code{\link{surv_juv_delta}} \code{prop_diversions} variable}
+
+\item{.surv_juv_delta_medium}{Size related intercept for \code{\link{surv_juv_delta}} medium sized fish}
+
+\item{.surv_juv_delta_large}{Size related intercept for \code{\link{surv_juv_delta}} large sized fish}
+
+\item{min_survival_rate}{estimated survival rate if temperature threshold is exceeded}
 
 \item{scenario}{The current scenario}
 }
