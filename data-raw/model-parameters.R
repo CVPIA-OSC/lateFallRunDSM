@@ -3,25 +3,22 @@ library(tidyverse)
 
 # 2019 Calibration Parameters ------------
 params <- list(
-
-  # items that were in dsm package
-  hatchery_allocation = lateFallRunDSM::hatchery_allocation,
-  natural_adult_removal_rate = lateFallRunDSM::natural_adult_removal_rate,
-  proportion_hatchery = lateFallRunDSM::proportion_hatchery,
-  month_return_proportions = lateFallRunDSM::month_return_proportions,
-  survival_betas = lateFallRunDSM::survival_betas,
-  growth_rates = lateFallRunDSM::growth_rates,
-  growth_rates_floodplain = lateFallRunDSM::growth_rates_floodplain,
-  mass_by_size_class = lateFallRunDSM::mass_by_size_class,
-  cross_channel_stray_rate = lateFallRunDSM::cross_channel_stray_rate,
-  stray_rate = lateFallRunDSM::stray_rate,
-  adult_harvest_rate = lateFallRunDSM::adult_harvest_rate,
-  diversity_group = lateFallRunDSM::diversity_group,
   
-  min_survival_rate = 0.0001,
-
-
-  # adults
+  # Data from latefallRunDSM cache-data (values vary by run)
+  hatchery_allocation = latefallRunDSM::hatchery_allocation,
+  natural_adult_removal_rate = latefallRunDSM::natural_adult_removal_rate,
+  proportion_hatchery = latefallRunDSM::proportion_hatchery,
+  month_return_proportions = latefallRunDSM::month_return_proportions,
+  survival_betas = latefallRunDSM::survival_betas,
+  growth_rates = latefallRunDSM::growth_rates,
+  growth_rates_floodplain = latefallRunDSM::growth_rates_floodplain,
+  mass_by_size_class = latefallRunDSM::mass_by_size_class,
+  cross_channel_stray_rate = latefallRunDSM::cross_channel_stray_rate,
+  stray_rate = latefallRunDSM::stray_rate,
+  adult_harvest_rate = latefallRunDSM::adult_harvest_rate,
+  diversity_group = latefallRunDSM::diversity_group,
+  
+  # Coefficients for adult submodules
   .adult_stray_intercept = 3,
   .adult_stray_wild = -5.5,
   .adult_stray_natal_flow = -1.99,
@@ -30,12 +27,14 @@ params <- list(
   .adult_stray_prop_delta_trans = 2.89,
   .adult_en_route_migratory_temp = -0.26,
   .adult_en_route_bypass_overtopped = -0.019,
-  .adult_en_route_adult_harvest_rate = lateFallRunDSM::adult_harvest_rate,
+  .adult_en_route_adult_harvest_rate = fallRunDSM::adult_harvest_rate, # varies by run
   .adult_prespawn_deg_day = -0.000669526,
-  # growth
+  
+  # Ocean entry success coefficient and variable
   .ocean_entry_success_length = c(-0.0897309864, -0.0709704348, -0.0208590732, 0.0732620916),
   .ocean_entry_success_months = 0.35,
-  # rear
+  
+  # Routing coefficients and variables
   .pulse_movement_intercept = -7.70744,
   .pulse_movement_proportion_pulse = 0.26579,
   .pulse_movement_medium = 1.66845,
@@ -44,14 +43,50 @@ params <- list(
   .pulse_movement_medium_pulse = -0.25477,
   .pulse_movement_large_pulse = -0.44778,
   .pulse_movement_very_large_pulse = 0.329,
-
+  territory_size = c(0.0498944803729701, 0.138941944739835, 0.471083652829798, 0),
+  
+  # Spawn success variables
   spawn_success_sex_ratio = 0.5,
   spawn_success_redd_size = 9.29,
   spawn_success_fecundity = 5522,
-
-  surv_egg_to_fry_proportion_natural = 0.533,
-  surv_egg_to_fry_scour = -0.655,
-
+  
+  # Egg to fry survival coefficients
+  .surv_egg_to_fry_proportion_natural = 0.533,
+  .surv_egg_to_fry_scour = -0.655,
+  
+  # Juvenile rearing survival coefficients and variables
+  .surv_juv_rear_avg_temp_thresh = -0.717,
+  .surv_juv_rear_contact_points = -0.189,
+  .surv_juv_rear_prop_diversions = -3.51,
+  .surv_juv_rear_total_diversions = -0.0021,
+  .surv_juv_rear_high_predation = -0.122,
+  .surv_juv_rear_stranded = -1.939,
+  .surv_juv_rear_medium = 1.48,
+  .surv_juv_rear_large = 2.223,
+  .surv_juv_rear_floodplain = 0.47,
+  min_survival_rate = 0.0001,
+  
+  # Juvenile bypass survival coefficients and variables
+  .surv_juv_bypass_avg_temp_thresh = -0.717,
+  .surv_juv_bypass_high_predation = -0.122,
+  .surv_juv_bypass_medium = 1.48,
+  .surv_juv_bypass_large = 2.223,
+  .surv_juv_bypass_floodplain = 0.47,
+  
+  # Juvenile delta survival coefficients and variables
+  .surv_juv_delta_avg_temp_thresh = -0.717,
+  .surv_juv_delta_contact_points = -0.189,
+  .surv_juv_delta_total_diverted = -0.0021,
+  .surv_juv_delta_high_predation = -0.122,
+  .surv_juv_delta_prop_diverted = -3.51,
+  .surv_juv_delta_medium = 1.48,
+  .surv_juv_delta_large = 2.223,
+  
+  # San joaquin outmigration variables
+  .surv_juv_outmigration_san_joaquin_medium = 1.48,
+  .surv_juv_outmigration_san_joaquin_large = 2.223,
+  
+  # Sac delta outmigration coefficients and variables
   .surv_juv_outmigration_sac_delta_intercept_one = -3.5,
   .surv_juv_outmigration_sac_delta_intercept_two =  0.3,
   .surv_juv_outmigration_sac_delta_intercept_three = -3.5,
@@ -60,40 +95,8 @@ params <- list(
   .surv_juv_outmigration_sac_delta_perc_diversions = -0.033,
   .surv_juv_outmigration_sac_delta_medium = 1.48,
   .surv_juv_outmigration_sac_delta_large = 2.223,
-
-
-
-
-
-
-
-
-
-
-  proportion_hatchery = lateFallRunDSM::proportion_hatchery,
-
-  # survival
-  .surv_juv_rear_avg_temp_thresh = -0.717,
-  .surv_juv_rear_high_predation = -0.122,
-  .surv_juv_rear_stranded = -1.939,
-  .surv_juv_rear_medium = 1.48,
-  .surv_juv_rear_large = 2.223,
-  .surv_juv_rear_floodplain = 0.47,
-  .surv_juv_bypass_avg_temp_thresh = -0.717,
-  .surv_juv_bypass_high_predation = -0.122,
-  .surv_juv_bypass_medium = 1.48,
-  .surv_juv_bypass_large = 2.223,
-  .surv_juv_bypass_floodplain = 0.47,
-  .surv_juv_delta_avg_temp_thresh = -0.717,
-  .surv_juv_delta_high_predation = -0.122,
-  .surv_juv_delta_prop_diverted = -3.51,
-  .surv_juv_delta_medium = 1.48,
-  .surv_juv_delta_large = 2.223,
-
-  .surv_juv_outmigration_san_joquin_medium = 1.48,
-  .surv_juv_outmigration_san_joaquin_large = 2.223,
-
-  ### load baseline data
+  
+  ## Variable from load baseline data
   # DSMflow variables -----
   freeport_flows = DSMflow::freeport_flow,
   vernalis_flows = DSMflow::vernalis_flow,
@@ -112,7 +115,7 @@ params <- list(
   cc_gates_prop_days_closed = DSMflow::delta_cross_channel_closed["proportion", ],
   proportion_flow_bypass = DSMflow::proportion_flow_bypasses,
   gates_overtopped = DSMflow::gates_overtopped,
-
+  
   # DSMtemperature variables -----
   vernalis_temps = DSMtemperature::vernalis_temperature,
   prisoners_point_temps = DSMtemperature::prisoners_point_temperature,
@@ -121,12 +124,12 @@ params <- list(
   avg_temp = DSMtemperature::stream_temperature,
   avg_temp_delta = DSMtemperature::delta_temperature,
   migratory_temperature_proportion_over_20 = DSMtemperature::migratory_temperature_proportion_over_20,
-
+  
   # DSMhabitat variables -----
   spawning_habitat = DSMhabitat::lfr_spawn,
-  inchannel_habitat_fry = DSMhabitat::lfr_fry,
-   inchannel_habitat_juvenile = DSMhabitat::lfr_juv,
-  floodplain_habitat = DSMhabitat::lfr_fp,
+  inchannel_habitat_fry = DSMhabitat::lfr_fry, # vary by run
+  inchannel_habitat_juvenile = DSMhabitat::lfr_juv, # vary by run
+  floodplain_habitat = DSMhabitat::lfr_fp, # vary by run
   weeks_flooded = DSMhabitat::weeks_flooded,
   delta_habitat = DSMhabitat::delta_habitat,
   sutter_habitat = DSMhabitat::sutter_habitat,
@@ -141,11 +144,8 @@ params <- list(
   prob_strand_early = DSMhabitat::prob_strand_early,
   prob_strand_late = DSMhabitat::prob_strand_late,
   prob_nest_scoured = DSMhabitat::prob_nest_scoured,
-
-
-
-  # existing
-
+  
+  # Calibration Variables (vary by run)
   ..surv_adult_enroute_int = 3,
   ..surv_adult_prespawn_int = 3,
   ..surv_egg_to_fry_int = 0.041,
@@ -160,18 +160,14 @@ params <- list(
                           `Lower Sacramento River` = -3.5, `Calaveras River` = -1.2, `Cosumnes River` = -1.2,
                           `Mokelumne River` = 1.9999999, `Merced River` = -0.2, `Stanislaus River` = -0.1081707,
                           `Tuolumne River` = -3.4999959, `San Joaquin River` = -0.4),
-  ..surv_juv_rear_contact_points = -0.0068,
-  ..surv_juv_rear_prop_diversions = -0.1755,
-  ..surv_juv_rear_total_diversions = -0.0005,
+  ..surv_juv_rear_contact_points = 0.0358,
+  ..surv_juv_rear_prop_diversions = 0.05,
+  ..surv_juv_rear_total_diversions = 0.215,
   ..surv_juv_bypass_int = -3.5,
   ..surv_juv_delta_int = 1.4,
-  ..surv_juv_delta_contact_points = (.0358 * -0.189),
-  ..surv_juv_delta_total_diverted = (.5 * -0.0021),
+  ..surv_juv_delta_contact_points = .0358,
+  ..surv_juv_delta_total_diverted = .5,
   ..surv_juv_outmigration_sj_int = -3.5,
-  ..surv_juv_outmigration_sac_int_one = 2.5,
-  ..surv_juv_outmigration_sac_prop_diversions = (-3.51 * .05),
-  ..surv_juv_outmigration_sac_total_diversions = (-.0021 * .215),
-  ..surv_juv_outmigration_sac_int_two = 0.3,
   ..ocean_entry_success_int = c(
     `Upper Sacramento River` = -0.5108849,
     `Antelope Creek` = 1.2,
