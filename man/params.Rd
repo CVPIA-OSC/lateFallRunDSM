@@ -42,7 +42,7 @@ period in front are model or submodel coefficients. Parameters with double perio
   \item \code{.adult_en_route_bypass_overtopped}: Coefficient for \code{bypass_overtopped} variable, source: Expert opinion Ted Sommer, California Department of Water Resources (tributaries above bypasses only)
   \item \code{.adult_en_route_adult_harvest_rate}:  Adult harvest rate, source:  \href{https://nrm.dfg.ca.gov/FileHandler.ashx?DocumentID=162355&usg= AOvVaw0VgMOwD7knFfSxRZy6k8RG}{(Palmer-Zwahlen & Kormos 2013-2015, Palmer-Zwahlen et al. 2018)}
   \item \code{degree_days}: More details at \code{\link[DSMtemperature]{degree_days}}
-  \item \code{month_return_proportions}: More details at \code{\link[fallRunDSM]{month_return_proportions}}
+  \item \code{month_return_proportions}: More details at \code{\link[lateFallRunDSM]{month_return_proportions}}
   \item \code{..surv_adult_prespawn_int}:  Intercept, Source: Calibration Estimate
   \item \code{.adult_prespawn_deg_day}: Coefficient for \code{deg_day} variable, source: \href{https://onlinelibrary.wiley.com/doi/epdf/10.1002/rra.3348}{Colvin et al. (2018)}
   \item \code{prob_nest_scoured}: More details at \code{\link[DSMhabitat]{prob_nest_scoured}}
@@ -55,7 +55,7 @@ period in front are model or submodel coefficients. Parameters with double perio
 \section{Egg to Fry Survival}{
 
 \itemize{
-  \item \code{proportion_hatchery}: More details at \code{\link[fallRunDSM]{proportion_hatchery}}
+  \item \code{proportion_hatchery}: More details at \code{\link[lateFallRunDSM]{proportion_hatchery}}
   \item \code{prob_nest_scoured}: More details at \code{\link[DSMhabitat]{prob_nest_scoured}}
   \item \code{mean_egg_temp_effect}: More details at \code{\link[DSMtemperature]{egg_temperature_effect}}
   \item \code{.surv_egg_to_fry_proportion_natural}: Coefficient for \code{proportion_natural} variable, Source: \href{https://cdnsciencepub.com/doi/abs/10.1139/F10-168}{Chilcote et al. (2011)}
