@@ -30,7 +30,7 @@ route(
 \arguments{
 \item{year}{The current simulation year, 1-20}
 
-\item{month}{The current simulation month, 1-8}
+\item{month}{The current simulation month, 4-11}
 
 \item{inchannel_habitat}{A vector of available habitat in square meters}
 

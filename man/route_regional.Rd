@@ -18,7 +18,7 @@ route_regional(
 )
 }
 \arguments{
-\item{month}{The simulation month, 4-11}
+\item{month}{The simulation month, 1-8}
 
 \item{migrants}{An n by 4 matrix of juvenile fish by watershed and size class}
 

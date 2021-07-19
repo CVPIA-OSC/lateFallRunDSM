@@ -3,7 +3,7 @@
 #' to a bypass, or out migrate during a simulated month
 #' @details See \code{\link{params}} for details on parameter sources
 #' @param year The current simulation year, 1-20
-#' @param month The current simulation month, 1-8
+#' @param month The current simulation month, 4-11
 #' @param juvenile An n by 4 matrix of juvenile fish by watershed and size class
 #' @param inchannel_habitat A vector of available habitat in square meters
 #' @param floodplain_habitat A vector of available floodplain habitat in square meters
@@ -107,7 +107,7 @@ route_bypass <- function(bypass_fish, bypass_habitat, migration_survival_rate,
 #' @title Route Regions
 #' @description Determines if juveniles stay in the region (Sections of Mainstem
 #' Sacramento River or San Joaquin River) or out migrate during a simulated month
-#' @param month The simulation month, 4-11
+#' @param month The simulation month, 1-8
 #' @param migrants An n by 4 matrix of juvenile fish by watershed and size class
 #' @param inchannel_habitat A vector of available habitat in square meters
 #' @param floodplain_habitat A vector of available floodplain habitat in square meters
