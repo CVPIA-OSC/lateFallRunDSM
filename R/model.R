@@ -84,6 +84,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                     gates_overtopped = ..params$gates_overtopped,
                                     tisdale_bypass_watershed = ..params$tisdale_bypass_watershed,
                                     yolo_bypass_watershed = ..params$yolo_bypass_watershed,
+                                    month_return_proportions = ..params$month_return_proportions, 
                                     migratory_temperature_proportion_over_20 = ..params$migratory_temperature_proportion_over_20,
                                     ..surv_adult_enroute_int = ..params$..surv_adult_enroute_int,
                                     .adult_stray_intercept = ..params$.adult_stray_intercept,

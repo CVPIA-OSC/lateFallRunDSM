@@ -27,7 +27,7 @@
 #' params$month_return_proportions for Battle and Clear creeks Nov, Dec, Jan: 10,40,40,10
 #  For upper Sacramento Oct- Feb distribution, 10,20, 40, 20, 10
 get_spawning_adults <- function(year, adults, hatch_adults, mode,
-                                month_return_proportions=lateFallRunDSM::params$month_return_proportions,
+                                month_return_proportions,
                                 prop_flow_natal,
                                 south_delta_routed_watersheds,
                                 cc_gates_days_closed,
