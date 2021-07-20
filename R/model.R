@@ -6,7 +6,7 @@
 #' @param seeds The default value is NULL runs the model in seeding mode,
 #' returning a 31 by 25 matrix with the first four years of seeded adults. This
 #' returned value can be fed into the model again as the value for the seeds argument
-#' @param ..params parameters derived from calibration. More details at \code{\link{params}}
+#' @param ..params Parameters for model and submodels. More details at \code{\link{params}}
 #' @source IP-117068
 #' @examples
 #' fall_run_seeds <- fallRunDSM::fall_run_model(mode = "seed")
