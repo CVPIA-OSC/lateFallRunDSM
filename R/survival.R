@@ -436,6 +436,7 @@ surv_juv_outmigration_san_joaquin <- function(..surv_juv_outmigration_sj_int = l
 #' @param .perc_diversions Coefficient for \code{perc_diversions} variable
 #' @param .medium Size related intercept for medium sized fish
 #' @param .large Size related intercept for large sized fish
+#' @param model_weights weights for competing models
 #' @source IP-117068
 #' @export
 surv_juv_outmigration_sac_delta <- function(delta_flow, avg_temp, perc_diversions,
@@ -446,9 +447,10 @@ surv_juv_outmigration_sac_delta <- function(delta_flow, avg_temp, perc_diversion
                                             .avg_temp = lateFallRunDSM::params$.surv_juv_outmigration_sac_delta_avg_temp,
                                             .perc_diversions = lateFallRunDSM::params$.surv_juv_outmigration_sac_delta_perc_diversions,
                                             .medium = lateFallRunDSM::params$.surv_juv_outmigration_sac_delta_medium,
-                                            .large = lateFallRunDSM::params$.surv_juv_outmigration_sac_delta_large){
+                                            .large = lateFallRunDSM::params$.surv_juv_outmigration_sac_delta_large,
+                                            model_weights = lateFallRunDSM::params$surv_juv_outmigration_sac_delta_model_weights){
 
-  model_weight <- 1/3 #this model weight needs to be elevated, I think. We vary this in the sensitivity analysis with the constraint that is sums to 1. I did it by hardcoding it with the below code
+  
   # modwt<-rep(0.333,3)
   # if(sum(vary == "juv.deltmigS.modwt")){ 
   #   if(pctil[vary == "juv.deltmigS.modwt"] > 1) modwt<-c(0.5,0,0.5)
@@ -464,17 +466,17 @@ surv_juv_outmigration_sac_delta <- function(delta_flow, avg_temp, perc_diversion
   base_score2 <- .intercept_two + .avg_temp * avg_temp
   base_score3 <- .intercept_three + .perc_diversions * perc_diversions
 
-  s <- model_weight * (boot::inv.logit(base_score1) +
-                         boot::inv.logit(base_score2) +
-                         boot::inv.logit(base_score3))
-
-  m <- model_weight * (boot::inv.logit(base_score1 + .medium) +
-                         boot::inv.logit(base_score2 + .medium) +
-                         boot::inv.logit(base_score3 + .medium))
-
-  vl <- l <- model_weight * (boot::inv.logit(base_score1 + .large) +
-                               boot::inv.logit(base_score2 + .large) +
-                               boot::inv.logit(base_score3 + .large))
+  s <- min(sum(model_weights * c(boot::inv.logit(base_score1),
+                                 boot::inv.logit(base_score2),
+                                 boot::inv.logit(base_score3))), 1)
+  
+  m <- min(sum(model_weights * c(boot::inv.logit(base_score1 + .medium),
+                                 boot::inv.logit(base_score2 + .medium),
+                                 boot::inv.logit(base_score3 + .medium))), 1)
+  
+  vl <- l <- min(sum(model_weights * c(boot::inv.logit(base_score1 + .large),
+                                       boot::inv.logit(base_score2 + .large),
+                                       boot::inv.logit(base_score3 + .large))), 1)
 
   cbind(s = s, m = m, l = l, vl = vl)
 }
@@ -664,6 +666,7 @@ surv_juv_outmigration_delta <- function(prop_DCC_closed, hor_barr, freeport_flow
 #' @param .surv_juv_outmigration_san_joaquin_medium Size related intercept for \code{\link{surv_juv_outmigration_san_joaquin}} medium sized fish
 #' @param .surv_juv_outmigration_san_joaquin_large Size related intercept for \code{\link{surv_juv_outmigration_san_joaquin}} large sized fish
 #' @param min_survival_rate estimated survival rate if temperature threshold is exceeded
+#' @param surv_juv_outmigration_sac_delta_model_weights weights for competing models
 #' @source IP-117068
 #' @export
 get_migratory_survival <- function(year, month,
@@ -695,7 +698,8 @@ get_migratory_survival <- function(year, month,
                                    ..surv_juv_outmigration_sac_int_two,
                                    .surv_juv_outmigration_san_joaquin_medium,
                                    .surv_juv_outmigration_san_joaquin_large,
-                                   min_survival_rate) {
+                                   min_survival_rate,
+                                   surv_juv_outmigration_sac_delta_model_weights) {
 
 
   aveT20 <- rbinom(31, 1, boot::inv.logit(-14.32252 + 0.72102 * avg_temp[ , month , year]))
@@ -732,7 +736,8 @@ get_migratory_survival <- function(year, month,
                                                               .avg_temp = .surv_juv_outmigration_sac_delta_avg_temp,
                                                               .perc_diversions = .surv_juv_outmigration_sac_delta_perc_diversions,
                                                               .medium = .surv_juv_outmigration_sac_delta_medium,
-                                                              .large = .surv_juv_outmigration_sac_delta_large) #Sac.Delt.S
+                                                              .large = .surv_juv_outmigration_sac_delta_large,
+                                                              model_weights = surv_juv_outmigration_sac_delta_model_weights) #Sac.Delt.S
 
   bay_delta_migration_surv <- mean(c(0.43, 0.46, 0.26, 0.25, 0.39)) # Bay.S Chipps island to bay
 

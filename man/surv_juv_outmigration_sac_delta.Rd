@@ -22,7 +22,8 @@ surv_juv_outmigration_sac_delta(
  
     .perc_diversions = lateFallRunDSM::params$.surv_juv_outmigration_sac_delta_perc_diversions,
   .medium = lateFallRunDSM::params$.surv_juv_outmigration_sac_delta_medium,
-  .large = lateFallRunDSM::params$.surv_juv_outmigration_sac_delta_large
+  .large = lateFallRunDSM::params$.surv_juv_outmigration_sac_delta_large,
+  model_weights = lateFallRunDSM::params$surv_juv_outmigration_sac_delta_model_weights
 )
 }
 \arguments{
@@ -47,6 +48,8 @@ surv_juv_outmigration_sac_delta(
 \item{.medium}{Size related intercept for medium sized fish}
 
 \item{.large}{Size related intercept for large sized fish}
+
+\item{model_weights}{weights for competing models}
 }
 \description{
 Calculates the Sacramento Delta juvenile out migration survival
