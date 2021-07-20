@@ -87,7 +87,7 @@ get_migratory_survival(
 
 \item{min_survival_rate}{estimated survival rate if temperature threshold is exceeded}
 
-\item{surv_juv_outmigration_sac_delta_model_weights}{weights for competing models}
+\item{surv_juv_outmigration_sac_delta_model_weights}{weights for \code{\link{surv_juv_outmigration_sac_delta}} competing models}
 }
 \description{
 Calculates the juvenile out migration survival rates in all

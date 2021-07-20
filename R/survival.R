@@ -666,7 +666,7 @@ surv_juv_outmigration_delta <- function(prop_DCC_closed, hor_barr, freeport_flow
 #' @param .surv_juv_outmigration_san_joaquin_medium Size related intercept for \code{\link{surv_juv_outmigration_san_joaquin}} medium sized fish
 #' @param .surv_juv_outmigration_san_joaquin_large Size related intercept for \code{\link{surv_juv_outmigration_san_joaquin}} large sized fish
 #' @param min_survival_rate estimated survival rate if temperature threshold is exceeded
-#' @param surv_juv_outmigration_sac_delta_model_weights weights for competing models
+#' @param surv_juv_outmigration_sac_delta_model_weights weights for \code{\link{surv_juv_outmigration_sac_delta}} competing models
 #' @source IP-117068
 #' @export
 get_migratory_survival <- function(year, month,
