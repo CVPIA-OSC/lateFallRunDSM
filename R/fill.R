@@ -10,7 +10,7 @@
 #' @param up_to_size_class Which size class and under is moved to floodplain and
 #' inchannel habitat (small = 1, medium = 2, large = 3, very large = 4)
 #' @source IP-117068
-#' #' @name fill
+#' @name fill
 NULL
 #' @rdname fill
 #' @export
