@@ -10,7 +10,7 @@ params <- list(
   proportion_hatchery = lateFallRunDSM::proportion_hatchery,
   month_return_proportions = lateFallRunDSM::month_return_proportions,
   survival_betas = lateFallRunDSM::survival_betas,
-  growth_rates = lateFallRunDSM::growth_rates,
+  growth_rates = lateFallRunDSM::growth_rates_inchannel,
   growth_rates_floodplain = lateFallRunDSM::growth_rates_floodplain,
   mass_by_size_class = lateFallRunDSM::mass_by_size_class,
   cross_channel_stray_rate = lateFallRunDSM::cross_channel_stray_rate,
