@@ -12,47 +12,15 @@ home:
     href: https://www.usbr.gov/mp/cvpia/
 
 reference:
-- title: Model Function 
-  desc: The Late-Fall Run Model. 
+- title: Life Cycle Model and Model Parameters
+  desc: The Late-Fall run life cycle model and it's parameters
   contents:
   - late_fall_run_model
-- title: Model Data 
-  desc: Data inputs to the Late Fall Run model. See the params list for more information describing data imported from DSMhabitat, DSMtemperature, and DSMflow packages.  
-  contents:
-  - adult_harvest_rate
-  - adult_seeds
-  - cross_channel_stray_rate
-  - diversity_group
-  - hatchery_allocation
-  - mass_by_size_class
-  - month_return_proportions
-  - natural_adult_removal_rate
   - params
-  - proportion_hatchery
-  - stray_rate
-  
-- title: Submodules  
-  desc: Submodules used by late_fall_run_model() to calculate Chinook survival and movement.      
+
+- title: Survival Sub-models
+  desc: Functions that calculate survival
   contents:
-  - adult_stray
-  - fill_natal
-  - fill_regional
-  - get_habitat
-  - get_migratory_survival
-  - get_rearing_survival
-  - get_spawning_adults
-  - growth
-  - growth_floodplain
-  - migrate
-  - ocean_entry_success
-  - pulse_movement
-  - rear
-  - route
-  - route_and_rear_deltas
-  - route_bypass
-  - route_regional
-  - route_south_delta
-  - spawn_success
   - surv_adult_enroute
   - surv_adult_prespawn
   - surv_egg_to_fry
@@ -63,17 +31,64 @@ reference:
   - surv_juv_outmigration_sac_delta
   - surv_juv_outmigration_san_joaquin
   - surv_juv_rear
-  
-- title: Helper functions
-  desc: Utility functions used within submodels and model. 
+  - spawn_success
+  - ocean_entry_success
+
+- title: Growth and Movement Sub-models
+  desc: Functions that calculate growth and movement
   contents:
-  - days_in_month
-  - gamma_MOM
+  - adult_stray
+  - pulse_movement
+  - fill
+  - route
+  - route_and_rear_deltas
+  - route_bypass
+  - route_regional
+  - route_south_delta
+  - growth
+  - growth_floodplain
+  - rear
+  - migrate
   - ocean_transition_month
-  - pretty_num
+
+- title: Datasets
+  desc: Data used by the lifecycle model
+  contents:
+  - adult_seeds
+  - adult_harvest_rate
+  - cross_channel_stray_rate
+  - growth_rates
+  - hatchery_allocation
+  - diversity_group
+  - mass_by_size_class
+  - month_return_proportions
+  - natural_adult_removal_rate
+  - proportion_hatchery
+  - stray_rate
+
+- title: Wrapper and Helper Functions
+  desc: Convenience functions that call multiple sub-models or are used within submodels.
+  contents:
+  - get_habitat
+  - get_rearing_survival
+  - get_migratory_survival
+  - get_spawning_adults
   - territory_by_size
-  
+  - gamma_MOM
+  - days_in_month
+
+navbar:
+  structure:
+    left:  [home, reference, news]
+    right: [github]
+  type: default
+  left:
+  - text: 'Reference'
+    href: reference/index.html
+  - text: 'News'
+    href: news/index.html
+
 repo:
  url:
   home: https://github.com/CVPIA-OSC/lateFallRunDSM
-  issue: https://github.com/CVPIA-OSC/lateFallRunDSM/issues/  
+  issue: https://github.com/CVPIA-OSC/lateFallRunDSM/issues/

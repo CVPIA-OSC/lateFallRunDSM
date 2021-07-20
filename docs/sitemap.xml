@@ -22,10 +22,7 @@
     <loc>https://CVPIA-OSC.github.io/lateFallRunDSM//reference/diversity_group.html</loc>
   </url>
   <url>
-    <loc>https://CVPIA-OSC.github.io/lateFallRunDSM//reference/fill_natal.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/lateFallRunDSM//reference/fill_regional.html</loc>
+    <loc>https://CVPIA-OSC.github.io/lateFallRunDSM//reference/fill.html</loc>
   </url>
   <url>
     <loc>https://CVPIA-OSC.github.io/lateFallRunDSM//reference/gamma_MOM.html</loc>
@@ -47,6 +44,9 @@
   </url>
   <url>
     <loc>https://CVPIA-OSC.github.io/lateFallRunDSM//reference/growth_floodplain.html</loc>
+  </url>
+  <url>
+    <loc>https://CVPIA-OSC.github.io/lateFallRunDSM//reference/growth_rates.html</loc>
   </url>
   <url>
     <loc>https://CVPIA-OSC.github.io/lateFallRunDSM//reference/hatchery_allocation.html</loc>
