@@ -30,8 +30,8 @@ Late-Fall Run Chinook life cycle model used for CVPIA's Structured
 Decision Making Process
 }
 \examples{
-fall_run_seeds <- fallRunDSM::fall_run_model(mode = "seed")
-fallRunDSM::fall_run_model(scenario = DSMscenario::scenarios$ONE,
+late_fall_run_seeds <- fallRunDSM::late_fall_run_model(mode = "seed")
+lateFallRunDSM::late_fall_run_model(scenario = DSMscenario::scenarios$ONE,
                            mode = "simulate",
                            seeds = fall_run_seeds)
 }

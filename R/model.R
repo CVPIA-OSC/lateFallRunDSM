@@ -9,8 +9,8 @@
 #' @param ..params Parameters for model and submodels. More details at \code{\link{params}}
 #' @source IP-117068
 #' @examples
-#' fall_run_seeds <- fallRunDSM::fall_run_model(mode = "seed")
-#' fallRunDSM::fall_run_model(scenario = DSMscenario::scenarios$ONE,
+#' late_fall_run_seeds <- fallRunDSM::late_fall_run_model(mode = "seed")
+#' lateFallRunDSM::late_fall_run_model(scenario = DSMscenario::scenarios$ONE,
 #'                            mode = "simulate",
 #'                            seeds = fall_run_seeds)
 #' @export
