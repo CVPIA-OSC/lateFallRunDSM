@@ -12,8 +12,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -90,7 +90,12 @@ period in front are model or submodel coefficients. Parameters with double perio
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/CVPIA-OSC/lateFallRunDSM">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -153,7 +158,7 @@ period in front are model or submodel coefficients. Parameters with double perio
 <li><p><code>.adult_en_route_bypass_overtopped</code>: Coefficient for <code>bypass_overtopped</code> variable, source: Expert opinion Ted Sommer, California Department of Water Resources (tributaries above bypasses only)</p></li>
 <li><p><code>.adult_en_route_adult_harvest_rate</code>:  Adult harvest rate, source:  <a href='https://nrm.dfg.ca.gov/FileHandler.ashx?DocumentID=162355&amp;usg= AOvVaw0VgMOwD7knFfSxRZy6k8RG'>(Palmer-Zwahlen &amp; Kormos 2013-2015, Palmer-Zwahlen et al. 2018)</a></p></li>
 <li><p><code>degree_days</code>: More details at <code><a href='https://CVPIA-OSC.github.io/DSMtemperature//reference/degree_days.html'>degree_days</a></code></p></li>
-<li><p><code>month_return_proportions</code>: More details at <code><a href='https://CVPIA-OSC.github.io/fallRunDSM//reference/month_return_proportions.html'>month_return_proportions</a></code></p></li>
+<li><p><code>month_return_proportions</code>: More details at <code><a href='month_return_proportions.html'>month_return_proportions</a></code></p></li>
 <li><p><code>..surv_adult_prespawn_int</code>:  Intercept, Source: Calibration Estimate</p></li>
 <li><p><code>.adult_prespawn_deg_day</code>: Coefficient for <code>deg_day</code> variable, source: <a href='https://onlinelibrary.wiley.com/doi/epdf/10.1002/rra.3348'>Colvin et al. (2018)</a></p></li>
 <li><p><code>prob_nest_scoured</code>: More details at <code><a href='https://rdrr.io/pkg/DSMhabitat/man/estimated_probs.html'>prob_nest_scoured</a></code></p></li>
@@ -167,7 +172,7 @@ period in front are model or submodel coefficients. Parameters with double perio
     
 
 <ul>
-<li><p><code>proportion_hatchery</code>: More details at <code><a href='https://CVPIA-OSC.github.io/fallRunDSM//reference/proportion_hatchery.html'>proportion_hatchery</a></code></p></li>
+<li><p><code>proportion_hatchery</code>: More details at <code><a href='proportion_hatchery.html'>proportion_hatchery</a></code></p></li>
 <li><p><code>prob_nest_scoured</code>: More details at <code><a href='https://rdrr.io/pkg/DSMhabitat/man/estimated_probs.html'>prob_nest_scoured</a></code></p></li>
 <li><p><code>mean_egg_temp_effect</code>: More details at <code><a href='https://CVPIA-OSC.github.io/DSMtemperature//reference/egg_temperature_effect.html'>egg_temperature_effect</a></code></p></li>
 <li><p><code>.surv_egg_to_fry_proportion_natural</code>: Coefficient for <code>proportion_natural</code> variable, Source: <a href='https://cdnsciencepub.com/doi/abs/10.1139/F10-168'>Chilcote et al. (2011)</a></p></li>

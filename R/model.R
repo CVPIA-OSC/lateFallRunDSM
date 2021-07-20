@@ -2,11 +2,11 @@
 #' @description Late-Fall Run Chinook life cycle model used for CVPIA's Structured
 #' Decision Making Process
 #' @param scenario Model inputs, can be modified to test management actions
-#' @param mode The mode to run model in. Can be \code{"seed"}, \code{"simulate"}, \code{"calibrate"}
+#' @param mode The mode to run model in. Can be \code{"seed"}, \code{"simulate"} or \code{"calibrate"}. 
 #' @param seeds The default value is NULL runs the model in seeding mode,
 #' returning a 31 by 25 matrix with the first four years of seeded adults. This
 #' returned value can be fed into the model again as the value for the seeds argument
-#' @param ..params parameters derived from calibration
+#' @param ..params parameters derived from calibration. More details at \code{\link{params}}
 #' @source IP-117068
 #' @export
 late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "calibrate"),

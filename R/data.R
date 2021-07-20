@@ -32,15 +32,15 @@
 "adult_seeds"
 
 #' @title Proportion Hatchery
-#' @description TODO
+#' @description The proportion of hatchery fish in each tributary, source: TODO
 "proportion_hatchery"
 
 #' @title Month Return Proportions
-#' @description the proportion of spawning fish in Oct-Dec
+#' @description The proportion of spawning fish in Oct-Dec, source: TODO
 "month_return_proportions"
 
 #' @title Mass by Size Class
-#' @description mass of fish by the size class
+#' @description The mass of fish by the size class, source: TODO
 "mass_by_size_class"
 
 #' @title Cross Channel Stray Rate

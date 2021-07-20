@@ -12,8 +12,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -88,7 +88,12 @@
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/CVPIA-OSC/lateFallRunDSM">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -116,8 +121,27 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
+          <h2 id="section-model-function" class="hasAnchor"><a href="#section-model-function" class="anchor"></a>Model Function</h2>
+          <p class="section-desc"><p>The Late-Fall Run Model.</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="late_fall_run_model.html">late_fall_run_model()</a></code> </p>
+        </td>
+        <td><p>Late-Fall Run Chinook Model</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-model-data" class="hasAnchor"><a href="#section-model-data" class="anchor"></a>Model Data</h2>
+          <p class="section-desc"><p>Data inputs to the Late Fall Run model. See the params list for more information describing data imported from DSMhabitat, DSMtemperature, and DSMflow packages.</p></p>
         </th>
       </tr>
       
@@ -140,27 +164,76 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="adult_stray.html">adult_stray()</a></code> </p>
-        </td>
-        <td><p>Adult Straying</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="cross_channel_stray_rate.html">cross_channel_stray_rate</a></code> </p>
         </td>
         <td><p>Cross Channel Stray Rate</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="days_in_month.html">days_in_month()</a></code> </p>
-        </td>
-        <td><p>Days in Month</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="diversity_group.html">diversity_group</a></code> </p>
         </td>
         <td><p>Diversity Groups</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="hatchery_allocation.html">hatchery_allocation</a></code> </p>
+        </td>
+        <td><p>Hatchery Allocation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="mass_by_size_class.html">mass_by_size_class</a></code> </p>
+        </td>
+        <td><p>Mass by Size Class</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="month_return_proportions.html">month_return_proportions</a></code> </p>
+        </td>
+        <td><p>Month Return Proportions</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="natural_adult_removal_rate.html">natural_adult_removal_rate</a></code> </p>
+        </td>
+        <td><p>Natural Spawners Removal Rate</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="params.html">params</a></code> </p>
+        </td>
+        <td><p>Model Parameters</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="proportion_hatchery.html">proportion_hatchery</a></code> </p>
+        </td>
+        <td><p>Proportion Hatchery</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="stray_rate.html">stray_rate</a></code> </p>
+        </td>
+        <td><p>Stray Rate</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-submodules" class="hasAnchor"><a href="#section-submodules" class="anchor"></a>Submodules</h2>
+          <p class="section-desc"><p>Submodules used by late_fall_run_model() to calculate Chinook survival and movement.</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="adult_stray.html">adult_stray()</a></code> </p>
+        </td>
+        <td><p>Adult Straying</p></td>
       </tr><tr>
         
         <td>
@@ -173,12 +246,6 @@
           <p><code><a href="fill_regional.html">fill_regional()</a></code> </p>
         </td>
         <td><p>Filling Regional Habitat</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gamma_MOM.html">gamma_MOM()</a></code> </p>
-        </td>
-        <td><p>Method of Moments Gamma Parameter Estimation</p></td>
       </tr><tr>
         
         <td>
@@ -218,75 +285,15 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="hatchery_allocation.html">hatchery_allocation</a></code> </p>
-        </td>
-        <td><p>Hatchery Allocation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="late_fall_run_model.html">late_fall_run_model()</a></code> </p>
-        </td>
-        <td><p>Late-Fall Run Chinook Model</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="load_baseline_data.html">load_baseline_data()</a></code> </p>
-        </td>
-        <td><p>Load Baseline Data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="mass_by_size_class.html">mass_by_size_class</a></code> </p>
-        </td>
-        <td><p>Mass by Size Class</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="migrate.html">migrate()</a></code> </p>
         </td>
         <td><p>Juvenile Migration</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="month_return_proportions.html">month_return_proportions</a></code> </p>
-        </td>
-        <td><p>Month Return Proportions</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="natural_adult_removal_rate.html">natural_adult_removal_rate</a></code> </p>
-        </td>
-        <td><p>Natural Spawners Removal Rate</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="ocean_entry_success.html">ocean_entry_success()</a></code> </p>
         </td>
         <td><p>Ocean Entry Success</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ocean_transition_month.html">ocean_transition_month()</a></code> </p>
-        </td>
-        <td><p>Ocean Transition Month</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="params.html">params</a></code> </p>
-        </td>
-        <td><p>Model Parameters</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pretty_num.html">pretty_num()</a></code> </p>
-        </td>
-        <td><p>Pretty Number</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="proportion_hatchery.html">proportion_hatchery</a></code> </p>
-        </td>
-        <td><p>Proportion Hatchery</p></td>
       </tr><tr>
         
         <td>
@@ -335,12 +342,6 @@
           <p><code><a href="spawn_success.html">spawn_success()</a></code> </p>
         </td>
         <td><p>Spawning Success</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="stray_rate.html">stray_rate</a></code> </p>
-        </td>
-        <td><p>Stray Rate</p></td>
       </tr><tr>
         
         <td>
@@ -401,6 +402,43 @@
           <p><code><a href="surv_juv_rear.html">surv_juv_rear()</a></code> </p>
         </td>
         <td><p>Juvenile Rearing Survival</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-helper-functions" class="hasAnchor"><a href="#section-helper-functions" class="anchor"></a>Helper functions</h2>
+          <p class="section-desc"><p>Utility functions used within submodels and model.</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="days_in_month.html">days_in_month()</a></code> </p>
+        </td>
+        <td><p>Days in Month</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gamma_MOM.html">gamma_MOM()</a></code> </p>
+        </td>
+        <td><p>Method of Moments Gamma Parameter Estimation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ocean_transition_month.html">ocean_transition_month()</a></code> </p>
+        </td>
+        <td><p>Ocean Transition Month</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pretty_num.html">pretty_num()</a></code> </p>
+        </td>
+        <td><p>Pretty Number</p></td>
       </tr><tr>
         
         <td>

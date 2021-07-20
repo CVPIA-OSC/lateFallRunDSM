@@ -11,6 +11,6 @@ An object of class \code{matrix} (inherits from \code{array}) with 2 rows and 5 
 month_return_proportions
 }
 \description{
-the proportion of spawning fish in Oct-Dec
+The proportion of spawning fish in Oct-Dec, source: TODO
 }
 \keyword{datasets}

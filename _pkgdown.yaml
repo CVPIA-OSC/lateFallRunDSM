@@ -1,0 +1,79 @@
+title: lateFallRunDSM
+url: https://CVPIA-OSC.github.io/lateFallRunDSM/
+template:
+  params:
+    bootswatch: yeti
+
+home:
+  links:
+  - text: Fish and Wildlife Service's CVPIA website
+    href: https://www.fws.gov/lodi/anadromous_fish_restoration/afrp_index.htm
+  - text: Bureau of Reclamation's CVPIA website
+    href: https://www.usbr.gov/mp/cvpia/
+
+reference:
+- title: Model Function 
+  desc: The Late-Fall Run Model. 
+  contents:
+  - late_fall_run_model
+- title: Model Data 
+  desc: Data inputs to the Late Fall Run model. See the params list for more information describing data imported from DSMhabitat, DSMtemperature, and DSMflow packages.  
+  contents:
+  - adult_harvest_rate
+  - adult_seeds
+  - cross_channel_stray_rate
+  - diversity_group
+  - hatchery_allocation
+  - mass_by_size_class
+  - month_return_proportions
+  - natural_adult_removal_rate
+  - params
+  - proportion_hatchery
+  - stray_rate
+  
+- title: Submodules  
+  desc: Submodules used by late_fall_run_model() to calculate Chinook survival and movement.      
+  contents:
+  - adult_stray
+  - fill_natal
+  - fill_regional
+  - get_habitat
+  - get_migratory_survival
+  - get_rearing_survival
+  - get_spawning_adults
+  - growth
+  - growth_floodplain
+  - migrate
+  - ocean_entry_success
+  - pulse_movement
+  - rear
+  - route
+  - route_and_rear_deltas
+  - route_bypass
+  - route_regional
+  - route_south_delta
+  - spawn_success
+  - surv_adult_enroute
+  - surv_adult_prespawn
+  - surv_egg_to_fry
+  - surv_juv_bypass
+  - surv_juv_delta
+  - surv_juv_outmigration_delta
+  - surv_juv_outmigration_sac
+  - surv_juv_outmigration_sac_delta
+  - surv_juv_outmigration_san_joaquin
+  - surv_juv_rear
+  
+- title: Helper functions
+  desc: Utility functions used within submodels and model. 
+  contents:
+  - days_in_month
+  - gamma_MOM
+  - ocean_transition_month
+  - pretty_num
+  - territory_by_size
+  
+repo:
+ url:
+  home: https://github.com/CVPIA-OSC/lateFallRunDSM
+  issue: https://github.com/CVPIA-OSC/lateFallRunDSM/issues/  
