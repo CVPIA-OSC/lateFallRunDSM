@@ -33,5 +33,5 @@ Decision Making Process
 late_fall_run_seeds <- fallRunDSM::late_fall_run_model(mode = "seed")
 lateFallRunDSM::late_fall_run_model(scenario = DSMscenario::scenarios$ONE,
                            mode = "simulate",
-                           seeds = fall_run_seeds)
+                           seeds = late_fall_run_seeds)
 }

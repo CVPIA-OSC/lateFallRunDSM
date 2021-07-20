@@ -12,7 +12,7 @@
 #' late_fall_run_seeds <- fallRunDSM::late_fall_run_model(mode = "seed")
 #' lateFallRunDSM::late_fall_run_model(scenario = DSMscenario::scenarios$ONE,
 #'                            mode = "simulate",
-#'                            seeds = fall_run_seeds)
+#'                            seeds = late_fall_run_seeds)
 #' @export
 late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "calibrate"),
                            seeds = NULL, ..params = lateFallRunDSM::params){
