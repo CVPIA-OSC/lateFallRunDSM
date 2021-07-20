@@ -63,7 +63,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
   adults <- switch (mode,
                     "seed" = lateFallRunDSM::adult_seeds,
                     "simulate" = seeds,
-                    "calibrate" = lateFallRunDSM::imputed_grandtab
+                    "calibrate" = seeds
   )
 
   simulation_length <- switch(mode,
