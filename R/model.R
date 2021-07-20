@@ -260,7 +260,16 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
       } else {
         # if month < 11
         # route northern natal fish stay and rear or migrate downstream ------
-        upper_sac_trib_fish <-  route(year = year,
+  if(month == 4){
+       # send specified proportion of fry out of tributaries
+       leave.battle<- rbinom(1,juveniles[3,], ..params$pr.fry.leave)
+       leave.clear <- rbinom(1,juveniles[7,], ..params$pr.fry.leave)
+       juveniles[1,]<-juveniles[1,] + leave.battle + leave.clear
+       juveniles[3,]<- juveniles[3,] - leave.battle
+       juveniles[7,]<- juveniles[7,] - leave.clear
+  }
+        
+       upper_sac_trib_fish <-  route(year = year,
                                       month = month,
                                       juveniles = juveniles[1:15, ],
                                       inchannel_habitat = habitat$inchannel[1:15],
@@ -572,8 +581,5 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
   return(output)
 
 }
-
-
-
 
 
