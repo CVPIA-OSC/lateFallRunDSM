@@ -8,6 +8,11 @@
 #' returned value can be fed into the model again as the value for the seeds argument
 #' @param ..params parameters derived from calibration. More details at \code{\link{params}}
 #' @source IP-117068
+#' @examples
+#' fall_run_seeds <- fallRunDSM::fall_run_model(mode = "seed")
+#' fallRunDSM::fall_run_model(scenario = DSMscenario::scenarios$ONE,
+#'                            mode = "simulate",
+#'                            seeds = fall_run_seeds)
 #' @export
 late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "calibrate"),
                            seeds = NULL, ..params = lateFallRunDSM::params){
