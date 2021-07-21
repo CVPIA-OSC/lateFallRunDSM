@@ -1,4 +1,15 @@
 library(tidyverse)
+# Watershed Labels 
+watershed_labels <- c("Upper Sacramento River", "Antelope Creek", "Battle Creek",
+                      "Bear Creek", "Big Chico Creek", "Butte Creek", "Clear Creek",
+                      "Cottonwood Creek", "Cow Creek", "Deer Creek", "Elder Creek",
+                      "Mill Creek", "Paynes Creek", "Stony Creek", "Thomes Creek",
+                      "Upper-mid Sacramento River", "Sutter Bypass", "Bear River",
+                      "Feather River", "Yuba River", "Lower-mid Sacramento River",
+                      "Yolo Bypass", "American River", "Lower Sacramento River", "Calaveras River",
+                      "Cosumnes River", "Mokelumne River", "Merced River", "Stanislaus River",
+                      "Tuolumne River", "San Joaquin River")
+usethis::use_data(watershed_labels, overwrite = TRUE)
 
 # Adult seeds
 adult_seeds <- matrix(0, nrow = 31, ncol = 30)
@@ -16,20 +27,8 @@ adult_seed_values <- DSMCalibrationData::mean_escapement_2013_2017 %>%
 
 adult_seeds[ , 1] <- adult_seed_values
 
-rownames(adult_seeds) <- DSMhabitat::watershed_species_present$watershed_name[-32]
+rownames(adult_seeds) <- watershed_labels
 usethis::use_data(adult_seeds, overwrite = TRUE)
-
-# Watershed Labels 
-watershed_labels <- c("Upper Sacramento River", "Antelope Creek", "Battle Creek",
-                      "Bear Creek", "Big Chico Creek", "Butte Creek", "Clear Creek",
-                      "Cottonwood Creek", "Cow Creek", "Deer Creek", "Elder Creek",
-                      "Mill Creek", "Paynes Creek", "Stony Creek", "Thomes Creek",
-                      "Upper-mid Sacramento River", "Sutter Bypass", "Bear River",
-                      "Feather River", "Yuba River", "Lower-mid Sacramento River",
-                      "Yolo Bypass", "American River", "Lower Sacramento River", "Calaveras River",
-                      "Cosumnes River", "Mokelumne River", "Merced River", "Stanislaus River",
-                      "Tuolumne River", "San Joaquin River")
-usethis::use_data(watershed_labels, overwrite = TRUE)
 
 # Proportion Hatchery 
 proportion_hatchery <- c(0.075, 0, 0.027, rep(0, 28)) #proportion hatchery based on CWT reports
