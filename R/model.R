@@ -268,7 +268,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
        juveniles[3,]<- juveniles[3,] - leave.battle
        juveniles[7,]<- juveniles[7,] - leave.clear
   }
-        
+      
        upper_sac_trib_fish <-  route(year = year,
                                       month = month,
                                       juveniles = juveniles[1:15, ],
