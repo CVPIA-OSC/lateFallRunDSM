@@ -17,13 +17,21 @@ late_fall_run_model(
 \arguments{
 \item{scenario}{Model inputs, can be modified to test management actions}
 
+\item{mode}{The mode to run model in. Can be \code{"seed"}, \code{"simulate"} or \code{"calibrate"}.}
+
 \item{seeds}{The default value is NULL runs the model in seeding mode,
 returning a 31 by 25 matrix with the first four years of seeded adults. This
 returned value can be fed into the model again as the value for the seeds argument}
 
-\item{..params}{parameters derived from calibration}
+\item{..params}{Parameters for model and submodels. More details at \code{\link{params}}}
 }
 \description{
 Late-Fall Run Chinook life cycle model used for CVPIA's Structured
 Decision Making Process
+}
+\examples{
+late_fall_run_seeds <- fallRunDSM::late_fall_run_model(mode = "seed")
+lateFallRunDSM::late_fall_run_model(scenario = DSMscenario::scenarios$ONE,
+                           mode = "simulate",
+                           seeds = late_fall_run_seeds)
 }

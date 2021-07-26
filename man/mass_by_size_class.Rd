@@ -11,6 +11,6 @@ An object of class \code{numeric} of length 4.
 mass_by_size_class
 }
 \description{
-mass of fish by the size class
+The mass of fish by the size class, source: TODO
 }
 \keyword{datasets}

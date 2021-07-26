@@ -5,12 +5,12 @@
 \alias{month_return_proportions}
 \title{Month Return Proportions}
 \format{
-An object of class \code{numeric} of length 3.
+An object of class \code{matrix} (inherits from \code{array}) with 2 rows and 5 columns.
 }
 \usage{
 month_return_proportions
 }
 \description{
-the proportion of spawning fish in Oct-Dec
+The proportion of spawning fish in Oct-Dec, source: TODO
 }
 \keyword{datasets}
