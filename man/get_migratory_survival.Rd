@@ -10,42 +10,36 @@ IP-117068
 get_migratory_survival(
   year,
   month,
-  cc_gates_prop_days_closed = cc_gates_prop_days_closed,
-  freeport_flows = freeport_flows,
-  vernalis_flows = vernalis_flows,
-  stockton_flows = stockton_flows,
-  vernalis_temps = vernalis_temps,
-  prisoners_point_temps = prisoners_point_temps,
-  CVP_exports = CVP_exports,
-  SWP_exports = SWP_exports,
-  upper_sacramento_flows = upper_sacramento_flows,
-  delta_inflow = delta_inflow,
-  avg_temp_delta = avg_temp_delta,
-  avg_temp = avg_temp,
-  delta_proportion_diverted = delta_proportion_diverted,
- 
-    .surv_juv_outmigration_sac_delta_intercept_one = .surv_juv_outmigration_sac_delta_intercept_one,
- 
-    .surv_juv_outmigration_sac_delta_intercept_two = .surv_juv_outmigration_sac_delta_intercept_two,
- 
-    .surv_juv_outmigration_sac_delta_intercept_three = .surv_juv_outmigration_sac_delta_intercept_three,
- 
-    .surv_juv_outmigration_sac_delta_delta_flow = .surv_juv_outmigration_sac_delta_delta_flow,
-  .surv_juv_outmigration_sac_delta_avg_temp = .surv_juv_outmigration_sac_delta_avg_temp,
- 
-    .surv_juv_outmigration_sac_delta_perc_diversions = .surv_juv_outmigration_sac_delta_perc_diversions,
-  .surv_juv_outmigration_sac_delta_medium = .surv_juv_outmigration_sac_delta_medium,
-  .surv_juv_outmigration_sac_delta_large = .surv_juv_outmigration_sac_delta_large,
-  ..surv_juv_outmigration_sj_int = ..surv_juv_outmigration_sj_int,
-  ..surv_juv_outmigration_sac_int_one = ..surv_juv_outmigration_sac_int_one,
- 
-    ..surv_juv_outmigration_sac_prop_diversions = ..surv_juv_outmigration_sac_prop_diversions,
- 
-    ..surv_juv_outmigration_sac_total_diversions = ..surv_juv_outmigration_sac_total_diversions,
-  ..surv_juv_outmigration_sac_int_two = ..surv_juv_outmigration_sac_int_two,
-  .surv_juv_outmigration_san_joquin_medium = .surv_juv_outmigration_san_joquin_medium,
-  .surv_juv_outmigration_san_joaquin_large = .surv_juv_outmigration_san_joaquin_large,
-  min_survival_rate
+  cc_gates_prop_days_closed,
+  freeport_flows,
+  vernalis_flows,
+  stockton_flows,
+  vernalis_temps,
+  prisoners_point_temps,
+  CVP_exports,
+  SWP_exports,
+  upper_sacramento_flows,
+  delta_inflow,
+  avg_temp_delta,
+  avg_temp,
+  delta_proportion_diverted,
+  .surv_juv_outmigration_sac_delta_intercept_one,
+  .surv_juv_outmigration_sac_delta_intercept_two,
+  .surv_juv_outmigration_sac_delta_intercept_three,
+  .surv_juv_outmigration_sac_delta_delta_flow,
+  .surv_juv_outmigration_sac_delta_avg_temp,
+  .surv_juv_outmigration_sac_delta_perc_diversions,
+  .surv_juv_outmigration_sac_delta_medium,
+  .surv_juv_outmigration_sac_delta_large,
+  ..surv_juv_outmigration_sj_int,
+  ..surv_juv_outmigration_sac_int_one,
+  ..surv_juv_outmigration_sac_prop_diversions,
+  ..surv_juv_outmigration_sac_total_diversions,
+  ..surv_juv_outmigration_sac_int_two,
+  .surv_juv_outmigration_san_joaquin_medium,
+  .surv_juv_outmigration_san_joaquin_large,
+  min_survival_rate,
+  surv_juv_outmigration_sac_delta_model_weights
 )
 }
 \arguments{
@@ -53,9 +47,47 @@ get_migratory_survival(
 
 \item{month}{The simulation month, 1-8}
 
-\item{.surv_juv_outmigration_san_joquin_medium}{TODO}
+\item{cc_gates_prop_days_closed}{More details at \code{\link[DSMflow]{delta_cross_channel_closed}}}
 
-\item{.surv_juv_outmigration_san_joaquin_large}{TODO}
+\item{freeport_flows}{More details at \code{\link[DSMflow]{freeport_flow}}}
+
+\item{vernalis_flows}{More details at \code{\link[DSMflow]{vernalis_flow}}}
+
+\item{stockton_flows}{More details at \code{\link[DSMflow]{stockton_flow}}}
+
+\item{vernalis_temps}{More details at \code{\link[DSMtemperature]{vernalis_temperature}}}
+
+\item{prisoners_point_temps}{More details at \code{\link[DSMtemperature]{prisoners_point_temperature}}}
+
+\item{CVP_exports}{More details at \code{\link[DSMflow]{cvp_exports}}}
+
+\item{SWP_exports}{More details at \code{\link[DSMflow]{swp_exports}}}
+
+\item{.surv_juv_outmigration_sac_delta_intercept_one}{Intercept \code{\link{surv_juv_outmigration_sac_delta}} for model one}
+
+\item{.surv_juv_outmigration_sac_delta_intercept_two}{Intercept \code{\link{surv_juv_outmigration_sac_delta}} for model two}
+
+\item{.surv_juv_outmigration_sac_delta_intercept_three}{Intercept \code{\link{surv_juv_outmigration_sac_delta}} for model three}
+
+\item{.surv_juv_outmigration_sac_delta_delta_flow}{Coefficient \code{\link{surv_juv_outmigration_sac_delta}} for \code{delta_flow} variable}
+
+\item{.surv_juv_outmigration_sac_delta_avg_temp}{Coefficient \code{\link{surv_juv_outmigration_sac_delta}} for \code{avg_temp} variable}
+
+\item{.surv_juv_outmigration_sac_delta_perc_diversions}{Coefficient \code{\link{surv_juv_outmigration_sac_delta}} for \code{perc_diversions} variable}
+
+\item{.surv_juv_outmigration_sac_delta_medium}{Size related intercept for \code{\link{surv_juv_outmigration_sac_delta}} medium sized fish}
+
+\item{.surv_juv_outmigration_sac_delta_large}{Size related intercept for \code{\link{surv_juv_outmigration_sac_delta}} large sized fish}
+
+\item{..surv_juv_outmigration_sj_int}{Intercept for \code{\link{surv_juv_outmigration_san_joaquin}}}
+
+\item{.surv_juv_outmigration_san_joaquin_medium}{Size related intercept for \code{\link{surv_juv_outmigration_san_joaquin}} medium sized fish}
+
+\item{.surv_juv_outmigration_san_joaquin_large}{Size related intercept for \code{\link{surv_juv_outmigration_san_joaquin}} large sized fish}
+
+\item{min_survival_rate}{estimated survival rate if temperature threshold is exceeded}
+
+\item{surv_juv_outmigration_sac_delta_model_weights}{weights for \code{\link{surv_juv_outmigration_sac_delta}} competing models}
 }
 \description{
 Calculates the juvenile out migration survival rates in all

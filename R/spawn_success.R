@@ -1,13 +1,14 @@
 #' @title Spawning Success
 #' @description Calculates the annual reproductive success.
+#' @details See \code{\link{params}} for details on parameter sources
 #' @param escapement The number of returning adults
 #' @param adult_prespawn_survival The adult prespawn surival rate
 #' @param egg_to_fry_survival The egg to fry survival rate
 #' @param prob_scour The probability of nest scouring
 #' @param spawn_habitat The available spawning habitat in square meters
-#' @param sex_ratio The female to male spawning ratio, default 0.5
-#' @param redd_size The size of redds including defensible space, default value 9.29 square meters
-#' @param fecundity The number of eggs per female, default value 5522
+#' @param sex_ratio The female to male spawning ratio
+#' @param redd_size The size of redds including defensible space
+#' @param fecundity The number of eggs per female
 #' @source IP-117068
 #' @export
 spawn_success <- function(escapement, adult_prespawn_survival, egg_to_fry_survival,
