@@ -9,7 +9,6 @@ params <- list(
   natural_adult_removal_rate = lateFallRunDSM::natural_adult_removal_rate,
   proportion_hatchery = lateFallRunDSM::proportion_hatchery,
   month_return_proportions = lateFallRunDSM::month_return_proportions,
-  survival_betas = lateFallRunDSM::survival_betas,
   growth_rates = lateFallRunDSM::growth_rates_inchannel,
   growth_rates_floodplain = lateFallRunDSM::growth_rates_floodplain,
   mass_by_size_class = lateFallRunDSM::mass_by_size_class,
@@ -46,6 +45,8 @@ params <- list(
   .pulse_movement_very_large_pulse = 0.329,
   territory_size = c(0.0498944803729701, 0.138941944739835, 0.471083652829798, 0),
   
+  prob_fry_leave = 0.25,
+
   # Spawn success variables
   spawn_success_sex_ratio = 0.5,
   spawn_success_redd_size = 9.29,

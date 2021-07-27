@@ -231,6 +231,7 @@ NULL
 #'   \item \code{.pulse_movement_large_pulse}: Additional coefficient for \code{proportion_pulse} variable for large size fish, source: Empirical model fit to CVPIA Chinook salmon screw trap abundance estimates from American River, Stanislaus River, Feather River, Mokelumne River, Sacramento River, Tuolumne River, Clear Creek 2008–2015.
 #'   \item \code{.pulse_movement_very_large_pulse}: Additional coefficient for \code{proportion_pulse} variable for very large size fish, source: Empirical model fit to CVPIA Chinook salmon screw trap abundance estimates from American River, Stanislaus River, Feather River, Mokelumne River, Sacramento River, Tuolumne River, Clear Creek 2008–2015.
 #'   \item \code{territory_size}: More details at \code{\link{territory_by_size}}
+#'   \item \code{prob_fry_leave}: Expert opinion provided by Charlie Chamberlin \email{charles_chamberlain@@fws.gov}.
 #' }
 #' @section Tributary Rearing:
 #' \itemize{
