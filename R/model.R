@@ -62,7 +62,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
   san_joaquin_fish <- matrix(0, nrow = 3, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels[28:30], lateFallRunDSM::size_class_labels))
   north_delta_fish <- matrix(0, nrow = 23, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels[1:23], lateFallRunDSM::size_class_labels))
   south_delta_fish <- matrix(0, nrow = 31, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels, lateFallRunDSM::size_class_labels))
-  juveniles_at_chipps <-   juveniles_at_chipps1 <-   juveniles_at_chipps2 <-   juveniles_at_chipps3 <- matrix(0, nrow = 31, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels, lateFallRunDSM::size_class_labels))
+  juveniles_at_chipps1 <- juveniles_at_chipps2 <- juveniles_at_chipps3 <- matrix(0, nrow = 31, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels, lateFallRunDSM::size_class_labels))
   # proportion_natural <- matrix(NA_real_, nrow = 31, ncol = 20, dimnames = list(lateFallRunDSM::watershed_labels, 1:20))
   
   adults <- switch (mode,
@@ -275,6 +275,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
         annual_migrants <- annual_migrants + migrants_at_golden_gate
       } else {
 
+        # start of month mechanics that get rep'd 3 times
         upper_sac_trib_fish <-  route(year = year,
                                       month = month,
                                       juveniles = juveniles1[1:15, ],
@@ -319,8 +320,8 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                              migration_survival_rate = migratory_survival$uppermid_sac,
                                              territory_size = lateFallRunDSM::params$territory_size)
         
-        
-        migrants[1:15, ] <- upper_mid_sac_fish$migrants + sutter_fish$migrants
+        # TODO need to have 3 migrant matricies
+        migrants1[1:15, ] <- upper_mid_sac_fish$migrants + sutter_fish$migrants
         
         sutter_fish <- rear(juveniles = sutter_fish$inchannel,
                             survival_rate = matrix(rep(rearing_survival$sutter, nrow(sutter_fish$inchannel)), ncol = 4, byrow = TRUE),
@@ -549,10 +550,12 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                             growth_rates = lateFallRunDSM::params$growth_rates,
                                             territory_size = lateFallRunDSM::params$territory_size)
         
+        # TODO step thru to confirm that this is ok to overwrite
         migrants_at_golden_gate <- delta_fish$migrants_at_golden_gate
         
         annual_migrants <- annual_migrants + migrants_at_golden_gate
         
+        # TODO rep each 3 times
         north_delta_fish <- delta_fish$north_delta_fish
         south_delta_fish <- delta_fish$south_delta_fish
         juveniles_at_chipps1 <- delta_fish$juveniles_at_chipps
@@ -569,6 +572,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
     
     #outmigration rulset where certain proportion of fish just leave at first part of the outmigration window
     for (month in 4:11) {
+      # dont need below
       habitat <- get_habitat(year, month,
                              inchannel_habitat_fry = ..params$inchannel_habitat_fry,
                              inchannel_habitat_juvenile = ..params$inchannel_habitat_juvenile,
@@ -654,9 +658,9 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                                    .surv_juv_outmigration_san_joaquin_large = ..params$.surv_juv_outmigration_san_joaquin_large, 
                                                    min_survival_rate = ..params$min_survival_rate,
                                                    surv_juv_outmigration_sac_delta_model_weights = ..params$surv_juv_outmigration_sac_delta_model_weights) #migratory_survival$uppermid_sac
+      # don't need above ----
       
       migrants <- matrix(0, nrow = 31, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels, lateFallRunDSM::size_class_labels))
-      
       if (month == 11) {
         # all remaining fish outmigrate
         sutter_fish <- migrate(sutter_fish, migratory_survival$sutter)
@@ -696,6 +700,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
       } else {
         # if month < 11
         # route northern natal fish stay and rear or migrate downstream ------
+        # hypothis 2
         if(month == 4){
           # send specified proportion of fry out of tributaries
           leave_battle <- rbinom(1, juveniles2[3, ], ..params$prob_fry_leave)
@@ -705,6 +710,9 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
           juveniles2[7, ] <- juveniles2[7, ] - leave_clear
         }
         
+        outs2 <- month_thing(juveniles2, migrants2, south_delta_fish2, north_delta_fish2)
+        
+        # all duplicative below ----
         upper_sac_trib_fish <-  route(year = year,
                                       month = month,
                                       juveniles = juveniles2[1:15, ],
@@ -1126,6 +1134,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
       } else {
         # if month < 11
 
+        # hypothesis 3 has a different route, and sets fill function to up_to_size = 4
         upper_sac_trib_fish <-  route2(year = year,
                                       month = month,
                                       juveniles = juveniles3[1:15, ],
