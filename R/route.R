@@ -48,7 +48,7 @@ route <- function(year, month, juveniles, inchannel_habitat, floodplain_habitat,
                                      .large_pulse = .pulse_movement_large_pulse,
                                      .very_large_pulse = .pulse_movement_very_large_pulse)
 
-  # total fish that will migrate becuase of pulse flows, this derived using total in river
+  # total fish that will migrate because of pulse flows, this derived using total in river
   # and a binomial selection based on pr of movement due to pulse flows
   pulse_migrants <- t(sapply(1:nrow(juveniles), function(i) {
     rbinom(n = 4, size = round(natal_watersheds$inchannel[i, ]), prob = prob_pulse_leave[i, ])
@@ -316,4 +316,216 @@ route_and_rear_deltas <- function(year, month, migrants, north_delta_fish, south
               juveniles_at_chipps = juveniles_at_chipps)
   )
 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#' @title Route Natal Streams
+#' @description Determines if juveniles stay in their natal tributary, are detoured
+#' to a bypass, or out migrate during a simulated month
+#' @details See \code{\link{params}} for details on parameter sources
+#' @param year The current simulation year, 1-20
+#' @param month The current simulation month, 4-11
+#' @param juvenile An n by 4 matrix of juvenile fish by watershed and size class
+#' @param inchannel_habitat A vector of available habitat in square meters
+#' @param floodplain_habitat A vector of available floodplain habitat in square meters
+#' @param prop_pulse_flows The proportion of pulse flows
+#' @param detour Values can be 'sutter' or 'yolo' if some juveniles are detoured on to that bypass, otherwise NULL
+#' @param .pulse_movement_intercept Intercept for \code{\link{pulse_movement}}
+#' @param .pulse_movement_proportion_pulse Coefficient for \code{\link{pulse_movement}} \code{proportion_pulse} variable
+#' @param .pulse_movement_medium Size related intercept for \code{\link{pulse_movement}} medium sized fish
+#' @param .pulse_movement_large Size related intercept for \code{\link{pulse_movement}} large sized fish
+#' @param .pulse_movement_vlarge Size related intercept for \code{\link{pulse_movement}} very large sized fish
+#' @param .pulse_movement_medium_pulse Additional coefficient for \code{\link{pulse_movement}} \code{proportion_pulse} variable for medium size fish
+#' @param .pulse_movement_large_pulse Additional coefficient for \code{\link{pulse_movement}} \code{proportion_pulse} variable for large size fish
+#' @param .pulse_movement_very_large_pulse Additional coefficient for \code{\link{pulse_movement}} \code{proportion_pulse} variable for very large size fish
+#' @param territory_size Array of juvenile fish territory requirements for \code{\link{fill_natal}}
+#' @source IP-117068
+#' @export
+route2 <- function(year, month, juveniles, inchannel_habitat, floodplain_habitat,
+                  prop_pulse_flows, proportion_flow_bypass, detour = NULL,
+                  .pulse_movement_intercept,
+                  .pulse_movement_proportion_pulse,
+                  .pulse_movement_medium,
+                  .pulse_movement_large,
+                  .pulse_movement_vlarge,
+                  .pulse_movement_medium_pulse,
+                  .pulse_movement_large_pulse,
+                  .pulse_movement_very_large_pulse,
+                  tempDwnStrm=19,
+                  territory_size) {
+  
+  if(tempDwnStrm<=18){ #if temps downstream are fine, business as usual
+    natal_watersheds <- fill_natal(juveniles = juveniles,
+                                   inchannel_habitat = inchannel_habitat,
+                                   floodplain_habitat = floodplain_habitat,
+                                   territory_size,up_to_size_class = 2)
+    
+    
+    # estimate probability leaving as function of pulse flow
+    prob_pulse_leave <- pulse_movement(prop_pulse_flows[ , month],
+                                       .intercept = .pulse_movement_intercept,
+                                       .proportion_pulse = .pulse_movement_proportion_pulse,
+                                       .medium = .pulse_movement_medium,
+                                       .large = .pulse_movement_large,
+                                       .vlarge = .pulse_movement_vlarge,
+                                       .medium_pulse = .pulse_movement_medium_pulse,
+                                       .large_pulse = .pulse_movement_large_pulse,
+                                       .very_large_pulse = .pulse_movement_very_large_pulse)
+    
+    # total fish that will migrate because of pulse flows, this derived using total in river
+    # and a binomial selection based on pr of movement due to pulse flows
+    pulse_migrants <- t(sapply(1:nrow(juveniles), function(i) {
+      rbinom(n = 4, size = round(natal_watersheds$inchannel[i, ]), prob = prob_pulse_leave[i, ])
+    }))
+    
+    
+    # update in river fish based on the pulse flow results
+    natal_watersheds$inchannel <- (natal_watersheds$inchannel - pulse_migrants)
+    
+    # update migratory fish based on the pulse flow results
+    natal_watersheds$migrants <- natal_watersheds$migrants + pulse_migrants
+    
+    if (!is.null(detour)) {
+      bypass <- ifelse(detour == 'sutter', "Sutter Bypass", "Yolo Bypass")
+      
+      detoured_fish <- t(sapply(1:nrow(natal_watersheds$migrants), function(i) {
+        
+        rbinom(n = 4,
+               size = round(natal_watersheds$migrants[i, ]),
+               prob = proportion_flow_bypass[month, year, bypass])
+      }))
+      
+      natal_watersheds$migrants <- natal_watersheds$migrants - detoured_fish
+      natal_watersheds$detoured <- detoured_fish
+    }
+  } else{ #if temps downstream are >18C, no fish move downstream and fish with no habitat die
+    natal_watersheds <- fill_natal(juveniles = juveniles,
+                                   inchannel_habitat = inchannel_habitat,
+                                   floodplain_habitat = floodplain_habitat,
+                                   territory_size,up_to_size_class = 4) #need to adjust very large fish territory size. make same as large fish?
+    number_of_regions <- max(nrow(juveniles), 1)
+    
+    natal_watersheds$migrants <- natal_watersheds$detoured <- matrix(0, ncol = 4, nrow = number_of_regions)
+
+      }
+
+    return(natal_watersheds)
+}
+
+#' @title Route Bypass
+#' @description Determines if juveniles remain in the bypass or out migrate
+#' @param bypass_fish An n by 4 matrix of juvenile fish by watershed and size class
+#' @param bypass_habitat A vector of available habitat in square meters
+#' @param migration_survival_rate The outmigration survival rate
+#' @param territory_size Array of juvenile fish territory requirements for \code{\link{fill_natal}}
+#' @source IP-117068
+#' @export
+route_bypass2 <- function(bypass_fish, bypass_habitat, migration_survival_rate,
+                          tempDwnStrm=19,territory_size) {
+  
+  
+
+    if(tempDwnStrm<=18){ #if temps downstream are fine, business as usual
+  
+      bypass_fish <- fill_regional(juveniles = bypass_fish,
+                                   habitat = bypass_habitat,
+                                   territory_size = territory_size,
+                                   up_to_size_class = 3)
+    } else{ #if temps downstream are >18C, no fish move downstream and fish with no habitat die
+      bypass_fish <- fill_regional(juveniles = bypass_fish,
+                                   habitat = bypass_habitat,
+                                   territory_size = territory_size,
+                                   up_to_size_class = 4)#need to adjust very large fish territory size. make same as large fish?
+      number_of_regions <- max(nrow(bypass_fish), 1)
+      bypass_fish$migrants <- matrix(0, ncol = 4, nrow = number_of_regions)
+    }
+  
+  bypass_fish$migrants <- t(
+    sapply(1:nrow(bypass_fish$migrants), function(i) {
+      
+      rbinom(n = 4, size = bypass_fish$migrants[i, ], prob = migration_survival_rate)
+    }))
+  
+  colnames(bypass_fish$migrants) <- c('s', 'm', 'l', 'vl')
+  
+  return(bypass_fish)
+}
+
+#' @title Route Regions
+#' @description Determines if juveniles stay in the region (Sections of Mainstem
+#' Sacramento River or San Joaquin River) or out migrate during a simulated month
+#' @param month The simulation month, 1-8
+#' @param migrants An n by 4 matrix of juvenile fish by watershed and size class
+#' @param inchannel_habitat A vector of available habitat in square meters
+#' @param floodplain_habitat A vector of available floodplain habitat in square meters
+#' @param prop_pulse_flows The proportion of pulse flows
+#' @param migration_survival_rate The outmigration survival rate
+#' @param territory_size Array of juvenile fish territory requirements for \code{\link{fill_natal}}
+#' @source IP-117068
+#' @export
+route_regional2 <- function(month, migrants,
+                           inchannel_habitat, floodplain_habitat,
+                           prop_pulse_flows, migration_survival_rate,
+                           tempDwnStrm=19,territory_size) {
+  # fill up upper mainstem, but in river fish can leave due to pulses
+  if(tempDwnStrm<=18){ #if temps downstream are fine, business as usual
+    regional_fish <- fill_regional(juveniles = migrants,
+                                   habitat = inchannel_habitat,
+                                   floodplain_habitat = floodplain_habitat,
+                                   territory_size = territory_size)
+    # estimate probability leaving as function of pulse flow
+    pulse_flows <- prop_pulse_flows[ , month]
+    prob_pulse_leave <- matrix(pulse_movement(pulse_flows), ncol = 4, byrow = T)
+    
+    pulse_migrants <- t(sapply(1:nrow(regional_fish$inchannel), function(i) {
+      
+      rbinom(n = 4, size = regional_fish$inchannel[i, ], prob = prob_pulse_leave)
+    }))
+    
+    # remove and add migrants
+    regional_fish$inchannel <- regional_fish$inchannel - pulse_migrants
+    regional_fish$migrants <- regional_fish$migrants + pulse_migrants
+    
+    # apply survival rate to migrants
+    regional_fish$migrants <- t(
+      sapply(1:nrow(regional_fish$migrants), function(i) {
+        
+        rbinom(n = 4, size = regional_fish$migrants[i, ], prob = migration_survival_rate)
+      }))
+  }
+  else{ #if temps downstream are >18C, no fish move downstream and fish with no habitat die
+    regional_fish <- fill_regional(juveniles = migrants,
+                                   habitat = inchannel_habitat,
+                                   floodplain_habitat = floodplain_habitat,
+                                   territory_size = territory_size,up_to_size_class = 4) #need to adjust very large fish territory size. make same as large fish?
+    
+    number_of_regions <- max(nrow(migrants), 1)
+    regional_fish$migrants <- matrix(0, ncol = 4, nrow = number_of_regions)
+    
+  }
+  
+  return(regional_fish)
+  
 }
