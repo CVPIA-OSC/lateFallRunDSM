@@ -1,14 +1,41 @@
 #' Juvenile Month Dynamics
 #' @param hypothesis
-#' @param fish list object containing tracking matrices for juveniles,  
+#' @param fish list object containing tracking matrices for juveniles, juveniles at chips, and adults in ocean
+#' @param year
+#' @param month
+#' @param rearing_survival
+#' @param migratory_survival
+#' @param habitat
+#' @param ..params   
 #' @examples 
-#' fish = list(juveniles = juveniles, juveniles_at_chipps = juveniles_at_chipps, adults_in_ocean = adults_in_ocean)
-
-juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_survival, migratory_survival, habitat, ..params) {
+#' fish = list(juveniles = juveniles, north_delta_fish = north_delta_fish, south_delta_fish = south_delta_fish,
+#' juveniles_at_chipps = juveniles_at_chipps, 
+#' adults_in_ocean = adults_in_ocean)
+juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_survival, 
+                                   migratory_survival, habitat, ..params, 
+                                   avg_ocean_transition_month) {
   
-  list2env(fish)
+  juveniles <- fish$juveniles
+  lower_mid_sac_fish <- fish$lower_mid_sac_fish
+  lower_sac_fish <- fish$lower_sac_fish
+  upper_mid_sac_fish <- fish$upper_mid_sac_fish
+  sutter_fish <- fish$sutter_fish
+  yolo_fish <- fish$yolo_fish
+  san_joaquin_fish <- fish$san_joaquin_fish
+  north_delta_fish <- fish$north_delta_fish
+  south_delta_fish <- fish$south_delta_fish
+  juveniles_at_chipps <- fish$juveniles_at_chipps
+  adults_in_ocean <- fish$adults_in_ocean
   
-  migrants <- matrix(0, nrow = 31, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels, lateFallRunDSM::size_class_labels))
+  if (hypothesis == 3) {
+    route <- lateFallRunDSM::route_alternative
+    route_regional <- lateFallRunDSM::route_regional_alternative
+    route_bypass <- lateFallRunDSM::route_bypass_alternative
+  } 
+  
+  migrants <- matrix(0, nrow = 31, ncol = 4, 
+                     dimnames = list(lateFallRunDSM::watershed_labels, 
+                                     lateFallRunDSM::size_class_labels))
   
   if (month == 11) {
     # all remaining fish outmigrate
@@ -38,17 +65,24 @@ juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_surviv
                                         migratory_survival_delta = migratory_survival$delta,
                                         migratory_survival_sac_delta = migratory_survival$sac_delta,
                                         migratory_survival_bay_delta = migratory_survival$bay_delta,
-                                        juveniles_at_chipps = juveniles_at_chipps1,
+                                        juveniles_at_chipps = juveniles_at_chipps,
                                         growth_rates = lateFallRunDSM::params$growth_rates,
                                         territory_size = lateFallRunDSM::params$territory_size)
     
     
     migrants_at_golden_gate <- delta_fish$migrants_at_golden_gate
     
-    annual_migrants <- annual_migrants + migrants_at_golden_gate
   } else {
     
-    # start of month mechanics that get rep'd 3 times
+    if (hypothesis == 2 & month == 4) {
+      # send specified proportion of fry out of tributaries
+      leave_battle <- rbinom(1, juveniles[3, ], ..params$prob_fry_leave)
+      leave_clear <- rbinom(1, juveniles[7, ], ..params$prob_fry_leave)
+      juveniles[1, ] <- juveniles[1, ] + leave_battle + leave_clear
+      juveniles[3, ] <- juveniles[3, ] - leave_battle
+      juveniles[7, ] <- juveniles[7, ] - leave_clear
+    }
+    
     upper_sac_trib_fish <-  route(year = year,
                                   month = month,
                                   juveniles = juveniles[1:15, ],
@@ -93,8 +127,7 @@ juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_surviv
                                          migration_survival_rate = migratory_survival$uppermid_sac,
                                          territory_size = lateFallRunDSM::params$territory_size)
     
-    # TODO need to have 3 migrant matricies
-    migrants1[1:15, ] <- upper_mid_sac_fish$migrants + sutter_fish$migrants
+    migrants[1:15, ] <- upper_mid_sac_fish$migrants + sutter_fish$migrants
     
     sutter_fish <- rear(juveniles = sutter_fish$inchannel,
                         survival_rate = matrix(rep(rearing_survival$sutter, nrow(sutter_fish$inchannel)), ncol = 4, byrow = TRUE),
@@ -319,31 +352,33 @@ juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_surviv
                                         migratory_survival_delta = migratory_survival$delta,
                                         migratory_survival_sac_delta = migratory_survival$sac_delta,
                                         migratory_survival_bay_delta = migratory_survival$bay_delta,
-                                        juveniles_at_chipps = juveniles_at_chipps1,
+                                        juveniles_at_chipps = juveniles_at_chipps,
                                         growth_rates = lateFallRunDSM::params$growth_rates,
                                         territory_size = lateFallRunDSM::params$territory_size)
     
-    # TODO step thru to confirm that this is ok to overwrite
     migrants_at_golden_gate <- delta_fish$migrants_at_golden_gate
-    
-    annual_migrants <- annual_migrants + migrants_at_golden_gate
-    
-    # TODO rep each 3 times
     north_delta_fish <- delta_fish$north_delta_fish
     south_delta_fish <- delta_fish$south_delta_fish
-    juveniles_at_chipps1 <- delta_fish$juveniles_at_chipps
+    juveniles_at_chipps <- delta_fish$juveniles_at_chipps
   }
   
   adults_in_ocean <- adults_in_ocean + ocean_entry_success(migrants = migrants_at_golden_gate,
-                                                             month = month,
-                                                             avg_ocean_transition_month = avg_ocean_transition_month,
-                                                             .ocean_entry_success_length = ..params$.ocean_entry_success_length,
-                                                             ..ocean_entry_success_int = ..params$..ocean_entry_success_int,
-                                                             .ocean_entry_success_months = ..params$.ocean_entry_success_months)
-  return(list(
-    juveniles = juveniles,
-    juveniles_at_chipps = juveniles_at_chipps,
-    adults_in_ocean = adults_in_ocean
-  ))
+                                                           month = month,
+                                                           avg_ocean_transition_month = avg_ocean_transition_month,
+                                                           .ocean_entry_success_length = ..params$.ocean_entry_success_length,
+                                                           ..ocean_entry_success_int = ..params$..ocean_entry_success_int,
+                                                           .ocean_entry_success_months = ..params$.ocean_entry_success_months)
+  return(list(juveniles = juveniles,
+              lower_mid_sac_fish = lower_mid_sac_fish,
+              lower_sac_fish = lower_sac_fish,
+              upper_mid_sac_fish = upper_mid_sac_fish,
+              sutter_fish = sutter_fish,
+              yolo_fish = yolo_fish,
+              san_joaquin_fish = san_joaquin_fish,
+              north_delta_fish = north_delta_fish,
+              south_delta_fish = south_delta_fish,
+              juveniles_at_chipps = juveniles_at_chipps,
+              adults_in_ocean = adults_in_ocean)
+  )
   
 }

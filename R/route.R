@@ -319,29 +319,7 @@ route_and_rear_deltas <- function(year, month, migrants, north_delta_fish, south
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#' @title Route Natal Streams
+#' @title Route Natal Streams - Alternative
 #' @description Determines if juveniles stay in their natal tributary, are detoured
 #' to a bypass, or out migrate during a simulated month
 #' @details See \code{\link{params}} for details on parameter sources
@@ -363,7 +341,7 @@ route_and_rear_deltas <- function(year, month, migrants, north_delta_fish, south
 #' @param territory_size Array of juvenile fish territory requirements for \code{\link{fill_natal}}
 #' @source IP-117068
 #' @export
-route2 <- function(year, month, juveniles, inchannel_habitat, floodplain_habitat,
+route_alternative <- function(year, month, juveniles, inchannel_habitat, floodplain_habitat,
                   prop_pulse_flows, proportion_flow_bypass, detour = NULL,
                   .pulse_movement_intercept,
                   .pulse_movement_proportion_pulse,
@@ -434,7 +412,7 @@ route2 <- function(year, month, juveniles, inchannel_habitat, floodplain_habitat
     return(natal_watersheds)
 }
 
-#' @title Route Bypass
+#' @title Route Bypass - Alternative
 #' @description Determines if juveniles remain in the bypass or out migrate
 #' @param bypass_fish An n by 4 matrix of juvenile fish by watershed and size class
 #' @param bypass_habitat A vector of available habitat in square meters
@@ -442,12 +420,12 @@ route2 <- function(year, month, juveniles, inchannel_habitat, floodplain_habitat
 #' @param territory_size Array of juvenile fish territory requirements for \code{\link{fill_natal}}
 #' @source IP-117068
 #' @export
-route_bypass2 <- function(bypass_fish, bypass_habitat, migration_survival_rate,
-                          tempDwnStrm=19,territory_size) {
+route_bypass_alternative <- function(bypass_fish, bypass_habitat, migration_survival_rate,
+                                     temp_down_stream = 19,territory_size) {
   
   
 
-    if(tempDwnStrm<=18){ #if temps downstream are fine, business as usual
+    if(temp_down_stream <= 18){ #if temps downstream are fine, business as usual
   
       bypass_fish <- fill_regional(juveniles = bypass_fish,
                                    habitat = bypass_habitat,
@@ -458,22 +436,19 @@ route_bypass2 <- function(bypass_fish, bypass_habitat, migration_survival_rate,
                                    habitat = bypass_habitat,
                                    territory_size = territory_size,
                                    up_to_size_class = 4)#need to adjust very large fish territory size. make same as large fish?
-      number_of_regions <- max(nrow(bypass_fish), 1)
-      bypass_fish$migrants <- matrix(0, ncol = 4, nrow = number_of_regions)
+      bypass_fish$migrants <- matrix(0, ncol = 4, nrow = nrow(bypass_fish$migrants),
+                                     dimnames = dimnames(bypass_fish$migrants))
     }
   
   bypass_fish$migrants <- t(
     sapply(1:nrow(bypass_fish$migrants), function(i) {
-      
       rbinom(n = 4, size = bypass_fish$migrants[i, ], prob = migration_survival_rate)
     }))
-  
-  colnames(bypass_fish$migrants) <- c('s', 'm', 'l', 'vl')
   
   return(bypass_fish)
 }
 
-#' @title Route Regions
+#' @title Route Regions - Alternative
 #' @description Determines if juveniles stay in the region (Sections of Mainstem
 #' Sacramento River or San Joaquin River) or out migrate during a simulated month
 #' @param month The simulation month, 1-8
@@ -485,7 +460,7 @@ route_bypass2 <- function(bypass_fish, bypass_habitat, migration_survival_rate,
 #' @param territory_size Array of juvenile fish territory requirements for \code{\link{fill_natal}}
 #' @source IP-117068
 #' @export
-route_regional2 <- function(month, migrants,
+route_regional_alternative <- function(month, migrants,
                            inchannel_habitat, floodplain_habitat,
                            prop_pulse_flows, migration_survival_rate,
                            tempDwnStrm=19,territory_size) {
