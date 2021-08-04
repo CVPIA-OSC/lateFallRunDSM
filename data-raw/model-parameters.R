@@ -4,7 +4,7 @@ library(tidyverse)
 # 2019 Calibration Parameters ------------
 params <- list(
   
-  # Data from latefallRunDSM cache-data (values vary by run)
+  # Data from lateFallRunDSM cache-data (values vary by run)
   hatchery_allocation = lateFallRunDSM::hatchery_allocation,
   natural_adult_removal_rate = lateFallRunDSM::natural_adult_removal_rate,
   proportion_hatchery = lateFallRunDSM::proportion_hatchery,

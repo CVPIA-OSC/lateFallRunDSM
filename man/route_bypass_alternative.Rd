@@ -11,8 +11,9 @@ route_bypass_alternative(
   bypass_fish,
   bypass_habitat,
   migration_survival_rate,
-  tempDwnStrm = 19,
-  territory_size
+  temp_down_stream = 19,
+  territory_size,
+  stochastic
 )
 }
 \arguments{
@@ -21,6 +22,8 @@ route_bypass_alternative(
 \item{bypass_habitat}{A vector of available habitat in square meters}
 
 \item{migration_survival_rate}{The outmigration survival rate}
+
+\item{temp_down_stream}{TODO}
 
 \item{territory_size}{Array of juvenile fish territory requirements for \code{\link{fill_natal}}}
 }

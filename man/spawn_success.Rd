@@ -15,7 +15,8 @@ spawn_success(
   spawn_habitat,
   sex_ratio = lateFallRunDSM::params$spawn_success_sex_ratio,
   redd_size = lateFallRunDSM::params$spawn_success_redd_size,
-  fecundity = lateFallRunDSM::params$spawn_success_fecundity
+  fecundity = lateFallRunDSM::params$spawn_success_fecundity,
+  stochastic
 )
 }
 \arguments{

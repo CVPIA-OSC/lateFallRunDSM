@@ -17,7 +17,8 @@ surv_juv_bypass(
   .medium = lateFallRunDSM::params$.surv_juv_bypass_medium,
   .large = lateFallRunDSM::params$.surv_juv_bypass_large,
   .floodplain = lateFallRunDSM::params$.surv_juv_bypass_floodplain,
-  min_survival_rate = lateFallRunDSM::params$min_survival_rate
+  min_survival_rate = lateFallRunDSM::params$min_survival_rate,
+  stochastic
 )
 }
 \arguments{

@@ -13,7 +13,8 @@ juvenile_month_dynamic(
   migratory_survival,
   habitat,
   ..params,
-  avg_ocean_transition_month
+  avg_ocean_transition_month,
+  stochastic
 )
 }
 \arguments{

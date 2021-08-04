@@ -14,8 +14,9 @@ route_regional_alternative(
   floodplain_habitat,
   prop_pulse_flows,
   migration_survival_rate,
-  tempDwnStrm = 19,
-  territory_size
+  temp_down_stream = 19,
+  territory_size,
+  stochastic
 )
 }
 \arguments{
@@ -30,6 +31,8 @@ route_regional_alternative(
 \item{prop_pulse_flows}{The proportion of pulse flows}
 
 \item{migration_survival_rate}{The outmigration survival rate}
+
+\item{temp_down_stream}{TODO}
 
 \item{territory_size}{Array of juvenile fish territory requirements for \code{\link{fill_natal}}}
 }

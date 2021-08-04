@@ -13,7 +13,8 @@ ocean_entry_success(
   avg_ocean_transition_month,
   .ocean_entry_success_length = lateFallRunDSM::params$.ocean_entry_success_length,
   ..ocean_entry_success_int = lateFallRunDSM::params$..ocean_entry_success_int,
-  .ocean_entry_success_months = lateFallRunDSM::params$.ocean_entry_success_months
+  .ocean_entry_success_months = lateFallRunDSM::params$.ocean_entry_success_months,
+  stochastic
 )
 }
 \arguments{

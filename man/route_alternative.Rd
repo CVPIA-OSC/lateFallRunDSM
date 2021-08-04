@@ -24,8 +24,9 @@ route_alternative(
   .pulse_movement_medium_pulse,
   .pulse_movement_large_pulse,
   .pulse_movement_very_large_pulse,
-  tempDwnStrm = 19,
-  territory_size
+  temp_down_stream = 19,
+  territory_size,
+  stochastic
 )
 }
 \arguments{
@@ -56,6 +57,8 @@ route_alternative(
 \item{.pulse_movement_large_pulse}{Additional coefficient for \code{\link{pulse_movement}} \code{proportion_pulse} variable for large size fish}
 
 \item{.pulse_movement_very_large_pulse}{Additional coefficient for \code{\link{pulse_movement}} \code{proportion_pulse} variable for very large size fish}
+
+\item{temp_down_stream}{TODO}
 
 \item{territory_size}{Array of juvenile fish territory requirements for \code{\link{fill_natal}}}
 

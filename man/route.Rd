@@ -24,13 +24,14 @@ route(
   .pulse_movement_medium_pulse,
   .pulse_movement_large_pulse,
   .pulse_movement_very_large_pulse,
-  territory_size
+  territory_size,
+  stochastic
 )
 }
 \arguments{
 \item{year}{The current simulation year, 1-20}
 
-\item{month}{The current simulation month, 4-11}
+\item{month}{The current simulation month, 1-8}
 
 \item{inchannel_habitat}{A vector of available habitat in square meters}
 
