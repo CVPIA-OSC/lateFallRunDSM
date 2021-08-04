@@ -44,6 +44,7 @@ fill_natal <- function(juveniles, inchannel_habitat, floodplain_habitat,
   migrants <- pmax(juveniles - river_rear, 0)
   list(inchannel = river_rear, floodplain = flood_rear, migrants = migrants)
 }
+
 #' @rdname fill
 #' @export
 fill_regional <- function(juveniles, habitat, floodplain_habitat = NULL,

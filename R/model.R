@@ -15,7 +15,8 @@
 #'                            seeds = late_fall_run_seeds)
 #' @export
 late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "calibrate"),
-                                seeds = NULL, ..params = lateFallRunDSM::params){
+                                seeds = NULL, ..params = lateFallRunDSM::params,
+                                stochastic = FALSE){
   
   mode <- match.arg(mode)
   
@@ -75,8 +76,12 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
   
   for (year in 1:simulation_length) {
     adults_in_ocean <- numeric(31)
-    avg_ocean_transition_month <- ocean_transition_month() # 2
+    
+    avg_ocean_transition_month <- ocean_transition_month(stochastic)
+    
+    # TODO stochastic?
     hatch_adults <- rmultinom(1, size = round(runif(1, 1753,7012)), prob = ..params$hatchery_allocation)[ , 1]
+    
     spawners <- get_spawning_adults(year, round(adults), hatch_adults, mode = mode,
                                     prop_flow_natal = ..params$prop_flow_natal,
                                     south_delta_routed_watersheds = ..params$south_delta_routed_watersheds,
@@ -95,7 +100,8 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                     .adult_stray_prop_delta_trans = ..params$.adult_stray_prop_delta_trans,
                                     .adult_en_route_migratory_temp = ..params$.adult_en_route_migratory_temp,
                                     .adult_en_route_bypass_overtopped = ..params$.adult_en_route_bypass_overtopped,
-                                    .adult_en_route_adult_harvest_rate = ..params$.adult_en_route_adult_harvest_rate)
+                                    .adult_en_route_adult_harvest_rate = ..params$.adult_en_route_adult_harvest_rate,
+                                    stochastic = stochastic)
     
     init_adults <- spawners$init_adults
     
@@ -138,7 +144,8 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                spawn_habitat = min_spawn_habitat,
                                sex_ratio = ..params$spawn_success_sex_ratio,
                                redd_size = ..params$spawn_success_redd_size,
-                               fecundity = ..params$spawn_success_fecundity)
+                               fecundity = ..params$spawn_success_fecundity,
+                               stochastic = stochastic)
     
     fish_1 <- fish_2 <- fish_3 <- list(juveniles = juveniles,
                                        lower_mid_sac_fish = lower_mid_sac_fish,
@@ -206,7 +213,8 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                                .surv_juv_delta_prop_diverted = ..params$.surv_juv_delta_prop_diverted,
                                                .surv_juv_delta_medium = ..params$.surv_juv_delta_medium,
                                                .surv_juv_delta_large = ..params$.surv_juv_delta_large, 
-                                               min_survival_rate = ..params$min_survival_rate)
+                                               min_survival_rate = ..params$min_survival_rate,
+                                               stochastic = stochastic)
       
       migratory_survival <- get_migratory_survival(year, month,
                                                    cc_gates_prop_days_closed = ..params$cc_gates_prop_days_closed,
@@ -238,25 +246,29 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                                    .surv_juv_outmigration_san_joaquin_medium = ..params$.surv_juv_outmigration_san_joquin_medium,
                                                    .surv_juv_outmigration_san_joaquin_large = ..params$.surv_juv_outmigration_san_joaquin_large, 
                                                    min_survival_rate = ..params$min_survival_rate,
-                                                   surv_juv_outmigration_sac_delta_model_weights = ..params$surv_juv_outmigration_sac_delta_model_weights) #migratory_survival$uppermid_sac
+                                                   surv_juv_outmigration_sac_delta_model_weights = ..params$surv_juv_outmigration_sac_delta_model_weights,
+                                                   stochastic = stochastic)
       
       fish_1 <- juvenile_month_dynamic(hypothesis = 1, fish_1, year = year, month = month, 
                                        rearing_survival = rearing_survival, 
                                        migratory_survival = migratory_survival, 
                                        habitat = habitat, ..params = ..params,
-                                       avg_ocean_transition_month = avg_ocean_transition_month)
+                                       avg_ocean_transition_month = avg_ocean_transition_month,
+                                       stochastic = stochastic)
       
       fish_2 <- juvenile_month_dynamic(hypothesis = 2, fish_2, year = year, month = month, 
                                        rearing_survival = rearing_survival, 
                                        migratory_survival = migratory_survival, 
                                        habitat = habitat, ..params = ..params,
-                                       avg_ocean_transition_month = avg_ocean_transition_month)
+                                       avg_ocean_transition_month = avg_ocean_transition_month,
+                                       stochastic = stochastic)
       
       fish_3 <- juvenile_month_dynamic(hypothesis = 3, fish_3, year = year, month = month, 
                                        rearing_survival = rearing_survival, 
                                        migratory_survival = migratory_survival, 
                                        habitat = habitat, ..params = ..params,
-                                       avg_ocean_transition_month = avg_ocean_transition_month)
+                                       avg_ocean_transition_month = avg_ocean_transition_month,
+                                       stochastic = stochastic)
     } # end of month loop
     
     #combine the different models by weighting them equally. Will want to vary the weights in sensitivity analysis.
@@ -266,7 +278,11 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
     output$juvenile_biomass[ , year] <- juveniles_at_chipps %*% lateFallRunDSM::params$mass_by_size_class
     
     adults_returning <- t(sapply(1:31, function(watershed) {
-      rmultinom(1, adults_in_ocean[watershed], prob = c(.432, .566, .02))  
+      if (stochastic) {
+        rmultinom(1, adults_in_ocean[watershed], prob = c(.432, .566, .02))  
+      } else {
+        round(adults_in_ocean[watershed] * c(.432, .566, .02))
+      }
     }))
     
     # distribute returning adults for future spawning
