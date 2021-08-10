@@ -389,8 +389,9 @@ route_alternative <- function(year, month, juveniles, inchannel_habitat, floodpl
                               .pulse_movement_medium_pulse,
                               .pulse_movement_large_pulse,
                               .pulse_movement_very_large_pulse,
-                              temperature_downstream = 19,
                               territory_size,
+                              temperature_downstream = 19,
+                              density_dependent_survival,
                               stochastic) {
   
   if(temperature_downstream <= 18){ #if temps downstream are fine, business as usual
@@ -451,12 +452,11 @@ route_alternative <- function(year, month, juveniles, inchannel_habitat, floodpl
                                    floodplain_habitat = floodplain_habitat,
                                    territory_size,up_to_size_class = 4) #need to adjust very large fish territory size. make same as large fish?
     
-    # TODO ?
-    # natal_watersheds$migrants <- natal_watersheds$detoured <- matrix(0, ncol = 4, nrow = nrow(natal_watersheds$migrants),
-    #                                                                  dimnames = dimnames(natal_watersheds$migrants))
+    natal_watersheds$inchannel <- natal_watersheds$inchannel + natal_watersheds$migrants * density_dependent_survival
     
-    # what to call 0.10
-    natal_watersheds$inchannel <- natal_watersheds$inchannel + natal_watersheds$migrants * 0.10
+    natal_watersheds$migrants <- matrix(0, ncol = 4, nrow = nrow(natal_watersheds$migrants),
+                                        dimnames = dimnames(natal_watersheds$migrants))
+    
     
     natal_watersheds$detoured <- matrix(0, ncol = 4, nrow = nrow(natal_watersheds$migrants),
                                         dimnames = dimnames(natal_watersheds$migrants)) 
@@ -475,8 +475,8 @@ route_alternative <- function(year, month, juveniles, inchannel_habitat, floodpl
 #' @source IP-117068
 #' @export
 route_bypass_alternative <- function(bypass_fish, bypass_habitat, migration_survival_rate,
-                                     temperature_downstream = 19, territory_size,
-                                     stochastic) {
+                                    territory_size, temperature_downstream = 19,
+                                     density_dependent_survival, stochastic) {
   
   
   
@@ -501,8 +501,15 @@ route_bypass_alternative <- function(bypass_fish, bypass_habitat, migration_surv
                                  habitat = bypass_habitat,
                                  territory_size = territory_size,
                                  up_to_size_class = 4)#need to adjust very large fish territory size. make same as large fish?
+    
+    bypass_fish$inchannel <- bypass_fish$inchannel + bypass_fish$migrants * density_dependent_survival
+    
     bypass_fish$migrants <- matrix(0, ncol = 4, nrow = nrow(bypass_fish$migrants),
-                                   dimnames = dimnames(bypass_fish$migrants))
+                                        dimnames = dimnames(bypass_fish$migrants))
+    
+    
+    bypass_fish$detoured <- matrix(0, ncol = 4, nrow = nrow(bypass_fish$migrants),
+                                        dimnames = dimnames(bypass_fish$migrants)) 
   }
   
   return(bypass_fish)
@@ -524,8 +531,8 @@ route_bypass_alternative <- function(bypass_fish, bypass_habitat, migration_surv
 route_regional_alternative <- function(month, migrants,
                                        inchannel_habitat, floodplain_habitat,
                                        prop_pulse_flows, migration_survival_rate,
-                                       temperature_downstream = 19,territory_size,
-                                       stochastic) {
+                                       territory_size, temperature_downstream = 19,
+                                       density_dependent_survival, stochastic) {
   # fill up upper mainstem, but in river fish can leave due to pulses
   if (temperature_downstream <= 18) { #if temps downstream are fine, business as usual
     regional_fish <- fill_regional(juveniles = migrants,
@@ -564,8 +571,13 @@ route_regional_alternative <- function(month, migrants,
                                    floodplain_habitat = floodplain_habitat,
                                    territory_size = territory_size,up_to_size_class = 4) #need to adjust very large fish territory size. make same as large fish?
     
+    regional_fish$inchannel <- regional_fish$inchannel + regional_fish$migrants * density_dependent_survival
+    
     regional_fish$migrants <- matrix(0, ncol = 4, nrow = nrow(regional_fish$migrants),
-                                     dimnames = dimnames(regional_fish$migrants))
+                                   dimnames = dimnames(regional_fish$migrants))
+    
+    regional_fish$detoured <- matrix(0, ncol = 4, nrow = nrow(regional_fish$migrants),
+                                   dimnames = dimnames(regional_fish$migrants)) 
   }
   
   return(regional_fish)

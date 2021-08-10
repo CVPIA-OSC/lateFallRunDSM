@@ -6,6 +6,11 @@ params <- list(
   
   juveniles_at_chipps_model_weights = rep(1/3, 3),
   adults_in_ocean_model_weights = rep(1/3, 3),
+  density_dependent_survival = .10,
+  
+  # Data from DSMscenarios
+  spawn_decay_rate = DSMscenario::spawn_decay_rate,
+  rear_decay_rate = DSMscenario::rear_decay_rate,
   
   # Data from lateFallRunDSM cache-data (values vary by run)
   hatchery_allocation = lateFallRunDSM::hatchery_allocation,

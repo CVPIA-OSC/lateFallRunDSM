@@ -66,8 +66,8 @@ juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_surviv
                                         migratory_survival_sac_delta = migratory_survival$sac_delta,
                                         migratory_survival_bay_delta = migratory_survival$bay_delta,
                                         juveniles_at_chipps = juveniles_at_chipps,
-                                        growth_rates = lateFallRunDSM::params$growth_rates,
-                                        territory_size = lateFallRunDSM::params$territory_size,
+                                        growth_rates = ..params$growth_rates,
+                                        territory_size = ..params$territory_size,
                                         stochastic = stochastic)
     
     
@@ -110,16 +110,17 @@ juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_surviv
                                   .pulse_movement_medium_pulse = ..params$.pulse_movement_medium_pulse,
                                   .pulse_movement_large_pulse = ..params$.pulse_movement_large_pulse,
                                   .pulse_movement_very_large_pulse = ..params$.pulse_movement_very_large_pulse,
-                                  territory_size = lateFallRunDSM::params$territory_size,
-                                  stochastic = stochastic,
-                                  temperature_downstream = ..params$avg_temp[16, month, year])
+                                  territory_size = ..params$territory_size,
+                                  temperature_downstream = ..params$avg_temp[16, month, year],
+                                  density_dependent_survival = ..params$density_dependent_survival,
+                                  stochastic = stochastic)
     
     upper_sac_trib_rear <- rear(juveniles = upper_sac_trib_fish$inchannel,
                                 survival_rate = rearing_survival$inchannel[1:15, ],
-                                growth = lateFallRunDSM::params$growth_rates,
+                                growth = ..params$growth_rates,
                                 floodplain_juveniles = upper_sac_trib_fish$floodplain,
                                 floodplain_survival_rate = rearing_survival$floodplain[1:15, ],
-                                floodplain_growth = lateFallRunDSM::params$growth_rates_floodplain,
+                                floodplain_growth = ..params$growth_rates_floodplain,
                                 weeks_flooded = ..params$weeks_flooded[1:15, month, year],
                                 stochastic = stochastic)
     
@@ -131,9 +132,10 @@ juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_surviv
     sutter_fish <- route_bypass(bypass_fish = sutter_fish + upper_sac_trib_fish$detoured,
                                 bypass_habitat = habitat$sutter,
                                 migration_survival_rate = migratory_survival$sutter,
-                                territory_size = lateFallRunDSM::params$territory_size,
-                                stochastic = stochastic,
-                                temperature_downstream = ..params$avg_temp[21, month, year])
+                                territory_size = ..params$territory_size,
+                                temperature_downstream = ..params$avg_temp[21, month, year],
+                                density_dependent_survival = ..params$density_dependent_survival,
+                                stochastic = stochastic)
     
     upper_mid_sac_fish <- route_regional(month = month,
                                          migrants = upper_mid_sac_fish + upper_sac_trib_fish$migrants,
@@ -141,23 +143,24 @@ juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_surviv
                                          floodplain_habitat = habitat$floodplain[16],
                                          prop_pulse_flows = ..params$prop_pulse_flows[16, , drop = FALSE],
                                          migration_survival_rate = migratory_survival$uppermid_sac,
-                                         territory_size = lateFallRunDSM::params$territory_size,
-                                         stochastic = stochastic,
-                                         temperature_downstream = ..params$avg_temp[21, month, year])
+                                         territory_size = ..params$territory_size,
+                                         temperature_downstream = ..params$avg_temp[21, month, year],
+                                         density_dependent_survival = ..params$density_dependent_survival,
+                                         stochastic = stochastic)
     
     migrants[1:15, ] <- upper_mid_sac_fish$migrants + sutter_fish$migrants
     
     sutter_fish <- rear(juveniles = sutter_fish$inchannel,
                         survival_rate = matrix(rep(rearing_survival$sutter, nrow(sutter_fish$inchannel)), ncol = 4, byrow = TRUE),
-                        growth = lateFallRunDSM::params$growth_rates,
+                        growth = ..params$growth_rates,
                         stochastic = stochastic)
     
     upper_mid_sac_fish <- rear(juveniles = upper_mid_sac_fish$inchannel,
                                survival_rate = rearing_survival$inchannel[16, ],
-                               growth = lateFallRunDSM::params$growth_rates,
+                               growth = ..params$growth_rates,
                                floodplain_juveniles = upper_mid_sac_fish$floodplain,
                                floodplain_survival_rate = rearing_survival$floodplain[16, ],
-                               floodplain_growth = lateFallRunDSM::params$growth_rates_floodplain,
+                               floodplain_growth = ..params$growth_rates_floodplain,
                                weeks_flooded = rep(..params$weeks_flooded[16, month, year], nrow(upper_mid_sac_fish$inchannel)),
                                stochastic = stochastic)
     
@@ -182,16 +185,17 @@ juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_surviv
                                      .pulse_movement_medium_pulse = ..params$.pulse_movement_medium_pulse,
                                      .pulse_movement_large_pulse = ..params$.pulse_movement_large_pulse,
                                      .pulse_movement_very_large_pulse = ..params$.pulse_movement_very_large_pulse,
-                                     territory_size = lateFallRunDSM::params$territory_size,
-                                     stochastic = stochastic,
-                                     temperature_downstream = ..params$avg_temp[24, month, year])
+                                     territory_size = ..params$territory_size,
+                                     temperature_downstream = ..params$avg_temp[24, month, year],
+                                     density_dependent_survival = ..params$density_dependent_survival,
+                                     stochastic = stochastic)
     
     lower_mid_sac_trib_rear <- rear(juveniles = lower_mid_sac_trib_fish$inchannel,
                                     survival_rate = rearing_survival$inchannel[18:20, ],
-                                    growth = lateFallRunDSM::params$growth_rates,
+                                    growth = ..params$growth_rates,
                                     floodplain_juveniles = lower_mid_sac_trib_fish$floodplain,
                                     floodplain_survival_rate = rearing_survival$floodplain[18:20, ],
-                                    floodplain_growth = lateFallRunDSM::params$growth_rates_floodplain,
+                                    floodplain_growth = ..params$growth_rates_floodplain,
                                     weeks_flooded = ..params$weeks_flooded[18:20, month, year],
                                     stochastic = stochastic)
     
@@ -200,9 +204,10 @@ juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_surviv
     yolo_fish <- route_bypass(bypass_fish = yolo_fish + lower_mid_sac_trib_fish$detoured,
                               bypass_habitat = habitat$yolo,
                               migration_survival_rate = migratory_survival$yolo,
-                              territory_size = lateFallRunDSM::params$territory_size,
-                              stochastic = stochastic,
-                              temperature_downstream = 17) # hardcoded for <18C
+                              territory_size = ..params$territory_size,
+                              temperature_downstream = 17, # hardcoded for <18C
+                              density_dependent_survival = ..params$density_dependent_survival,
+                              stochastic = stochastic)
     
     migrants[18:20, ] <- lower_mid_sac_trib_fish$migrants + yolo_fish$migrants
     
@@ -212,24 +217,25 @@ juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_surviv
                                          floodplain_habitat = habitat$floodplain[21],
                                          prop_pulse_flows = ..params$prop_pulse_flows[21, , drop = FALSE],
                                          migration_survival_rate = migratory_survival$lowermid_sac,
-                                         territory_size = lateFallRunDSM::params$territory_size,
-                                         stochastic = stochastic,
-                                         temperature_downstream = ..params$avg_temp[24, month, year])
+                                         territory_size = ..params$territory_size,
+                                         temperature_downstream = ..params$avg_temp[24, month, year],
+                                         density_dependent_survival = ..params$density_dependent_survival,
+                                         stochastic = stochastic)
     
     migrants <- lower_mid_sac_fish$migrants
     
     # rear
     yolo_fish <- rear(juveniles = yolo_fish$inchannel,
                       survival_rate = matrix(rep(rearing_survival$yolo, nrow(yolo_fish$inchannel)), ncol = 4, byrow = TRUE),
-                      growth = lateFallRunDSM::params$growth_rates,
+                      growth = ..params$growth_rates,
                       stochastic = stochastic)
     
     lower_mid_sac_fish <- rear(juveniles = lower_mid_sac_fish$inchannel,
                                survival_rate = rearing_survival$inchannel[21, ],
-                               growth = lateFallRunDSM::params$growth_rates,
+                               growth = ..params$growth_rates,
                                floodplain_juveniles = lower_mid_sac_fish$floodplain,
                                floodplain_survival_rate = rearing_survival$floodplain[21, ],
-                               floodplain_growth = lateFallRunDSM::params$growth_rates_floodplain,
+                               floodplain_growth = ..params$growth_rates_floodplain,
                                weeks_flooded = rep(..params$weeks_flooded[21, month, year], nrow(lower_mid_sac_fish$inchannel)),
                                stochastic = stochastic)
     
@@ -252,16 +258,17 @@ juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_surviv
                                  .pulse_movement_medium_pulse = ..params$.pulse_movement_medium_pulse,
                                  .pulse_movement_large_pulse = ..params$.pulse_movement_large_pulse,
                                  .pulse_movement_very_large_pulse = ..params$.pulse_movement_very_large_pulse,
-                                 territory_size = lateFallRunDSM::params$territory_size,
-                                 stochastic = stochastic,
-                                 temperature_downstream = ..params$avg_temp_delta[month, year, 1])
+                                 territory_size = ..params$territory_size,
+                                 temperature_downstream = ..params$avg_temp_delta[month, year, 1],
+                                 density_dependent_survival = ..params$density_dependent_survival,
+                                 stochastic = stochastic)
     
     lower_sac_trib_rear <- rear(juveniles = lower_sac_trib_fish$inchannel,
                                 survival_rate = rearing_survival$inchannel[23, , drop = FALSE],
-                                growth = lateFallRunDSM::params$growth_rates,
+                                growth = ..params$growth_rates,
                                 floodplain_juveniles = lower_sac_trib_fish$floodplain,
                                 floodplain_survival_rate = rearing_survival$floodplain[23, , drop = FALSE],
-                                floodplain_growth = lateFallRunDSM::params$growth_rates_floodplain,
+                                floodplain_growth = ..params$growth_rates_floodplain,
                                 weeks_flooded = ..params$weeks_flooded[23, month, year],
                                 stochastic = stochastic)
     
@@ -275,18 +282,19 @@ juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_surviv
                                      floodplain_habitat = habitat$floodplain[24],
                                      prop_pulse_flows = ..params$prop_pulse_flows[24, , drop = FALSE],
                                      migration_survival_rate = migratory_survival$lower_sac,
-                                     territory_size = lateFallRunDSM::params$territory_size,
-                                     stochastic = stochastic,
-                                     temperature_downstream = 17) #hardcoded <18C
+                                     territory_size = ..params$territory_size,
+                                     temperature_downstream = 17, #hardcoded <18C
+                                     density_dependent_survival = ..params$density_dependent_survival,
+                                     stochastic = stochastic)
     
     migrants <- lower_sac_fish$migrants
     
     lower_sac_fish <- rear(juveniles = lower_sac_fish$inchannel,
                            survival_rate = rearing_survival$inchannel[24, ],
-                           growth = lateFallRunDSM::params$growth_rates,
+                           growth = ..params$growth_rates,
                            floodplain_juveniles = lower_sac_fish$floodplain,
                            floodplain_survival_rate = rearing_survival$floodplain[24, ],
-                           floodplain_growth = lateFallRunDSM::params$growth_rates_floodplain,
+                           floodplain_growth = ..params$growth_rates_floodplain,
                            weeks_flooded = rep(..params$weeks_flooded[24, month, year], nrow(lower_sac_fish$inchannel)),
                            stochastic = stochastic)
     
@@ -311,16 +319,17 @@ juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_surviv
                                    .pulse_movement_medium_pulse = ..params$.pulse_movement_medium_pulse,
                                    .pulse_movement_large_pulse = ..params$.pulse_movement_large_pulse,
                                    .pulse_movement_very_large_pulse = ..params$.pulse_movement_very_large_pulse,
-                                   territory_size = lateFallRunDSM::params$territory_size,
-                                   stochastic = stochastic,
-                                   temperature_downstream = 17) #hardcoded <18C
+                                   territory_size = ..params$territory_size,
+                                   temperature_downstream = 17, #hardcoded <18C
+                                   density_dependent_survival = ..params$density_dependent_survival,
+                                   stochastic = stochastic)
     
     south_delta_trib_rear <- rear(juveniles = south_delta_trib_fish$inchannel,
                                   survival_rate = rearing_survival$inchannel[25:27, ],
-                                  growth = lateFallRunDSM::params$growth_rates,
+                                  growth = ..params$growth_rates,
                                   floodplain_juveniles = south_delta_trib_fish$floodplain,
                                   floodplain_survival_rate = rearing_survival$floodplain[25:27, ],
-                                  floodplain_growth = lateFallRunDSM::params$growth_rates_floodplain,
+                                  floodplain_growth = ..params$growth_rates_floodplain,
                                   weeks_flooded = ..params$weeks_flooded[25:27, month, year],
                                   stochastic = stochastic)
     
@@ -346,16 +355,17 @@ juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_surviv
                                    .pulse_movement_medium_pulse = ..params$.pulse_movement_medium_pulse,
                                    .pulse_movement_large_pulse = ..params$.pulse_movement_large_pulse,
                                    .pulse_movement_very_large_pulse = ..params$.pulse_movement_very_large_pulse,
-                                   territory_size = lateFallRunDSM::params$territory_size,
-                                   stochastic = stochastic,
-                                   temperature_downstream = ..params$avg_temp[31, month, year])
+                                   territory_size = ..params$territory_size,
+                                   temperature_downstream = ..params$avg_temp[31, month, year],
+                                   density_dependent_survival = ..params$density_dependent_survival,
+                                   stochastic = stochastic)
     
     san_joaquin_trib_rear <- rear(juveniles = san_joaquin_trib_fish$inchannel,
                                   survival_rate = rearing_survival$inchannel[28:30, ],
-                                  growth = lateFallRunDSM::params$growth_rates,
+                                  growth = ..params$growth_rates,
                                   floodplain_juveniles = san_joaquin_trib_fish$floodplain,
                                   floodplain_survival_rate = rearing_survival$floodplain[28:30, ],
-                                  floodplain_growth = lateFallRunDSM::params$growth_rates_floodplain,
+                                  floodplain_growth = ..params$growth_rates_floodplain,
                                   weeks_flooded = ..params$weeks_flooded[28:30, month, year],
                                   stochastic = stochastic)
     
@@ -367,18 +377,19 @@ juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_surviv
                                        floodplain_habitat = habitat$floodplain[31],
                                        prop_pulse_flows = ..params$prop_pulse_flows[31, , drop = FALSE],
                                        migration_survival_rate = migratory_survival$san_joaquin,
-                                       territory_size = lateFallRunDSM::params$territory_size,
-                                       stochastic = stochastic,
-                                       temperature_downstream = ..params$avg_temp[31, month, year])
+                                       territory_size = ..params$territory_size,
+                                       temperature_downstream = ..params$avg_temp[31, month, year],
+                                       density_dependent_survival = ..params$density_dependent_survival,
+                                       stochastic = stochastic)
     
     migrants[28:30, ] <- san_joaquin_fish$migrants
     
     san_joaquin_fish <- rear(juveniles = san_joaquin_fish$inchannel,
                              survival_rate = rearing_survival$inchannel[31, ],
-                             growth = lateFallRunDSM::params$growth_rates,
+                             growth = ..params$growth_rates,
                              floodplain_juveniles = san_joaquin_fish$floodplain,
                              floodplain_survival_rate = rearing_survival$floodplain[31, ],
-                             floodplain_growth = lateFallRunDSM::params$growth_rates_floodplain,
+                             floodplain_growth = ..params$growth_rates_floodplain,
                              weeks_flooded = rep(..params$weeks_flooded[31, month, year], nrow(san_joaquin_fish$inchannel)),
                              stochastic = stochastic)
     
@@ -397,8 +408,8 @@ juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_surviv
                                         migratory_survival_sac_delta = migratory_survival$sac_delta,
                                         migratory_survival_bay_delta = migratory_survival$bay_delta,
                                         juveniles_at_chipps = juveniles_at_chipps,
-                                        growth_rates = lateFallRunDSM::params$growth_rates,
-                                        territory_size = lateFallRunDSM::params$territory_size,
+                                        growth_rates = ..params$growth_rates,
+                                        territory_size = ..params$territory_size,
                                         stochastic = stochastic)
     
     migrants_at_golden_gate <- delta_fish$migrants_at_golden_gate
