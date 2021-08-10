@@ -36,7 +36,10 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
     
     scenario_data <- DSMscenario::load_scenario(scenario,
                                                 habitat_inputs = habitats,
-                                                species = DSMscenario::species$LATE_FALL_RUN)
+                                                species = DSMscenario::species$LATE_FALL_RUN,
+                                                spawn_decay_rate = ..params$spawn_decay_rate,
+                                                rear_decay_rate = ..params$rear_decay_rate,
+                                                stochastic = stochastic)
     
     ..params$spawning_habitat <- scenario_data$spawning_habitat
     ..params$inchannel_habitat_fry <- scenario_data$inchannel_habitat_fry
@@ -79,8 +82,11 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
     
     avg_ocean_transition_month <- ocean_transition_month(stochastic)
     
-    # TODO stochastic?
-    hatch_adults <- rmultinom(1, size = round(runif(1, 1753,7012)), prob = ..params$hatchery_allocation)[ , 1]
+    hatch_adults <- if (stochastic) {
+      rmultinom(1, size = round(runif(1, 1753,7012)), prob = ..params$hatchery_allocation)[ , 1]
+    } else {
+      round(mean(c(1753, 7012)) * ..params$hatchery_allocation)
+    }
     
     spawners <- get_spawning_adults(year, round(adults), hatch_adults, mode = mode,
                                     prop_flow_natal = ..params$prop_flow_natal,
@@ -275,7 +281,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
     juveniles_at_chipps <- ..params$juveniles_at_chipps_model_weights[1] * fish_1$juveniles_at_chipps +
       ..params$juveniles_at_chipps_model_weights[2] * fish_2$juveniles_at_chipps +
       ..params$juveniles_at_chipps_model_weights[3] * fish_3$juveniles_at_chipps 
-
+    
     adults_in_ocean <- ..params$adults_in_ocean_model_weights[1] * fish_1$adults_in_ocean + 
       ..params$adults_in_ocean_model_weights[2] * fish_2$adults_in_ocean +
       ..params$adults_in_ocean_model_weights[3] * fish_3$adults_in_ocean
