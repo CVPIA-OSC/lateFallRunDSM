@@ -272,8 +272,13 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
     } # end of month loop
     
     #combine the different models by weighting them equally. Will want to vary the weights in sensitivity analysis.
-    juveniles_at_chipps <- (1/3) * (fish_1$juveniles_at_chipps + fish_2$juveniles_at_chipps + fish_3$juveniles_at_chipps)
-    adults_in_ocean <- (1/3) * (fish_1$adults_in_ocean + fish_2$adults_in_ocean + fish_3$adults_in_ocean)
+    juveniles_at_chipps <- ..params$juveniles_at_chipps_model_weights[1] * fish_1$juveniles_at_chipps +
+      ..params$juveniles_at_chipps_model_weights[2] * fish_2$juveniles_at_chipps +
+      ..params$juveniles_at_chipps_model_weights[3] * fish_3$juveniles_at_chipps 
+
+    adults_in_ocean <- ..params$adults_in_ocean_model_weights[1] * fish_1$adults_in_ocean + 
+      ..params$adults_in_ocean_model_weights[2] * fish_2$adults_in_ocean +
+      ..params$adults_in_ocean_model_weights[3] * fish_3$adults_in_ocean
     
     output$juvenile_biomass[ , year] <- juveniles_at_chipps %*% lateFallRunDSM::params$mass_by_size_class
     

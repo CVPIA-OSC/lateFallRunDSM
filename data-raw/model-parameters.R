@@ -4,6 +4,9 @@ library(tidyverse)
 # 2019 Calibration Parameters ------------
 params <- list(
   
+  juveniles_at_chipps_model_weights = rep(1/3, 3),
+  adults_in_ocean_model_weights = rep(1/3, 3),
+  
   # Data from lateFallRunDSM cache-data (values vary by run)
   hatchery_allocation = lateFallRunDSM::hatchery_allocation,
   natural_adult_removal_rate = lateFallRunDSM::natural_adult_removal_rate,
