@@ -47,7 +47,6 @@ mass_by_size_class <- c(0.5, 1.8, 9.1, 31.4)
 names(mass_by_size_class) <- c("s", "m", "l", "vl")
 usethis::use_data(mass_by_size_class, overwrite = TRUE)
 
-# TODO come up with better names
 cross_channel_stray_rate <- c(rep(1, 15), 0, 0, 2, 2, 2, 0, 0, 3, 0, rep(0, 7)) / 24
 names(cross_channel_stray_rate) <- watershed_labels
 usethis::use_data(cross_channel_stray_rate, overwrite = TRUE)
@@ -55,13 +54,6 @@ usethis::use_data(cross_channel_stray_rate, overwrite = TRUE)
 stray_rate <- c(rep(1, 15), 0, 0, 1, 1, 1, 0, 0, 1, 0, rep(1, 6), 0) / 25
 names(stray_rate) <- watershed_labels
 usethis::use_data(stray_rate, overwrite = TRUE)
-
-
-# TODO confirm that these are not being used in the refactored model?
-# TODO better names and refactor
-cc.aloc <- c(rep(1,15),0,0,2,2,2,0,0,3,0,rep(0,7))/24
-oth.aloc <- c(rep(1,15),0,0,1,1,1,0,0,1,0,rep(1,6),0)/25
-
 
 # Adult Harvest Rate
 adult_harvest_rate <- c(0.0676, 0, 0.0676, 0, 0, 0, 0.0676, rep(0, 24))

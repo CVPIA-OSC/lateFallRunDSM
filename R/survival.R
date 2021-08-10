@@ -66,7 +66,6 @@ surv_juv_rear <- function(max_temp_thresh, avg_temp_thresh, high_predation,
     m2 <- ifelse(max_temp_thresh, min_survival_rate, boot::inv.logit(base_score_floodplain + .medium)) ^ prop_fp
     l2 <- ifelse(max_temp_thresh, min_survival_rate, boot::inv.logit(base_score_floodplain + .large)) ^ prop_fp
   } else {
-    # TODO after J+A discussion update
     s1 <- (boot::inv.logit(base_score_inchannel) * (1 - max_temp_thresh)) + (min_survival_rate * max_temp_thresh)
     m1 <- (boot::inv.logit(base_score_inchannel + .medium) * (1 - max_temp_thresh)) + (min_survival_rate * max_temp_thresh)
     l1 <- (boot::inv.logit(base_score_inchannel + .large) * (1 - max_temp_thresh)) + (min_survival_rate * max_temp_thresh)
@@ -121,7 +120,6 @@ surv_juv_bypass <- function(max_temp_thresh, avg_temp_thresh, high_predation,
     m <- ifelse(max_temp_thresh, min_survival_rate, boot::inv.logit(base_score + .medium))
     l <- ifelse(max_temp_thresh, min_survival_rate, boot::inv.logit(base_score + .large))
   } else {
-    # TODO update after discussion
     s <- (boot::inv.logit(base_score) * (1 - max_temp_thresh)) + (min_survival_rate * max_temp_thresh)
     m <- (boot::inv.logit(base_score + .medium) * (1 - max_temp_thresh)) + (min_survival_rate * max_temp_thresh)
     l <- (boot::inv.logit(base_score + .large) * (1 - max_temp_thresh)) + (min_survival_rate * max_temp_thresh)
