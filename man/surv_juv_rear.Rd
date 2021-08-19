@@ -34,7 +34,8 @@ surv_juv_rear(
   .medium = lateFallRunDSM::params$.surv_juv_rear_medium,
   .large = lateFallRunDSM::params$.surv_juv_rear_large,
   .floodplain = lateFallRunDSM::params$.surv_juv_rear_floodplain,
-  min_survival_rate = lateFallRunDSM::params$min_survival_rate
+  min_survival_rate = lateFallRunDSM::params$min_survival_rate,
+  stochastic
 )
 }
 \arguments{

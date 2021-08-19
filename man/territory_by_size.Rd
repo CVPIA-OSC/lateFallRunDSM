@@ -8,7 +8,7 @@ IP-117068
 }
 \usage{
 territory_by_size(
-  fork_lengths = c(mean(c(3.5, 4.2)), mean(c(4.2, 7.2)), mean(c(7.2, 11)), 0)
+  fork_lengths = c(mean(c(3.5, 4.2)), mean(c(4.2, 7.2)), rep(mean(c(7.2, 11)), 2))
 )
 }
 \arguments{

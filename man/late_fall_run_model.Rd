@@ -11,7 +11,8 @@ late_fall_run_model(
   scenario = NULL,
   mode = c("seed", "simulate", "calibrate"),
   seeds = NULL,
-  ..params = lateFallRunDSM::params
+  ..params = lateFallRunDSM::params,
+  stochastic = FALSE
 )
 }
 \arguments{
@@ -30,7 +31,7 @@ Late-Fall Run Chinook life cycle model used for CVPIA's Structured
 Decision Making Process
 }
 \examples{
-late_fall_run_seeds <- fallRunDSM::late_fall_run_model(mode = "seed")
+late_fall_run_seeds <- lateFallRunDSM::late_fall_run_model(mode = "seed")
 lateFallRunDSM::late_fall_run_model(scenario = DSMscenario::scenarios$ONE,
                            mode = "simulate",
                            seeds = late_fall_run_seeds)

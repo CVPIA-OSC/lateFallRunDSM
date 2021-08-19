@@ -24,13 +24,14 @@ route_and_rear_deltas(
   juveniles_at_chipps,
   growth_rates,
   location_index = c(rep(1, 24), 3, rep(2, 2), rep(4, 4)),
-  territory_size
+  territory_size,
+  stochastic
 )
 }
 \arguments{
 \item{year}{Simulation year, 1-20}
 
-\item{month}{Simulation month, 4-11}
+\item{month}{Simulation month, 1-8}
 
 \item{migrants}{An n by 4 matrix of juvenile fish by watershed and size class}
 

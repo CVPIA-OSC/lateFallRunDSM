@@ -4,7 +4,15 @@ library(tidyverse)
 # 2019 Calibration Parameters ------------
 params <- list(
   
-  # Data from latefallRunDSM cache-data (values vary by run)
+  juveniles_at_chipps_model_weights = rep(1/3, 3),
+  adults_in_ocean_model_weights = rep(1/3, 3),
+  density_dependent_survival = .10,
+  
+  # Data from DSMscenarios
+  spawn_decay_rate = DSMscenario::spawn_decay_rate,
+  rear_decay_rate = DSMscenario::rear_decay_rate,
+  
+  # Data from lateFallRunDSM cache-data (values vary by run)
   hatchery_allocation = lateFallRunDSM::hatchery_allocation,
   natural_adult_removal_rate = lateFallRunDSM::natural_adult_removal_rate,
   proportion_hatchery = lateFallRunDSM::proportion_hatchery,
@@ -43,7 +51,7 @@ params <- list(
   .pulse_movement_medium_pulse = -0.25477,
   .pulse_movement_large_pulse = -0.44778,
   .pulse_movement_very_large_pulse = 0.329,
-  territory_size = c(0.0498944803729701, 0.138941944739835, 0.471083652829798, 0),
+  territory_size = c(0.0498944803729701, 0.138941944739835, 0.471083652829798, 0.471083652829798),
   
   prob_fry_leave = 0.25,
 
