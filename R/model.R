@@ -48,23 +48,23 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
     ..params$weeks_flooded <- scenario_data$weeks_flooded
   }
   
+  if (mode == "calibrate") {
+    scenario_data <- list(
+      survival_adjustment = matrix(1, nrow = 31, ncol = 21,
+                                   dimnames = list(DSMscenario::watershed_labels,
+                                                   1980:2000)))
+  }
+  
   output <- list(
     # SIT METRICS
     spawners = matrix(0, nrow = 31, ncol = 20, dimnames = list(lateFallRunDSM::watershed_labels, 1:20)),
     juvenile_biomass = matrix(0, nrow = 31, ncol = 20, dimnames = list(lateFallRunDSM::watershed_labels, 1:20)),
-    proportion_natural = matrix(NA_real_, nrow = 31, ncol = 20, dimnames = list(lateFallRunDSM::watershed_labels, 1:20))
+    proportion_natural = matrix(0, nrow = 31, ncol = 20, dimnames = list(lateFallRunDSM::watershed_labels, 1:20))
   )
   
-  # initialize 31 x 4 matrices for natal fish, migrants, and ocean fish
-  lower_mid_sac_fish <- matrix(0, nrow = 31, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels, lateFallRunDSM::size_class_labels))
-  lower_sac_fish <- matrix(0, nrow = 31, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels, lateFallRunDSM::size_class_labels))
-  upper_mid_sac_fish <- matrix(0, nrow = 15, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels[1:15], lateFallRunDSM::size_class_labels))
-  sutter_fish <- matrix(0, nrow = 15, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels[1:15], lateFallRunDSM::size_class_labels))
-  yolo_fish <- matrix(0, nrow = 3, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels[18:20], lateFallRunDSM::size_class_labels))
-  san_joaquin_fish <- matrix(0, nrow = 3, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels[28:30], lateFallRunDSM::size_class_labels))
-  north_delta_fish <- matrix(0, nrow = 23, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels[1:23], lateFallRunDSM::size_class_labels))
-  south_delta_fish <- matrix(0, nrow = 31, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels, lateFallRunDSM::size_class_labels))
-  juveniles_at_chipps <- matrix(0, nrow = 31, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels, lateFallRunDSM::size_class_labels))
+  if (mode == 'calibrate') {
+    calculated_adults <- matrix(0, nrow = 31, ncol = 30)
+  }
   
   adults <- switch (mode,
                     "seed" = lateFallRunDSM::adult_seeds,
@@ -75,10 +75,20 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
   simulation_length <- switch(mode,
                               "seed" = 5,
                               "simulate" = 20,
-                              "calibrate" = 20)
+                              "calibrate" = 19)
   
   for (year in 1:simulation_length) {
     adults_in_ocean <- numeric(31)
+    # initialize 31 x 4 matrices for natal fish, migrants, and ocean fish
+    lower_mid_sac_fish <- matrix(0, nrow = 20, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels[1:20], lateFallRunDSM::size_class_labels))
+    lower_sac_fish <- matrix(0, nrow = 27, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels[1:27], lateFallRunDSM::size_class_labels))
+    upper_mid_sac_fish <- matrix(0, nrow = 15, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels[1:15], lateFallRunDSM::size_class_labels))
+    sutter_fish <- matrix(0, nrow = 15, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels[1:15], lateFallRunDSM::size_class_labels))
+    yolo_fish <- matrix(0, nrow = 20, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels[1:20], lateFallRunDSM::size_class_labels))
+    san_joaquin_fish <- matrix(0, nrow = 3, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels[28:30], lateFallRunDSM::size_class_labels))
+    north_delta_fish <- matrix(0, nrow = 23, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels[1:23], lateFallRunDSM::size_class_labels))
+    south_delta_fish <- matrix(0, nrow = 31, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels, lateFallRunDSM::size_class_labels))
+    juveniles_at_chipps <- matrix(0, nrow = 31, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels, lateFallRunDSM::size_class_labels))
     
     avg_ocean_transition_month <- ocean_transition_month(stochastic)
     
@@ -118,7 +128,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
     output$proportion_natural[ , year] <- spawners$proportion_natural
     
     egg_to_fry_surv <- surv_egg_to_fry(
-      proportion_natural = 1 - ..params$proportion_hatchery,
+      proportion_natural = spawners$proportion_natural,
       scour = ..params$prob_nest_scoured,
       temperature_effect = ..params$mean_egg_temp_effect,
       .proportion_natural = ..params$.surv_egg_to_fry_proportion_natural,
@@ -248,7 +258,6 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                                    .surv_juv_outmigration_sac_delta_medium = ..params$.surv_juv_outmigration_sac_delta_medium,
                                                    .surv_juv_outmigration_sac_delta_large = ..params$.surv_juv_outmigration_sac_delta_large,
                                                    ..surv_juv_outmigration_sj_int = ..params$..surv_juv_outmigration_sj_int,
-                                                   ..surv_juv_outmigration_sac_int_one = ..params$..surv_juv_outmigration_sac_int_one,
                                                    ..surv_juv_outmigration_sac_prop_diversions = ..params$..surv_juv_outmigration_sac_prop_diversions,
                                                    ..surv_juv_outmigration_sac_total_diversions = ..params$..surv_juv_outmigration_sac_total_diversions,
                                                    ..surv_juv_outmigration_sac_int_two = ..params$..surv_juv_outmigration_sac_int_two,
@@ -299,8 +308,9 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
       }
     }))
     
-    # distribute returning adults for future spawning
-    if (mode != "calibrate") {
+    if (mode == "calibrate") {
+      calculated_adults[1:31, (year + 2):(year + 4)] <- calculated_adults[1:31, (year + 2):(year + 4)] + adults_returning
+    } else {
       adults[1:31, (year + 2):(year + 4)] <- adults[1:31, (year + 2):(year + 4)] + adults_returning
     }
     
@@ -309,7 +319,7 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
   if (mode == "seed") {
     return(adults[ , 6:30])
   } else if (mode == "calibrate") {
-    return(output)
+    return(calculated_adults[, 6:20])
   }
   
   spawn_change <- sapply(1:19, function(year) {

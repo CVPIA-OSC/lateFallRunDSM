@@ -14,8 +14,6 @@ route_alternative(
   inchannel_habitat,
   floodplain_habitat,
   prop_pulse_flows,
-  proportion_flow_bypass,
-  detour = NULL,
   .pulse_movement_intercept,
   .pulse_movement_proportion_pulse,
   .pulse_movement_medium,
@@ -24,8 +22,9 @@ route_alternative(
   .pulse_movement_medium_pulse,
   .pulse_movement_large_pulse,
   .pulse_movement_very_large_pulse,
-  temp_down_stream = 19,
   territory_size,
+  temperature_downstream = 19,
+  density_dependent_survival,
   stochastic
 )
 }
@@ -39,8 +38,6 @@ route_alternative(
 \item{floodplain_habitat}{A vector of available floodplain habitat in square meters}
 
 \item{prop_pulse_flows}{The proportion of pulse flows}
-
-\item{detour}{Values can be 'sutter' or 'yolo' if some juveniles are detoured on to that bypass, otherwise NULL}
 
 \item{.pulse_movement_intercept}{Intercept for \code{\link{pulse_movement}}}
 
@@ -58,11 +55,13 @@ route_alternative(
 
 \item{.pulse_movement_very_large_pulse}{Additional coefficient for \code{\link{pulse_movement}} \code{proportion_pulse} variable for very large size fish}
 
-\item{temp_down_stream}{TODO}
-
 \item{territory_size}{Array of juvenile fish territory requirements for \code{\link{fill_natal}}}
 
+\item{temperature_downstream}{TODO}
+
 \item{juvenile}{An n by 4 matrix of juvenile fish by watershed and size class}
+
+\item{detour}{Values can be 'sutter' or 'yolo' if some juveniles are detoured on to that bypass, otherwise NULL}
 }
 \description{
 Determines if juveniles stay in their natal tributary, are detoured

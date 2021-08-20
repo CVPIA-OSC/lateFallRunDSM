@@ -9,13 +9,17 @@ IP-117068
 \usage{
 route_regional_alternative(
   month,
+  year,
   migrants,
   inchannel_habitat,
   floodplain_habitat,
+  proportion_flow_bypass,
+  detour = NULL,
   prop_pulse_flows,
   migration_survival_rate,
-  temp_down_stream = 19,
   territory_size,
+  temperature_downstream = 19,
+  density_dependent_survival,
   stochastic
 )
 }
@@ -32,9 +36,9 @@ route_regional_alternative(
 
 \item{migration_survival_rate}{The outmigration survival rate}
 
-\item{temp_down_stream}{TODO}
-
 \item{territory_size}{Array of juvenile fish territory requirements for \code{\link{fill_natal}}}
+
+\item{temperature_downstream}{TODO}
 }
 \description{
 Determines if juveniles stay in the region (Sections of Mainstem

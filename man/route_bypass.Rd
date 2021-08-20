@@ -12,7 +12,8 @@ route_bypass(
   bypass_habitat,
   migration_survival_rate,
   territory_size,
-  stochastic
+  stochastic,
+  ...
 )
 }
 \arguments{
@@ -23,6 +24,8 @@ route_bypass(
 \item{migration_survival_rate}{The outmigration survival rate}
 
 \item{territory_size}{Array of juvenile fish territory requirements for \code{\link{fill_regional}}}
+
+\item{stochastic}{\code{TRUE} \code{FALSE} value indicating if model is being run stochastically}
 }
 \description{
 Determines if juveniles remain in the bypass or out migrate

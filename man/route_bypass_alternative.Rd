@@ -11,8 +11,9 @@ route_bypass_alternative(
   bypass_fish,
   bypass_habitat,
   migration_survival_rate,
-  temp_down_stream = 19,
   territory_size,
+  temperature_downstream = 19,
+  density_dependent_survival,
   stochastic
 )
 }
@@ -23,9 +24,9 @@ route_bypass_alternative(
 
 \item{migration_survival_rate}{The outmigration survival rate}
 
-\item{temp_down_stream}{TODO}
-
 \item{territory_size}{Array of juvenile fish territory requirements for \code{\link{fill_natal}}}
+
+\item{temperature_downstream}{TODO}
 }
 \description{
 Determines if juveniles remain in the bypass or out migrate

@@ -70,9 +70,11 @@ hatchery_allocation <- c(0.083, 0, 0.015, rep(0, 28)) # hatchery allocation base
 names(hatchery_allocation) <- watershed_labels
 usethis::use_data(hatchery_allocation, overwrite = TRUE)
 
+# TODO what should this be?
 # Diversity Groups
 original_groups <- read_csv("data-raw/misc/Grouping.csv")
 diversity_group <- original_groups$DiversityGroup
+diversity_group[c(18,19,20,23,26,27)] <- 5
 names(diversity_group) <- original_groups$watershed
 usethis::use_data(diversity_group, overwrite = TRUE)
 
