@@ -61,9 +61,10 @@ params <- list(
   spawn_success_fecundity = 5522,
   
   # Egg to fry survival coefficients and calibrated intercept 
-  ..surv_egg_to_fry_int = 0.041,
+  .surv_egg_to_fry_int = 0.041,
   .surv_egg_to_fry_proportion_natural = 0.533,
   .surv_egg_to_fry_scour = -0.655,
+  
   
   # Juvenile rearing survival calibrated intercept, coefficients, and variables
   ..surv_juv_rear_int = c(`Upper Sacramento River` = 1.5, `Antelope Creek` = 3.5, `Battle Creek` = 3.5,
@@ -116,16 +117,6 @@ params <- list(
   .surv_juv_outmigration_san_joaquin_medium = 1.48,
   .surv_juv_outmigration_san_joaquin_large = 2.223,
   
-  # Sac delta outmigration coefficients and variables
-  .surv_juv_outmigration_sac_delta_intercept_one = -3.5,
-  .surv_juv_outmigration_sac_delta_intercept_two =  0.3,
-  .surv_juv_outmigration_sac_delta_intercept_three = -3.5,
-  .surv_juv_outmigration_sac_delta_delta_flow = 0.0013,
-  .surv_juv_outmigration_sac_delta_avg_temp = 0.386,
-  .surv_juv_outmigration_sac_delta_perc_diversions = -0.033,
-  .surv_juv_outmigration_sac_delta_medium = 1.48,
-  .surv_juv_outmigration_sac_delta_large = 2.223,
-  surv_juv_outmigration_sac_delta_model_weights = rep(1/3, 3),
   
   # Ocean entry success calibrated intercept, coefficients, and variable
   .ocean_entry_success_length = c(-0.0897309864, -0.0709704348, -0.0208590732, 0.0732620916),
@@ -210,7 +201,24 @@ params <- list(
   delta_prop_high_predation = DSMhabitat::delta_prop_high_predation,
   prob_strand_early = DSMhabitat::prob_strand_early,
   prob_strand_late = DSMhabitat::prob_strand_late,
-  prob_nest_scoured = DSMhabitat::prob_nest_scoured
+  prob_nest_scoured = DSMhabitat::prob_nest_scoured,
+  
+  # calibrated values
+  ..surv_egg_to_fry_mean_egg_temp_effect = 2.389592
+  # ..surv_adult_enroute_int = x[1],
+  # ..surv_adult_prespawn_int = x[2],
+  # ..surv_egg_to_fry_mean_egg_temp_effect =  x[3],
+  # ..surv_juv_rear_int = rep(x[4], 31),
+  # ..surv_juv_rear_contact_points = x[5],
+  # ..surv_juv_rear_prop_diversions = x[6],
+  # ..surv_juv_rear_total_diversions = x[7],
+  # ..surv_juv_bypass_int = x[8],
+  # ..surv_juv_delta_int = x[9],
+  # ..surv_juv_delta_contact_points = x[10],
+  # ..surv_juv_delta_total_diverted = x[11],
+  # ..surv_juv_outmigration_sj_int = x[12],
+  # ..ocean_entry_success_int = rep(x[13], 31)
+  
 )
 
 
