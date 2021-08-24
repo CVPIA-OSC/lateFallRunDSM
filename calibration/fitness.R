@@ -40,7 +40,7 @@ late_fall_run_fitness <- function(
 
 
   tryCatch({
-    preds <- fall_run_model(mode = "calibrate",
+    preds <- late_fall_run_model(mode = "calibrate",
                             seeds = seeds,
                             stochastic = FALSE,
                             ..params = params_init)
@@ -59,4 +59,17 @@ late_fall_run_fitness <- function(
   warning = function(w) return(1e12)
   )
 }
+
+
+# x <- runif(13)
+# print(late_fall_run_fitness(
+#   known_adults = DSMCalibrationData::grandtab_observed$late_fall,
+#   seeds = DSMCalibrationData::grandtab_imputed$late_fall,
+#   params = params,
+#   x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[9], x[10],
+#   x[11], x[12], x[13]
+# ))
+# 
+
+
 
