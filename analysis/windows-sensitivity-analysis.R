@@ -35,11 +35,13 @@ run_scenarios_scaled_param <- function(param, scalar) {
 
   sensi_params <- lateFallRunDSM::params
   sensi_params[param][[1]] <-
-    if (param %in% c("cc_gates_prop_days_closed", "cross_channel_stray_rate",
+    if (param %in% c("..surv_egg_to_fry_mean_egg_temp_effect",
+                     "adult_harvest_rate",
+                     "cc_gates_prop_days_closed", "cross_channel_stray_rate",
                      "delta_prop_high_predation", "delta_proportion_diverted",
                      "density_dependent_survival",
                      "growth_rates", "growth_rates_floodplain",
-                     "hatchery_allocation", "mean_egg_temp_effect",
+                     "hatchery_allocation", 
                      "migratory_temperature_proportion_over_20", "min_survival_rate",
                      "month_return_proportions", "natural_adult_removal_rate",
                      "prob_fry_leave",
@@ -50,7 +52,7 @@ run_scenarios_scaled_param <- function(param, scalar) {
                      "spawn_success_sex_ratio", "stray_rate")) {
       boot::inv.logit(log((sensi_params[param][[1]] + 1e-7) / ((1 - sensi_params[param][[1]]) + 1e-7)) * scalar)
     } else if (param %in% c("weeks_flooded", "juveniles_at_chipps_model_weights", 
-                            "adults_in_ocean_model_weights")) {
+                            "adults_in_ocean_model_weights", "cc_gates_days_closed")) {
       scalar
     } else {
       sensi_params[param][[1]] * scalar
@@ -101,15 +103,13 @@ param_sensitivity <- function(param) {
 
 library(tictoc)
 tic("one param")
-x <- param_sensitivity("juveniles_at_chipps_model_weights")
+x <- param_sensitivity("growth_rates")
 toc()
 View(x)
 
-y <- param_sensitivity("hatchery_allocation")
-
 # how to separate coefficients from other model inputs within params
-coefficients <- names(params)[grep('\\.', names(params))]
-model_inputs <- sort(names(params)[grep('\\.', names(params), invert = TRUE)])
+coefficients <- names(lateFallRunDSM::params)[grep('\\.', names(lateFallRunDSM::params))]
+model_inputs <- sort(names(lateFallRunDSM::params)[grep('\\.', names(lateFallRunDSM::params), invert = TRUE)])
 
 
 # close all cluster connections

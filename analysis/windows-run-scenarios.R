@@ -16,12 +16,12 @@ run_scenario <- function(scenario) {
   output <- late_fall_run_model(scenario = scenario, mode = 'simulate',
                            stochastic = TRUE, seed = s)
 
-  prop_nat <- output$spawners * output$proportion_natural
+  nat_spawn <- output$spawners * output$proportion_natural
   juv_biomass <- output$juvenile_biomass
   viability <- output$viability_metrics
 
   return(list(
-    prop_nat = prop_nat,
+    nat_spawn = nat_spawn,
     juv_biomass = juv_biomass,
     viability = viability
   ))
@@ -36,7 +36,7 @@ run_scenarios_parallel <- function(scenario, number_of_runs = 5000) {
            })
 }
 
-number_of_runs <- 5000
+number_of_runs <- 5
 
 baseline_results <- run_scenarios_parallel(DSMscenario::scenarios$NO_ACTION, number_of_runs)
 scenario_1_results <- run_scenarios_parallel(DSMscenario::scenarios$ONE, number_of_runs)
@@ -54,13 +54,16 @@ scenario_12_results <- run_scenarios_parallel(DSMscenario::scenarios$TWELVE, num
 scenario_13_results <- run_scenarios_parallel(DSMscenario::scenarios$THIRTEEN, number_of_runs)
 
 
-baseline_prop_nat <- flatten_dbl(transpose(baseline_results)$prop_nat)
-scenario_1_prop_nat <- flatten_dbl(transpose(scenario_1_results)$prop_nat)
+baseline_nat_spawn <- transpose(baseline_results)$nat_spawn
+s0_mean_valley_wide_nat_spawn <- map_dbl(1:number_of_runs, ~mean(colSums(baseline_nat_spawn[[.]])))
 
-plot(1:number_of_runs, cummean(baseline_prop_nat))
-plot(1:number_of_runs, cummean(scenario_1_prop_nat))
+s1_nat_spawn <- transpose(scenario_1_results)$nat_spawn
+s1_mean_valley_wide_nat_spawn <- map_dbl(1:number_of_runs, ~mean(colSums(s1_nat_spawn[[.]])))
 
-(mean(scenario_1_prop_nat) - mean(baseline_prop_nat)) / mean(baseline_prop_nat)
+plot(1:number_of_runs, cummean(s0_mean_valley_wide_nat_spawn))
+plot(1:number_of_runs, cummean(s1_mean_valley_wide_nat_spawn))
+
+(mean(s1_mean_valley_wide_nat_spawn) - mean(s0_mean_valley_wide_nat_spawn)) / mean(s0_mean_valley_wide_nat_spawn)
 
 # close all cluster connections
 closeAllConnections()
