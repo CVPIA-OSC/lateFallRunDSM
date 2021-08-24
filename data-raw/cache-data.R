@@ -31,8 +31,11 @@ rownames(adult_seeds) <- watershed_labels
 usethis::use_data(adult_seeds, overwrite = TRUE)
 
 # Proportion Hatchery 
-proportion_hatchery <- c(0.075, 0, 0.027, rep(0, 28)) #proportion hatchery based on CWT reports
+proportion_hatchery <- rep(0, 31) #proportion hatchery based on CWT reports
 names(proportion_hatchery) <- watershed_labels
+proportion_hatchery["Upper Sacramento River"] <- 0.075
+proportion_hatchery["Battle Creek"] <- 0.027
+proportion_hatchery["Clear Creek"] <- 0.027
 usethis::use_data(proportion_hatchery, overwrite = TRUE)
 
 # Month Return Proportions 
