@@ -64,14 +64,13 @@ juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_surviv
                                         cc_gates_days_closed = ..params$cc_gates_days_closed,
                                         rearing_survival_delta = rearing_survival$delta,
                                         migratory_survival_delta = migratory_survival$delta,
-                                        migratory_survival_sac_delta = migratory_survival$sac_delta,
                                         migratory_survival_bay_delta = migratory_survival$bay_delta,
                                         juveniles_at_chipps = juveniles_at_chipps,
                                         growth_rates = ..params$growth_rates,
                                         territory_size = ..params$territory_size,
                                         stochastic = stochastic)
     
-    
+    juveniles_at_chipps <- delta_fish$juveniles_at_chipps
     migrants_at_golden_gate <- delta_fish$migrants_at_golden_gate
     
   } else {
@@ -414,7 +413,6 @@ juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_surviv
                                         cc_gates_days_closed = ..params$cc_gates_days_closed,
                                         rearing_survival_delta = rearing_survival$delta,
                                         migratory_survival_delta = migratory_survival$delta,
-                                        migratory_survival_sac_delta = migratory_survival$sac_delta,
                                         migratory_survival_bay_delta = migratory_survival$bay_delta,
                                         juveniles_at_chipps = juveniles_at_chipps,
                                         growth_rates = ..params$growth_rates,

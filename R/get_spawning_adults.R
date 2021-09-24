@@ -28,10 +28,6 @@
 #' @param stochastic TRUE FALSE value indicating if model is being run stochastically
 #' @source IP-117068
 #' @export
-#
-# Inputs that need to change
-# params$month_return_proportions for Battle and Clear creeks Nov, Dec, Jan: 10,40,40,10
-# For upper Sacramento Oct- Feb distribution, 10,20, 40, 20, 10
 get_spawning_adults <- function(year, adults, hatch_adults, mode,
                                 month_return_proportions,
                                 prop_flow_natal,

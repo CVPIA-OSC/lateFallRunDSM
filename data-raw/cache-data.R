@@ -31,8 +31,11 @@ rownames(adult_seeds) <- watershed_labels
 usethis::use_data(adult_seeds, overwrite = TRUE)
 
 # Proportion Hatchery 
-proportion_hatchery <- c(0.075, 0, 0.027, rep(0, 28)) #proportion hatchery based on CWT reports
+proportion_hatchery <- rep(0, 31) #proportion hatchery based on CWT reports
 names(proportion_hatchery) <- watershed_labels
+proportion_hatchery["Upper Sacramento River"] <- 0.075
+proportion_hatchery["Battle Creek"] <- 0.027
+proportion_hatchery["Clear Creek"] <- 0.027
 usethis::use_data(proportion_hatchery, overwrite = TRUE)
 
 # Month Return Proportions 
@@ -70,11 +73,9 @@ hatchery_allocation <- c(0.083, 0, 0.015, rep(0, 28)) # hatchery allocation base
 names(hatchery_allocation) <- watershed_labels
 usethis::use_data(hatchery_allocation, overwrite = TRUE)
 
-# TODO what should this be?
 # Diversity Groups
 original_groups <- read_csv("data-raw/misc/Grouping.csv")
-diversity_group <- original_groups$DiversityGroup
-diversity_group[c(18,19,20,23,26,27)] <- 5
+diversity_group <- original_groups$diversity_group
 names(diversity_group) <- original_groups$watershed
 usethis::use_data(diversity_group, overwrite = TRUE)
 
