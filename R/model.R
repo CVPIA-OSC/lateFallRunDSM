@@ -79,7 +79,6 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
   
   for (year in 1:simulation_length) {
     adults_in_ocean <- numeric(31)
-    # initialize 31 x 4 matrices for natal fish, migrants, and ocean fish
     lower_mid_sac_fish <- matrix(0, nrow = 20, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels[1:20], lateFallRunDSM::size_class_labels))
     lower_sac_fish <- matrix(0, nrow = 27, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels[1:27], lateFallRunDSM::size_class_labels))
     upper_mid_sac_fish <- matrix(0, nrow = 15, ncol = 4, dimnames = list(lateFallRunDSM::watershed_labels[1:15], lateFallRunDSM::size_class_labels))
@@ -178,7 +177,6 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                        juveniles_at_chipps = juveniles_at_chipps,
                                        adults_in_ocean = adults_in_ocean)
     
-    #regular outmigration ruleset
     for (month in 4:11) {
       habitat <- get_habitat(year, month,
                              inchannel_habitat_fry = ..params$inchannel_habitat_fry,
