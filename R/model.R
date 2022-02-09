@@ -59,7 +59,8 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
     # SIT METRICS
     spawners = matrix(0, nrow = 31, ncol = 20, dimnames = list(lateFallRunDSM::watershed_labels, 1:20)),
     juvenile_biomass = matrix(0, nrow = 31, ncol = 20, dimnames = list(lateFallRunDSM::watershed_labels, 1:20)),
-    proportion_natural = matrix(0, nrow = 31, ncol = 20, dimnames = list(lateFallRunDSM::watershed_labels, 1:20))
+    proportion_natural = matrix(0, nrow = 31, ncol = 20, dimnames = list(lateFallRunDSM::watershed_labels, 1:20)),
+    juveniles_at_chipps = data.frame()
   )
   
   if (mode == 'calibrate') {
@@ -260,6 +261,8 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                        avg_ocean_transition_month = avg_ocean_transition_month,
                                        stochastic = stochastic)
       
+      
+      
       fish_2 <- juvenile_month_dynamic(hypothesis = 2, fish_2, year = year, month = month, 
                                        rearing_survival = rearing_survival, 
                                        migratory_survival = migratory_survival, 
@@ -273,6 +276,34 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                        habitat = habitat, ..params = ..params,
                                        avg_ocean_transition_month = avg_ocean_transition_month,
                                        stochastic = stochastic)
+      
+      fish_1_df <- data.frame(fish_1$juveniles_at_chipps * (1/3))
+      fish_1_df$watershed = lateFallRunDSM::watershed_labels
+      fish_1_df$month = month
+      fish_1_df$year = year
+      fish_1_df$hypothesis = "one"
+      rownames(fish_1_df) <- NULL
+      
+      fish_2_df <- data.frame(fish_2$juveniles_at_chipps * (1/3))
+      fish_2_df$watershed = lateFallRunDSM::watershed_labels
+      fish_2_df$month = month
+      fish_2_df$year = year
+      fish_2_df$hypothesis = "two"
+      rownames(fish_2_df) <- NULL
+      
+      fish_3_df <- data.frame(fish_3$juveniles_at_chipps * (1/3))
+      fish_3_df$watershed = lateFallRunDSM::watershed_labels
+      fish_3_df$month = month
+      fish_3_df$year = year
+      fish_3_df$hypothesis = "three"
+      rownames(fish_3_df) <- NULL
+      
+      output$juveniles_at_chipps <- dplyr::bind_rows(
+        output$juveniles_at_chipps, 
+        fish_1_df, 
+        fish_2_df, 
+        fish_3_df
+      )
     } # end of month loop
     
     #combine the different models by weighting them equally. Will want to vary the weights in sensitivity analysis.
