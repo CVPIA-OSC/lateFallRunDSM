@@ -90,6 +90,7 @@ NULL
 #'   \item \code{yolo_habitat}: More details at \code{\link[DSMhabitat]{yolo_habitat}}
 #'   \item \code{delta_habitat}: More details at \code{\link[DSMhabitat]{delta_habitat}}
 #'   \item \code{spawn_decay_rate}: More details at \code{\link[DSMscenario]{spawn_decay_rate}}
+#'   \item \code{rear_decay_rate}: More details at \code{\link[DSMscenario]{rear_decay_rate}}
 #' }
 #' @section Spawning Adults:
 #' \itemize{
