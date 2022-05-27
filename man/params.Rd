@@ -18,6 +18,7 @@ period in front are model or submodel coefficients. Parameters with double perio
   \item \code{sutter_habitat}: More details at \code{\link[DSMhabitat]{sutter_habitat}}
   \item \code{yolo_habitat}: More details at \code{\link[DSMhabitat]{yolo_habitat}}
   \item \code{delta_habitat}: More details at \code{\link[DSMhabitat]{delta_habitat}}
+  \item \code{spawn_decay_rate}: More details at \code{\link[DSMscenario]{spawn_decay_rate}}
 }
 }
 
