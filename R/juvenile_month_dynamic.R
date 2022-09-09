@@ -1,16 +1,23 @@
-#' Juvenile Month Dynamics
-#' @param hypothesis
+#' @title Juvenile Month Dynamics
+#' @description calling function that handles a single month juvenille 
+#' dynamic. In practice, this function is called for all months for which
+#' a juvenilly salmon is moving through the system. 
+#' @param hypothesis one of 1, 2, 3. Determines the movement logic based on prededined hypothesis rulesets.
 #' @param fish list object containing tracking matrices for juveniles, juveniles at chips, and adults in ocean
-#' @param year
-#' @param month
-#' @param rearing_survival
-#' @param migratory_survival
-#' @param habitat
-#' @param ..params   
-#' @examples 
+#' @param year integer value for year iteration
+#' @param month integer value for month iteration
+#' @param rearing_survival a list containing rearing survival by watersheds, obtained by calling "get_rearing_survival"
+#' @param migratory_survival a list containing migratory survival by watersheds, obtained by calling "get_migratory_survival"
+#' @param habitat habitat values by watershed for given year and month
+#' @param ..params Parameters for model and submodels. Defaults to lateFallRunDSM::params 
+#' @param avg_ocean_transition_month month juveniles transition to the ocean
+#' @param stochastic value indicating if model should be run stochastically. Defaults to FALSE
+#' @examples
+#' \dontrun{
 #' fish = list(juveniles = juveniles, north_delta_fish = north_delta_fish, south_delta_fish = south_delta_fish,
 #' juveniles_at_chipps = juveniles_at_chipps, 
 #' adults_in_ocean = adults_in_ocean)
+#' }
 juvenile_month_dynamic <- function(hypothesis, fish, year, month, rearing_survival, 
                                    migratory_survival, habitat, ..params, 
                                    avg_ocean_transition_month, stochastic) {

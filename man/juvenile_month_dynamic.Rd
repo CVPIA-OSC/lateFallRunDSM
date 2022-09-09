@@ -18,15 +18,35 @@ juvenile_month_dynamic(
 )
 }
 \arguments{
+\item{hypothesis}{one of 1, 2, 3. Determines the movement logic based on prededined hypothesis rulesets.}
+
 \item{fish}{list object containing tracking matrices for juveniles, juveniles at chips, and adults in ocean}
 
-\item{..params}{}
+\item{year}{integer value for year iteration}
+
+\item{month}{integer value for month iteration}
+
+\item{rearing_survival}{a list containing rearing survival by watersheds, obtained by calling "get_rearing_survival"}
+
+\item{migratory_survival}{a list containing migratory survival by watersheds, obtained by calling "get_migratory_survival"}
+
+\item{habitat}{habitat values by watershed for given year and month}
+
+\item{..params}{Parameters for model and submodels. Defaults to lateFallRunDSM::params}
+
+\item{avg_ocean_transition_month}{month juveniles transition to the ocean}
+
+\item{stochastic}{value indicating if model should be run stochastically. Defaults to FALSE}
 }
 \description{
-Juvenile Month Dynamics
+calling function that handles a single month juvenille 
+dynamic. In practice, this function is called for all months for which
+a juvenilly salmon is moving through the system.
 }
 \examples{
+\dontrun{
 fish = list(juveniles = juveniles, north_delta_fish = north_delta_fish, south_delta_fish = south_delta_fish,
 juveniles_at_chipps = juveniles_at_chipps, 
 adults_in_ocean = adults_in_ocean)
+}
 }

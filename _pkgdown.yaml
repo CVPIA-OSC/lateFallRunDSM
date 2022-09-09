@@ -13,9 +13,10 @@ home:
 
 reference:
 - title: Life Cycle Model and Model Parameters
-  desc: The Late-Fall run life cycle model and it's parameters
+  desc: The Late-Fall run life cycle model and its parameters
   contents:
   - late_fall_run_model
+  - juvenile_month_dynamic
   - params
 
 - title: Survival Sub-models

@@ -1,8 +1,8 @@
-pandoc: 2.17.1.1
-pkgdown: 2.0.3
+pandoc: '2.18'
+pkgdown: 2.0.4
 pkgdown_sha: ~
 articles: {}
-last_built: 2022-05-27T20:17Z
+last_built: 2022-09-08T17:00Z
 urls:
   reference: https://CVPIA-OSC.github.io/lateFallRunDSM/reference
   article: https://CVPIA-OSC.github.io/lateFallRunDSM/articles
