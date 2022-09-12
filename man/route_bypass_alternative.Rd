@@ -22,11 +22,11 @@ route_bypass_alternative(
 
 \item{bypass_habitat}{A vector of available habitat in square meters}
 
-\item{migration_survival_rate}{The outmigration survival rate}
+\item{migration_survival_rate}{The out-migration survival rate}
 
 \item{territory_size}{Array of juvenile fish territory requirements for \code{\link{fill_natal}}}
 
-\item{temperature_downstream}{TODO}
+\item{temperature_downstream}{Numeric temperature threshold that determines if fish move downstream. Defaults to 19.}
 }
 \description{
 Determines if juveniles remain in the bypass or out migrate

@@ -378,7 +378,7 @@ route_and_rear_deltas <- function(year, month, migrants, north_delta_fish, south
 #' @param .pulse_movement_medium_pulse Additional coefficient for \code{\link{pulse_movement}} \code{proportion_pulse} variable for medium size fish
 #' @param .pulse_movement_large_pulse Additional coefficient for \code{\link{pulse_movement}} \code{proportion_pulse} variable for large size fish
 #' @param .pulse_movement_very_large_pulse Additional coefficient for \code{\link{pulse_movement}} \code{proportion_pulse} variable for very large size fish
-#' @param temperature_downstream TODO
+#' @param temperature_downstream Numeric temperature threshold that determines if fish move downstream. Defaults to 19.
 #' @param territory_size Array of juvenile fish territory requirements for \code{\link{fill_natal}}
 #' @source IP-117068
 #' @export
@@ -454,8 +454,8 @@ route_alternative <- function(year, month, juveniles, inchannel_habitat, floodpl
 #' @description Determines if juveniles remain in the bypass or out migrate
 #' @param bypass_fish An n by 4 matrix of juvenile fish by watershed and size class
 #' @param bypass_habitat A vector of available habitat in square meters
-#' @param migration_survival_rate The outmigration survival rate
-#' @param temperature_downstream TODO
+#' @param migration_survival_rate The out-migration survival rate
+#' @param temperature_downstream Numeric temperature threshold that determines if fish move downstream. Defaults to 19.
 #' @param territory_size Array of juvenile fish territory requirements for \code{\link{fill_natal}}
 #' @source IP-117068
 #' @export
@@ -509,7 +509,7 @@ route_bypass_alternative <- function(bypass_fish, bypass_habitat, migration_surv
 #' @param floodplain_habitat A vector of available floodplain habitat in square meters
 #' @param prop_pulse_flows The proportion of pulse flows
 #' @param migration_survival_rate The outmigration survival rate
-#' @param temperature_downstream TODO
+#' @param temperature_downstream Numeric temperature threshold that determines if fish move downstream. Defaults to 19.
 #' @param territory_size Array of juvenile fish territory requirements for \code{\link{fill_natal}}
 #' @source IP-117068
 #' @export

@@ -57,7 +57,7 @@ route_alternative(
 
 \item{territory_size}{Array of juvenile fish territory requirements for \code{\link{fill_natal}}}
 
-\item{temperature_downstream}{TODO}
+\item{temperature_downstream}{Numeric temperature threshold that determines if fish move downstream. Defaults to 19.}
 
 \item{juvenile}{An n by 4 matrix of juvenile fish by watershed and size class}
 
