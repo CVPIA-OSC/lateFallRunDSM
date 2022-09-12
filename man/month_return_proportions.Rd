@@ -5,12 +5,15 @@
 \alias{month_return_proportions}
 \title{Month Return Proportions}
 \format{
-An object of class \code{matrix} (inherits from \code{array}) with 2 rows and 5 columns.
+1 dimensional array [31 watersheds]
+}
+\source{
+Proportion hatchery was derived using coded wire tag analysis. Details and methodology are available \href{https://cvpia-osc.github.io/fallRunDSM/articles/hatchery-analysis.html}
 }
 \usage{
 month_return_proportions
 }
 \description{
-The proportion of spawning fish in Oct-Dec, source: TODO
+The proportion of spawning fish in Oct-Dec
 }
 \keyword{datasets}

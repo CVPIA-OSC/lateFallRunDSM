@@ -11,6 +11,6 @@ An object of class \code{numeric} of length 31.
 proportion_hatchery
 }
 \description{
-The proportion of hatchery fish in each tributary, source: TODO
+The proportion of hatchery fish in each tributary
 }
 \keyword{datasets}

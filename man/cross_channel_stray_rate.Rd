@@ -5,7 +5,10 @@
 \alias{cross_channel_stray_rate}
 \title{Cross Channel Stray Rate}
 \format{
-An object of class \code{numeric} of length 31.
+Vector of length 44 (4 size classes)
+}
+\source{
+Size classes were derived from analysis of Stanislaus data
 }
 \usage{
 cross_channel_stray_rate
