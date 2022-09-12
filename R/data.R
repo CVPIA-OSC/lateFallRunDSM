@@ -33,21 +33,23 @@
 
 #' @title Proportion Hatchery
 #' @description The proportion of hatchery fish in each tributary
-"proportion_hatchery"
 #' @format 1 dimensional array [31 watersheds]
-#' @source Proportion hatchery was derived using coded wire tag analysis. Details and methodology are available \href{https://cvpia-osc.github.io/fallRunDSM/articles/hatchery-analysis.html}
+#' @source 
+#' Proportion hatchery was derived using coded wire tag analysis. Details and methodology are available \href{https://cvpia-osc.github.io/fallRunDSM/articles/hatchery-analysis.html}{CVPIA Hatchery Analysis}
+"proportion_hatchery"
 
 #' @title Month Return Proportions
 #' @description The proportion of spawning fish in Oct-Dec
-"month_return_proportions"
 #' @format Vector of length 3
-#' @source Expert opinion from SIT members 
+#' @source 
+#' Expert opinion from SIT members
+"month_return_proportions"
 
 #' @title Mass by Size Class
 #' @description The mass of fish by the size class
-"mass_by_size_class"
 #' @format Vector of length 44 (4 size classes)
-#' @source Size classes were derived from analysis of Stanislaus data 
+#' @source Size classes were derived from analysis of Stanislaus data
+"mass_by_size_class"
 
 #' @title Cross Channel Stray Rate
 #' @description Natural straying allocation across channels, source: expert opinion from SIT members.

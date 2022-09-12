@@ -5,10 +5,10 @@
 \alias{month_return_proportions}
 \title{Month Return Proportions}
 \format{
-1 dimensional array [31 watersheds]
+Vector of length 3
 }
 \source{
-Proportion hatchery was derived using coded wire tag analysis. Details and methodology are available \href{https://cvpia-osc.github.io/fallRunDSM/articles/hatchery-analysis.html}
+Expert opinion from SIT members
 }
 \usage{
 month_return_proportions

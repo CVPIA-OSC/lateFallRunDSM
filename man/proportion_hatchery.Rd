@@ -5,7 +5,10 @@
 \alias{proportion_hatchery}
 \title{Proportion Hatchery}
 \format{
-An object of class \code{numeric} of length 31.
+1 dimensional array [31 watersheds]
+}
+\source{
+Proportion hatchery was derived using coded wire tag analysis. Details and methodology are available \href{https://cvpia-osc.github.io/fallRunDSM/articles/hatchery-analysis.html}{CVPIA Hatchery Analysis}
 }
 \usage{
 proportion_hatchery
