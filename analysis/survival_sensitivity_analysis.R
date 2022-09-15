@@ -33,25 +33,37 @@ library(tictoc) # measure time to run
 library(parallel)
 library(doParallel)
 
+
+# Upper Sacramento River - check 
+# Battle Creek - check 
+# Clear Creek
+# Upper-mid Sacramento River - check
+# Sutter Bypass - check
+# Lower-mid Sacramento River - check 
+# Yolo Bypass - check
+# Lower Sacramento River - check
+# Delta - check
+# Bay Delta - check
+
 # scenarios to evaluate 
-scenarios1 <- expand.grid(location_surv = lateFallRunDSM::watershed_labels[c(16, 21, 24, 17, 22, 3)], 
-                          month_surv = c(9:12, 1:5),
+scenarios1 <- expand.grid(location_surv = lateFallRunDSM::watershed_labels[c(16, 21, 24, 17, 22, 3, 7)], #TODO: should we move Battle and Clear to scenario2?
+                          month_surv = c(4:11),
                           which_surv = c("juv_rear", "juv_migratory")) 
 
 scenarios2  <- expand.grid(location_surv = c("Upper Sacramento River", "South Delta"),
-                           month_surv = c(9:12, 1:5),
+                           month_surv = c(4:11),
                            which_surv = "juv_rear") 
 
 scenarios3  <- expand.grid(location_surv = c("Delta","Bay Delta"), 
-                           month_surv = c(9:12, 1:5),
+                           month_surv = c(4:11),
                            which_surv = "juv_migratory")
 
-scenarios4  <- expand.grid(location_surv = c("Upper Sacramento River","Battle Creek"),
+scenarios4  <- expand.grid(location_surv = c("Upper Sacramento River","Battle Creek", "Clear Creek"),
                            month_surv = NA,
                            which_surv = "egg_to_fry")
 
 scenarios5  <- expand.grid(location_surv = "North Delta",
-                           month_surv = c(9:12, 1:5),
+                           month_surv = c(4:11),
                            which_surv = "juv_rear") 
 
 # set up for running function in parallel
