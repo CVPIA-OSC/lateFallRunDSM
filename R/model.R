@@ -16,7 +16,10 @@
 #' @export
 late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "calibrate"),
                                 seeds = NULL, ..params = lateFallRunDSM::params,
-                                stochastic = FALSE){
+                                stochastic = FALSE,
+                                which_surv = c("egg_to_fry", "juv_rear", "juv_migratory"),
+                                location_surv = "Upper Sacramento River",
+                                month_surv = 1){
   
   mode <- match.arg(mode)
   
@@ -135,6 +138,11 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
       .scour = ..params$.surv_egg_to_fry_scour
     )
     
+    # egg to fry sensitivity analysis
+    if (mode == "simulate" & !is.na(which_surv) & which_surv == "egg_to_fry") {
+      egg_to_fry_surv[location_surv] <- min(egg_to_fry_surv[location_surv] * 1.2, 1) 
+    }
+    
     next_year <- year + 1
     min_spawn_habitat <- apply(..params$spawning_habitat[ , c(12, 1, 2), c(year, next_year, next_year)], 1, min)
     
@@ -233,6 +241,30 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                                min_survival_rate = ..params$min_survival_rate,
                                                stochastic = stochastic)
       
+      # juvenile rearing sensitivity analysis
+      if (mode == "simulate" & !is.na(which_surv) &  which_surv == "juv_rear"  & month == month_surv) {
+        if(location_surv %in% c("Upper Sacramento River", "Lower-mid Sacramento River", 
+                                "Lower Sacramento River", "Upper-mid Sacramento River", 
+                                "Battle Creek")) {
+          index_position <- which(winterRunDSM::watershed_labels == location_surv)
+          rearing_survival$inchannel[index_position, ] <- pmin(rearing_survival$inchannel[index_position, ] * 1.2, 1)
+          rearing_survival$floodplain[index_position, ] <- pmin(rearing_survival$floodplain[index_position, ] * 1.2, 1)
+        }
+        
+        if (location_surv == "Sutter Bypass") {
+          rearing_survival$sutter <- pmin(rearing_survival$sutter * 1.2, 1)
+        }
+        
+        if (location_surv == "Yolo Bypass") {
+          rearing_survival$yolo <- pmin(rearing_survival$yolo * 1.2, 1)
+        }
+        
+        if (location_surv %in% c("North Delta", "South Delta")) {
+          rearing_survival$delta[location_surv, ] <- pmin(rearing_survival$delta[location_surv, ] * 1.2, 1)
+        }
+      }
+      
+      
       migratory_survival <- get_migratory_survival(year, month,
                                                    cc_gates_prop_days_closed = ..params$cc_gates_prop_days_closed,
                                                    freeport_flows = ..params$freeport_flows,
@@ -252,6 +284,38 @@ late_fall_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "c
                                                    .surv_juv_outmigration_san_joaquin_large = ..params$.surv_juv_outmigration_san_joaquin_large, 
                                                    min_survival_rate = ..params$min_survival_rate,
                                                    stochastic = stochastic)
+      
+      # juvenile migration sensitivity analysis
+      if (mode == "simulate" & !is.na(which_surv) & which_surv == "juv_migratory" & month == month_surv) {
+        
+        if (location_surv == "Upper-mid Sacramento River") {
+          migratory_survival$uppermid_sac = pmin(migratory_survival$uppermid_sac* 1.2, 1)
+        }
+        
+        if (location_surv == "Lower-mid Sacramento River") {
+          migratory_survival$lowermid_sac = pmin(migratory_survival$lowermid_sac* 1.2, 1)
+        }
+        
+        if (location_surv == "Lower Sacramento River") {
+          migratory_survival$lower_sac = pmin(migratory_survival$lower_sac* 1.2, 1)
+        }
+        
+        if (location_surv == "Sutter Bypass") {
+          migratory_survival$sutter = pmin(migratory_survival$sutter * 1.2, 1)
+        }
+        
+        if (location_surv == "Yolo Bypass") {
+          migratory_survival$yolo = pmin(migratory_survival$yolo * 1.2, 1)
+        }
+        
+        if (location_surv == "Delta") {
+          migratory_survival$delta = pmin(migratory_survival$delta * 1.2, 1)
+        }
+        
+        if (location_surv == "Bay Delta") {
+          migratory_survival$bay_delta = min(migratory_survival$bay_delta * 1.2, 1)
+        }
+      }
       
       fish_1 <- juvenile_month_dynamic(hypothesis = 1, fish_1, year = year, month = month, 
                                        rearing_survival = rearing_survival, 
