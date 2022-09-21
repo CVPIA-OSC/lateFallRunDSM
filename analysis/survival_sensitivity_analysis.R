@@ -16,8 +16,8 @@ sensitivity_latefall_run_model <- function(scenario, scenarios, sensi_seeds) {
                                                   location_surv = location_surv,
                                                   month_surv = month_surv)
   
-  output <- dplyr::as_tibble((model_results$spawners * model_results$proportion_natural)[c(1, 3), ]) |> 
-    dplyr::mutate(location = c("Upper Sacramento River", "Battle Creek"),
+  output <- dplyr::as_tibble((model_results$spawners * model_results$proportion_natural)[c(1, 3, 7), ]) |> 
+    dplyr::mutate(location = c("Upper Sacramento River", "Battle Creek", "Clear Creek"),
                   survival_target = which_surv, 
                   location_target = location_surv, 
                   month_target = month_surv,
@@ -124,8 +124,8 @@ model_results <- lateFallRunDSM::late_fall_run_model(mode = "simulate",
                                                 location_surv = NA,
                                                 month_surv = NA)
 
-do_nothing <- dplyr::as_tibble((model_results$spawners * model_results$proportion_natural)[c(1, 3), ]) |> 
-  dplyr::mutate(location = c("Upper Sacramento River", "Battle Creek"),
+do_nothing <- dplyr::as_tibble((model_results$spawners * model_results$proportion_natural)[c(1, 3, 7), ]) |> 
+  dplyr::mutate(location = c("Upper Sacramento River", "Battle Creek", "Clear Creek"),
                 survival_target = NA, 
                 location_target = NA, 
                 month_target = NA,
@@ -133,4 +133,45 @@ do_nothing <- dplyr::as_tibble((model_results$spawners * model_results$proportio
   dplyr::select(id, location, survival_target, location_target, month_target, `1`:`20`)
 
 results <- dplyr::bind_rows(r1, r2, r3, r4, r5, do_nothing)
+
 #write_csv(results, "analysis/late_fall_run_survival_sensi_model_ouput.csv")
+
+
+# exploratory plots
+# juv_rear:
+results %>%
+  filter(is.na(survival_target)) %>%
+  bind_rows(results %>%
+              filter(survival_target == "juv_rear",
+                     location_target == "Battle Creek",
+                     month_target == 5)) %>%
+  pivot_longer(cols = c(`1`:`20`), values_to = 'natural_spawners', names_to = "year") %>%
+  mutate(year = as.numeric(year)) %>%
+  ggplot() +
+  geom_point(aes(x = as.factor(year), y = natural_spawners, color = as.factor(id), alpha = 0.5)) +
+  coord_flip()
+
+# juv migratory:
+results %>%
+  filter(is.na(survival_target)) %>%
+  bind_rows(results %>%
+              filter(survival_target == "juv_migratory",
+                     location_target == "Battle Creek",
+                     month_target == 4)) %>%
+  pivot_longer(cols = c(`1`:`20`), values_to = 'natural_spawners', names_to = "year") %>%
+  mutate(year = as.numeric(year)) %>%
+  ggplot() +
+  geom_point(aes(x = as.factor(year), y = natural_spawners, color = as.factor(id), alpha = 0.5)) +
+  coord_flip()
+
+# egg to fry:
+results %>%
+  filter(is.na(survival_target)) %>%
+  bind_rows(results %>%
+              filter(survival_target == "egg_to_fry",
+                     location_target == "Upper Sacramento River")) %>%
+  pivot_longer(cols = c(`1`:`20`), values_to = 'natural_spawners', names_to = "year") %>%
+  mutate(year = as.numeric(year)) %>%
+  ggplot() +
+  geom_point(aes(x = as.factor(year), y = natural_spawners, color = as.factor(id), alpha = 0.5)) +
+  coord_flip()
