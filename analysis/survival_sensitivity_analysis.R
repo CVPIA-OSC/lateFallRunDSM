@@ -46,25 +46,26 @@ library(doParallel)
 # Bay Delta - check
 
 # scenarios to evaluate 
-scenarios1 <- expand.grid(location_surv = lateFallRunDSM::watershed_labels[c(16, 21, 24, 17, 22, 3, 7)], #TODO: should we move Battle and Clear to scenario2?
+scenarios1 <- expand.grid(location_surv = lateFallRunDSM::watershed_labels[c(1, 16, 21, 24, 17, 22, 3, 7)], #TODO: should we move Battle and Clear to scenario2?
                           month_surv = c(4:11),
-                          which_surv = c("juv_rear", "juv_migratory")) 
+                          which_surv = c("juv_rear")) 
 
-scenarios2  <- expand.grid(location_surv = c("Upper Sacramento River", "South Delta"),
+scenarios2  <- expand.grid(location_surv = c("South Delta", "North Delta"),
                            month_surv = c(4:11),
                            which_surv = "juv_rear") 
 
-scenarios3  <- expand.grid(location_surv = c("Delta","Bay Delta"), 
+scenarios3  <- expand.grid(location_surv = lateFallRunDSM::watershed_labels[c( 16, 21, 24, 17, 22)], 
                            month_surv = c(4:11),
                            which_surv = "juv_migratory")
 
-scenarios4  <- expand.grid(location_surv = c("Upper Sacramento River","Battle Creek", "Clear Creek"),
+scenarios4  <- expand.grid(location_surv = c("Delta","Bay Delta"), 
+                           month_surv = c(4:11),
+                           which_surv = "juv_migratory")
+
+scenarios5  <- expand.grid(location_surv = c("Upper Sacramento River","Battle Creek", "Clear Creek"),
                            month_surv = NA,
                            which_surv = "egg_to_fry")
 
-scenarios5  <- expand.grid(location_surv = "North Delta",
-                           month_surv = c(4:11),
-                           which_surv = "juv_rear") 
 
 # set up for running function in parallel
 no_cores <- detectCores(logical = TRUE)
@@ -133,6 +134,12 @@ do_nothing <- dplyr::as_tibble((model_results$spawners * model_results$proportio
   dplyr::select(id, location, survival_target, location_target, month_target, `1`:`20`)
 
 results <- dplyr::bind_rows(r1, r2, r3, r4, r5, do_nothing)
+
+# this doesn't actually do anything.. 
+results <- results %>%
+  mutate(row_sum = rowSums(results[6:20])) %>%
+  filter(row_sum > 0) %>%
+  glimpse
 
 #write_csv(results, "analysis/late_fall_run_survival_sensi_model_ouput.csv")
 
