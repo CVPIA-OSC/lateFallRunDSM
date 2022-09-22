@@ -135,13 +135,69 @@ do_nothing <- dplyr::as_tibble((model_results$spawners * model_results$proportio
 
 results <- dplyr::bind_rows(r1, r2, r3, r4, r5, do_nothing)
 
-# this doesn't actually do anything.. 
-results <- results %>%
-  mutate(row_sum = rowSums(results[6:20])) %>%
-  filter(row_sum > 0) %>%
-  glimpse
+# identify watersheds where no spawning occurs and remove from dataframe
+no_spawning_locations <- results  |>
+  mutate(row_sum = rowSums(results[6:20]))  |>
+  filter(row_sum == 0) |>
+  pull(location) |> unique()
 
-#write_csv(results, "analysis/late_fall_run_survival_sensi_model_ouput.csv")
+
+final_results <- results |>
+  filter(!location %in% no_spawning_locations) |>
+  glimpse()
+
+# write_csv(final_results, "analysis/late_fall_run_survival_sensi_model_ouput.csv")
+
+# Exploratory plots
+sensi_results <- read_csv("analysis/late_fall_run_survival_sensi_model_ouput.csv") |> glimpse()
+
+
+no_action <- sensi_results |>
+  filter(id == 140) |>
+  pivot_longer(`1`:`20`, names_to = "year", values_to = "nat_spawn",
+               names_transform = list(year = as.numeric)) |>
+  group_by(year) |>
+  summarise(no_action_total_nat_spawn = sum(nat_spawn))
+
+results_with_diff <- sensi_results %>%
+  pivot_longer(cols = c(`1`:`20`), values_to = 'natural_spawners',
+               names_to = "year", names_transform = list(year = as.numeric)) |>
+  mutate(scenario = paste(survival_target, month_target,
+                          tolower(gsub(" ", "_", location_target)), sep = "_")) |>
+  group_by(id, year, scenario) |>
+  summarise(total_nat_spawn = sum(natural_spawners)) |>
+  ungroup() |>
+  filter(id != 354) |>
+  left_join(no_action) |>
+  mutate(diff = total_nat_spawn - no_action_total_nat_spawn)
+
+ids_with_diff <- results_with_diff |>
+  group_by(id, scenario) |>
+  summarise(total_diff = sum(diff)) |> 
+  filter(total_diff > 0) |>
+  pull(id)
+
+results_with_diff |>
+  filter(id %in% ids_with_diff) |>
+  group_by(year) |>
+  summarise(total_spawn_no_action = sum(no_action_total_nat_spawn),
+            total_spawn_action = sum(total_nat_spawn)) |>
+  View()
+
+results_with_diff |>
+  filter(id == 117) |>
+  pivot_longer(total_nat_spawn:no_action_total_nat_spawn,
+               names_to = "type", values_to = "nat_spawn") |>
+  ggplot(aes(year, nat_spawn, color = type)) +
+  geom_line()
+
+# #review neg difference values
+# results_with_diff |>
+#   filter(id == 65) |>
+#   pivot_longer(total_nat_spawn:no_action_total_nat_spawn,
+#                names_to = "type", values_to = "nat_spawn") |>
+#   ggplot(aes(year, nat_spawn, color = type)) +
+#   geom_line()
 
 
 # exploratory plots
