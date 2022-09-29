@@ -5,7 +5,7 @@
 \alias{mass_by_size_class}
 \title{Mass by Size Class}
 \format{
-Vector of length 44 (4 size classes)
+Vector of length 4 (4 size classes)
 }
 \source{
 Size classes were derived from analysis of Stanislaus data

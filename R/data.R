@@ -35,7 +35,7 @@
 #' @description The proportion of hatchery fish in each tributary
 #' @format 1 dimensional array [31 watersheds]
 #' @source 
-#' Proportion hatchery was derived using coded wire tag analysis. Details and methodology are available \href{https://cvpia-osc.github.io/fallRunDSM/articles/hatchery-analysis.html}{CVPIA Hatchery Analysis}
+#' Proportion hatchery was derived using coded wire tag analysis. Details and methodology are available \href{https://cvpia-osc.github.io/latefallRunDSM/articles/hatchery-analysis.html}{CVPIA Hatchery Analysis}
 "proportion_hatchery"
 
 #' @title Month Return Proportions
@@ -47,7 +47,7 @@
 
 #' @title Mass by Size Class
 #' @description The mass of fish by the size class
-#' @format Vector of length 44 (4 size classes)
+#' @format Vector of length 4 (4 size classes)
 #' @source Size classes were derived from analysis of Stanislaus data
 "mass_by_size_class"
 
@@ -56,9 +56,9 @@
 "cross_channel_stray_rate"
 
 #' @title Stray Rate
-#' @description Estimated with coded wire tag data 2010–2013 (\href{https://nrm.dfg.ca.gov/FileHandler.ashx?DocumentID=162355&usg= AOvVaw0VgMOwD7knFfSxRZy6k8RG}{Kormos et al. 2012},
+#' @description Estimated with coded wire tag data 2010–2013 \href{https://nrm.dfg.ca.gov/FileHandler.ashx?DocumentID=162355&usg=AOvVaw0VgMOwD7knFfSxRZy6k8RG}{Kormos et al. 2012},
 #' \href{https://www.rmpc.org/files/mark-mtg-2014-docs/2011_CFM_CWT_Recovery_Report_FAR_2013(Melodie_Palmer-Zwahlen).pdf}{Palmer-Zwahlen & Kormos 2013-2015},
-#' \href{https://nrm.dfg.ca.gov/FileHandler.ashx?DocumentID=162355&usg=AOvVaw3wSbd-zJk1eQa085Xuxiyg}{Palmer-Zwahlen et al. 2018})
+#' \href{https://nrm.dfg.ca.gov/FileHandler.ashx?DocumentID=162355&usg=AOvVaw3wSbd-zJk1eQa085Xuxiyg}{Palmer-Zwahlen et al. 2018}
 "stray_rate"
 
 #' @title Diversity Groups
@@ -111,14 +111,14 @@ NULL
 #'   \item \code{migratory_temperature_proportion_over_20}: More details at \code{\link[DSMtemperature]{migratory_temperature_proportion_over_20}}
 #'   \item \code{..surv_adult_enroute_int}:  Intercept, Source: calibration
 #'   \item \code{.adult_stray_intercept}: Empirical model fit using 2008–2011 tagging data provided by East Bay Municipal Utility District
-#'   \item \code{.adult_stray_wild}: Coefficient for \code{wild} variable, source: Estimated with coded wire tag data 2010–2013 \href{https://nrm.dfg.ca.gov/FileHandler.ashx?DocumentID=162355&usg= AOvVaw0VgMOwD7knFfSxRZy6k8RG}{(Kormos et al. 2012, Palmer-Zwahlen & Kormos 2013-2015, Palmer-Zwahlen et al. 2018)}
+#'   \item \code{.adult_stray_wild}: Coefficient for \code{wild} variable, source: Estimated with coded wire tag data 2010–2013 \href{https://nrm.dfg.ca.gov/FileHandler.ashx?DocumentID=162355&usg=AOvVaw0VgMOwD7knFfSxRZy6k8RG}{(Kormos et al. 2012, Palmer-Zwahlen & Kormos 2013-2015, Palmer-Zwahlen et al. 2018)}
 #'   \item \code{.adult_stray_natal_flow}: Coefficient for \code{natal_flow} variable, source: Empirical model fit using 2008–2011 tagging data provided by East Bay Municipal Utility District
 #'   \item \code{.adult_stray_cross_channel_gates_closed}: Coefficient for \code{cross_channel_gates_closed} variable, Source: Empirical model fit using  2008–2011 tagging data provided by East Bay Municipal Utility District.
-#'   \item \code{.adult_stray_prop_bay_trans}: Coefficient for \code{prop_bay_trans} variable, source: Estimated with coded wire tag data 2010–2013 \href{https://nrm.dfg.ca.gov/FileHandler.ashx?DocumentID=162355&usg= AOvVaw0VgMOwD7knFfSxRZy6k8RG}{(Kormos et al. 2012, Palmer-Zwahlen & Kormos 2013-2015, Palmer-Zwahlen et al. 2018)}
-#'   \item \code{.adult_stray_prop_delta_trans}: Coefficient for \code{prop_delta_trans} variable, source: Estimated with coded wire tag data 2010–2013 \href{https://nrm.dfg.ca.gov/FileHandler.ashx?DocumentID=162355&usg= AOvVaw0VgMOwD7knFfSxRZy6k8RG}{(Kormos et al. 2012, Palmer-Zwahlen & Kormos 2013-2015, Palmer-Zwahlen et al. 2018)}
+#'   \item \code{.adult_stray_prop_bay_trans}: Coefficient for \code{prop_bay_trans} variable, source: Estimated with coded wire tag data 2010–2013 \href{https://nrm.dfg.ca.gov/FileHandler.ashx?DocumentID=162355&usg=AOvVaw0VgMOwD7knFfSxRZy6k8RG}{(Kormos et al. 2012, Palmer-Zwahlen & Kormos 2013-2015, Palmer-Zwahlen et al. 2018)}
+#'   \item \code{.adult_stray_prop_delta_trans}: Coefficient for \code{prop_delta_trans} variable, source: Estimated with coded wire tag data 2010–2013 \href{https://nrm.dfg.ca.gov/FileHandler.ashx?DocumentID=162355&usg=AOvVaw0VgMOwD7knFfSxRZy6k8RG}{(Kormos et al. 2012, Palmer-Zwahlen & Kormos 2013-2015, Palmer-Zwahlen et al. 2018)}
 #'   \item \code{.adult_en_route_migratory_temp}: Coefficient for \code{migratory_temp} variable, source: \href{https://dsm-docs.s3.us-west-2.amazonaws.com/schrek_cb_1994.pdf}{Schreck et al. (1994)}
 #'   \item \code{.adult_en_route_bypass_overtopped}: Coefficient for \code{bypass_overtopped} variable, source: Expert opinion Ted Sommer, California Department of Water Resources (tributaries above bypasses only)
-#'   \item \code{.adult_en_route_adult_harvest_rate}:  Adult harvest rate, source:  \href{https://nrm.dfg.ca.gov/FileHandler.ashx?DocumentID=162355&usg= AOvVaw0VgMOwD7knFfSxRZy6k8RG}{(Palmer-Zwahlen & Kormos 2013-2015, Palmer-Zwahlen et al. 2018)}
+#'   \item \code{.adult_en_route_adult_harvest_rate}:  Adult harvest rate, source:  \href{https://nrm.dfg.ca.gov/FileHandler.ashx?DocumentID=162355&usg=AOvVaw0VgMOwD7knFfSxRZy6k8RG}{(Palmer-Zwahlen & Kormos 2013-2015, Palmer-Zwahlen et al. 2018)}
 #'   \item \code{degree_days}: More details at \code{\link[DSMtemperature]{degree_days}}
 #'   \item \code{month_return_proportions}: More details at \code{\link[lateFallRunDSM]{month_return_proportions}}
 #'   \item \code{..surv_adult_prespawn_int}:  Intercept, Source: Calibration Estimate

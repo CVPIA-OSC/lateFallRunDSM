@@ -8,7 +8,7 @@
 1 dimensional array [31 watersheds]
 }
 \source{
-Proportion hatchery was derived using coded wire tag analysis. Details and methodology are available \href{https://cvpia-osc.github.io/fallRunDSM/articles/hatchery-analysis.html}{CVPIA Hatchery Analysis}
+Proportion hatchery was derived using coded wire tag analysis. Details and methodology are available \href{https://cvpia-osc.github.io/latefallRunDSM/articles/hatchery-analysis.html}{CVPIA Hatchery Analysis}
 }
 \usage{
 proportion_hatchery
